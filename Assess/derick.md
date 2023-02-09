@@ -1,6 +1,5 @@
-#derick
-
-##strenght
+derick
+strenght
 	-programming
-##weakness
+weakness
 	-programming 00 stuff
