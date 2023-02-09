@@ -1,4 +1,5 @@
-derick
+#derick
+
 strenght
 	-programming
 weakness
