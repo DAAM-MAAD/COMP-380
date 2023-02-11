@@ -2,9 +2,9 @@ derick
 
 strenght
 
-	-programming
+	-programming in java and c
 
 
 weakness
 
-	-programming 00 stuff
+	-using git and github, programming experience a little than  2 years
