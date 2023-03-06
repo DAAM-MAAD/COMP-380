@@ -8,6 +8,12 @@
 
 ### Main
 
+#### Hotel
+ 
+- Array of accounts
+- Database will be here toooooooooooooooooo
+
+
 ### Class which reads and write from/to file
  
  - Builds database
