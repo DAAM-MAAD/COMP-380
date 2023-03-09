@@ -5,4 +5,11 @@ public class Hotel{
 			new gui();
 	}
   
+	
+	
+	
+	
+	
+	
+	
 }
