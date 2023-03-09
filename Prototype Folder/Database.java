@@ -1,3 +1,5 @@
+package com.com380;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -59,7 +61,7 @@ public class Database {
     + remove account from account file - Done
     + check if account exists before adding - Done
      */
-    public boolean accountExists(String info) throws IOException {
+    private boolean accountExists(String info) throws IOException {
         return Files.lines(Paths.get(getAccountsFile())).anyMatch(l -> l.contains(info));
 
     }
