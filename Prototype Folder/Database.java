@@ -1,27 +1,43 @@
-
+package com.com380;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.HashMap;
 
 public class Database {
 
     // class variables
     private String roomsFile = "Rooms.txt";
     private String accountsFile = "Accounts.txt";
-    private String accountInfo;
+    // private String accountInfo;
     private int occupancy;
     private int hotelRoomMax = 10;
     private int numberOfAccounts = 5;
 
-    //private ArrayList<Integer> roomList = new ArrayList<Integer>();
+    private HashMap<Account, Room> db = new HashMap<Account, Room>();
+
+
+
+
+    // may not include?
+   // private ArrayList<Account> accountList = new ArrayList<>();
+   // private ArrayList<Room> roomList = new ArrayList<>();
 
     // constructor
     public Database() {};
 
+    // HashMap
+    /*
+    + need upload Account.txt data to
+
+     */
+
+    // Regular
     // getters
     public String getRoomsFile() {
         return roomsFile;
@@ -53,19 +69,22 @@ public class Database {
     }
     public void setNumberOfAccounts(int n) {
         this.numberOfAccounts = n;
-    }
+    } // Remove. Don't need
 
     // other methods
     /*
     + add new account to account file - Done
     + remove account from account file - Done
     + check if account exists before adding - Done
+    + read account file to array?
+    + read room file to array?
      */
     private boolean accountExists(String info) throws IOException {
         return Files.lines(Paths.get(getAccountsFile())).anyMatch(l -> l.contains(info));
 
     }
-    public void addAccount(String info) throws IOException {
+    public void addAccount(Account acc) throws IOException {
+        String info = accountToString(acc);
         if(accountExists(info)) {
             System.out.println("Account Exist. Can not add.");
             return;
@@ -79,7 +98,6 @@ public class Database {
 
             setOccupancy(1);
         }
-
     }
     public void readAccountFile() throws FileNotFoundException {
         File file = new File(getAccountsFile());
@@ -92,7 +110,7 @@ public class Database {
         inputFile.close();
 
     }
-    public void removeAccount(String info) throws IOException {
+    public void removeAccount(int accID) throws IOException {
 //Construct the new file that will later be renamed to the original filename.
         File inputFile = new File(getAccountsFile());
         File tempFile = new File("tempFile.txt");
@@ -100,14 +118,19 @@ public class Database {
         PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
         String line = null;
 
+
         //Read from the original file and write to the new
         //unless content matches data to be removed.
         while ((line = br.readLine()) != null) {
+            String[] ac = line.split(", ");
+
+            // Remove empty lines
             if (line.equals("")) {
                 continue;
             }
-            // Remove empty lines
-            if (!line.trim().equals(info)) {
+
+            // if accID equals account ID, remove from file
+            if (!ac[0].equals(Integer.toString(accID))) {
                 pw.println(line);
                 pw.flush();
             }
@@ -126,5 +149,15 @@ public class Database {
         if (!tempFile.renameTo(inputFile))
             System.out.println("Could not rename file");
     }
+    public String accountToString(Account acc) {
+        int accountID = acc.getAccountID();
+        String accountPassword = acc.getAccountPassword();
+        String customerData = acc.getCustomerData();
+
+        String accountInfo = accountID + ", " + accountPassword + ", " + customerData;
+
+        return accountInfo;
+    }
+
 }
 

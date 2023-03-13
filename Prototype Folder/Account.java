@@ -1,4 +1,4 @@
-
+package com.com380;
 
 import java.util.ArrayList;
 
@@ -11,17 +11,21 @@ public class Account {
     private String customerData;
 
     // constructor
-    public Account() {
-
+    public Account(int accID, String pass, String customerInfo) {
+        this.accountID = accID;
+        this.accountPassword = pass;
+        this.customerData = customerInfo;
     }
 
     // getters
-
     public int getAccountID() {
         return accountID;
     }
     public String getAccountPassword() {
         return accountPassword;
+    }
+    public String getCustomerData() {
+        return customerData;
     }
 
     // setters
@@ -33,5 +37,7 @@ public class Account {
     }
 
     // other methods
+
+
 
 }
