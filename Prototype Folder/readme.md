@@ -55,9 +55,9 @@ Sprint 2
 # Coding Implementation
     
 - Github host, pull and push
-- Eclipse (AB and Derick)
+- Eclipse (AB)
 - IntelliJ  (Mat)
-- Vscode (Arya)
+- Vscode (Arya and derick)
 
 
     
