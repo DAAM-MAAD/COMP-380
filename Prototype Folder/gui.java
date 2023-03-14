@@ -1,60 +1,71 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
 import java.awt.*;
 import java.awt.image.*;
 import java.lang.*;
 import javax.imageio.*;
+import javax.swing.border.Border;
 import java.io.*;
 
-public class gui {
+public class gui implements ActionListener {
     public static final int PADDING = 4;
+
     gui() {
         // Creating windows frame, titling it, asnd making it visible
 
+        //Creating main frame for main menu
         JFrame main = new JFrame("MAAD Hotel");
-    ImageIcon favicon = null;
 
-    java.net.URL imgURL = gui.class.getResource("favicon.png");
+        // Favicon
+        ImageIcon favicon = null;
+        java.net.URL imgURL = gui.class.getResource("favicon.png");
+        favicon = new ImageIcon(imgURL);
+        main.setIconImage(favicon.getImage());
 
-    favicon = new ImageIcon(imgURL);
-    main.setIconImage(favicon.getImage());
-
+        // Setting frame dimensions
         Dimension preferred = main.getPreferredSize();
         main.setPreferredSize(preferred);
-        main.setMinimumSize(new Dimension(500, 300));
-        //main.setLayout(null);
+        main.setMinimumSize(new Dimension(1000, 500));
 
 
+        // PANEL: Main Menu and Image
+        JPanel mainMenu = new JPanel(new GridLayout(0, 2));
+        JPanel imagePanel = new JPanel(new GridLayout(1, 1));
 
+        mainMenu.setMaximumSize((new Dimension(40, 40)));
+        imagePanel.setPreferredSize((new Dimension(500, 430)));
 
-//        //Creates Buttons
-//        main.setAlwaysOnTop(false);
-//        JButton Reserve = new JButton("Reserve Room");
-//        Reserve.setBounds(0, 20, 150, 40);
-
-        // PANEL
-        JPanel mainMenu = new JPanel(new GridLayout(0,2,PADDING, PADDING));
-        JPanel imagePanel = new JPanel(new GridLayout(1, 1, PADDING, PADDING));
         imagePanel.add(new JLabel(favicon));
-        imagePanel.add(new JLabel ("Reserve with MAAD!"));
+        imagePanel.add(new JLabel("Reserve with MAAD!"), BorderLayout.SOUTH);
 
-        mainMenu.setBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING));
-        imagePanel.setBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING));
-        mainMenu.add( new JButton("Login"));
-        mainMenu.add( new JButton("Exit"));
+        //Login and Exit Buttons
+        JButton login = new JButton("Login");
+        login.setPreferredSize(new Dimension(40, 60));
+        JButton Exit = new JButton("Exit");
+        Exit.addActionListener(this);
+        login.setPreferredSize(new Dimension(40, 40));
+        mainMenu.add(login);
+        mainMenu.add(Exit);
 
 
-
-        //main.add(logo, BorderLayout.CENTER);
         main.add(imagePanel, BorderLayout.NORTH);
-        main.add(mainMenu, BorderLayout.CENTER);
+        main.add(mainMenu, BorderLayout.SOUTH);
 
-        //main.setLocationRelativeTo(null);
+
         main.pack();
         main.setVisible(true);
 
 
+
     }
 
-
+    //Listener for exit key
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.exit(99);
+    }
 }
+
+
