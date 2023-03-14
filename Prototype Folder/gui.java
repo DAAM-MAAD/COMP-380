@@ -7,10 +7,12 @@ import javax.imageio.*;
 import java.io.*;
 
 public class gui {
-    public static final int PADDING = 50;
+    public static final int PADDING = 4;
     gui() {
         // Creating windows frame, titling it, asnd making it visible
-        JFrame main = new JFrame("MAAD");
+        JFrame main = new JFrame("MAAD Hotel");
+        ImageIcon img = new ImageIcon("" );
+        main.setIconImage(img.getImage());
         Dimension preferred = main.getPreferredSize();
         main.setPreferredSize(preferred);
         main.setMinimumSize(new Dimension(500, 300));
@@ -38,8 +40,8 @@ public class gui {
 //        main.add(new JLabel(logo), BorderLayout.CENTER);
 
 
-      //main.add(logo, BorderLayout.CENTER);
-       main.add(mainMenu, BorderLayout.CENTER);
+        //main.add(logo, BorderLayout.CENTER);
+        main.add(mainMenu, BorderLayout.CENTER);
 
         //main.setLocationRelativeTo(null);
         main.pack();
@@ -50,29 +52,3 @@ public class gui {
 
 
 }
-
-
-<<<<<<< HEAD
-public class gui{
-	
-   gui() {
-      JFrame main = new JFrame("Dababy");
-      Dimension preferred = main.getPreferredSize();
-      main.setPreferredSize(preferred);
-      main.setLayout(null);
-      main.setVisible(true);
-   
-      main.setLocationRelativeTo(null);
-      main.pack();
-      main.setExtendedState (java.awt.Frame.MAXIMIZED_BOTH);
-      int height = java.awt.Frame.MAXIMIZED_VERT;
-      int width = java.awt.Frame.MAXIMIZED_HORIZ;
-      JButton Reserve = new JButton ("Reserve Room");
-      Reserve.setBounds( width/4, height/4, 150, 40 ) ;
-      main.add(Reserve);
-   	
-   }
-	
-}
-=======
->>>>>>> 0e31fa68701708563ddcb33d2846d09e20c31619
