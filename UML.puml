@@ -10,7 +10,6 @@ Administration "1  " -- "0..n  "Report
 Reservation *-- Room
 
 
-
 class Account {
     private int accountID
     private String accountPassword
