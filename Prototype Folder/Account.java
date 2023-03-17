@@ -37,7 +37,4 @@ public class Account {
     }
 
     // other methods
-
-
-
 }

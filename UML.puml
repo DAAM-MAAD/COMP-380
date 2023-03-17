@@ -1,0 +1,141 @@
+@startuml
+Customer "0..n  " -- "1  " Hotel
+Hotel "1  " -- "0..n  " Account
+Account "1  " -- "1  " Reservation
+Hotel "1  " *-- "1..n  " Room
+Hotel "1  " -- "1  "Database
+Hotel "1  " -- "1  " Administration
+Administration "1  " -- "0..n  "Report
+
+Reservation *-- Room
+
+
+
+class Account {
+    private int accountID
+    private String accountPassword
+    private ArrayList<String> accountHistory
+    private String customerData
+
+    public Account(int accID, String pass, String customerInfo)
+    public int getAccountID()
+    public String getAccountPassword()
+    public String getCustomerData()
+    public void setAccountID(int n)
+    public void setAccountPassword(String s)
+}
+
+class Administration {
+    private String confirmationNotice
+
+    public Report generateReport()
+    public boolean reservationCancel(int roomNum)
+    public boolean modifyReservation(Reservation n)
+    public void sendNotification(Reservation n)
+}
+
+class Customer {
+    private String customerName
+    private int customerAge
+    private String customerAddress
+    private String customerEmail
+
+    public String getCustomerName()
+    public int getCustomerAge()
+    public String getCustomerAddress()
+    public String getCustomerEmail()
+    public void setCustomerName(String name)
+    public void setCustomerAge(int age)
+    public void setCustomerAddress(String address)
+    public void setCustomerEmail(String email)
+}
+
+class Database {
+    private String roomsFile
+    private String accountsFile
+    private String accountInfo
+    private int occupancy
+    private int hotelRoomMax
+    private int numberOfAccounts
+    private HashMap<Account, Room> db = new HashMap<Account, Room>
+
+    public Database()
+    public String getRoomsFile()
+    public String getAccountsFile()
+    public int getNumberOfRooms()
+    public int getNumberOfAccounts()
+    public int getHotelRoomMax()
+    public int getOccupancy()
+    public void setOccupancy(int n)
+    public void setNumberOfAccounts(int n)
+    private boolean accountExists(String info)
+    public void addAccount(Account acc)
+    public void readAccountFile()
+    public void removeAccount(int accID)
+    public String accountToString(Account acc)
+}
+
+class Hotel {
+    public static void main (String[] args)
+}
+
+class Report {
+    public int getRoomNumber(int accountNum)
+    public int getHotelOccupancy()
+    public Customer getCustomerInfo(Customer p)
+}
+
+class Reservation {
+    private int reservationID
+    private int roomNumber
+    private int occupancy
+    private float totalCost
+    private int durationOfStay
+    private Date arrivalDate
+    private int accountID
+
+    public int getReservationID()
+    public int getRoomNumber()
+    public int getOccupancy()
+    public float getTotalCost()
+    public int getDurationOfStay()
+    public Date getArrivalDate()
+    public int getAccountID()
+    public void setReservationID(int reservationID)
+    public void setRoomNumber(int roomNumber)
+    public void setOccupancy(int occupancy)
+    public void setTotalCost(float totalCost)
+    public void setDurationOfStay(int durationOfStay)
+    public void setArrivalDate(Date arrivalDate)
+    public void setAccountID(int accountID)
+}
+
+class Room {
+    private int roomNumber
+    private boolean availability
+    private int occupancy
+    private float roomPrice
+    private String roomType
+    private String amenities
+
+    public Room()
+    public int getRoomNumber()
+    public boolean isAvailability()
+    public int getOccupancy()
+    public float getRoomPrice()
+    public String getRoomType()
+    public String getAmenities()
+    public void setRoomNumber(int n)
+    public void setAvailability(boolean state)
+    public void setOccupancy(int n)
+    public void setRoomPrice(float value)
+    public void setRoomType(String type)
+    public void setAmenities(String perks)
+
+
+
+}
+
+
+
+@enduml
