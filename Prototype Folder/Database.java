@@ -19,23 +19,19 @@ public class Database {
     private int hotelRoomMax = 10;
     private int numberOfAccounts = 5;
 
-    private HashMap<Account, Room> db = new HashMap<Account, Room>();
+    private HashMap<Room, Account> db = new HashMap<Room, Account>();
 
-
-
-
-    // may not include?
-   // private ArrayList<Account> accountList = new ArrayList<>();
-   // private ArrayList<Room> roomList = new ArrayList<>();
 
     // constructor
-    public Database() {};
+    public Database() {
+    };
 
     // HashMap
     /*
     + need upload Account.txt data to
-
      */
+
+
 
     // Regular
     // getters

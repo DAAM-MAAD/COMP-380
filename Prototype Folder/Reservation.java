@@ -1,19 +1,50 @@
 package com.com380;
 
+import java.rmi.server.RemoteServer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Reservation {
     private int reservationID;
     private int roomNumber;
     private int occupancy;
-    private float totalCost;
+    private double cost;
     private int durationOfStay;
     private Date arrivalDate;
     private int accountID;
+    private boolean cancelled;
 
+    // constructor
+    public Reservation() {
+    }
+
+    /**
+     * create Reservation with provided parameters
+     *
+     * @param rID   reservation ID
+     * @param rNum  room number
+     * @param occ   room occupancy
+     * @param cost room cost
+     * @param stay  duration of reservation in days
+     * @param mmddyyyy  arrival date of reservation
+     * @param aID   account ID that made reservation
+     * @param cancel    status of reservation regarding cancellation
+     */
+    public Reservation(int rID, int rNum, int occ, double cost, int stay,
+                       Date mmddyyyy, int aID, boolean cancel) {
+        this.reservationID = rID;
+        this.roomNumber = rNum;
+        this.occupancy = occ;
+        this.cost = cost;
+        this.durationOfStay = stay;
+        this.arrivalDate = mmddyyyy;
+        this.accountID = aID;
+        this.cancelled = cancel;
+    }
     // getters and setters
-
     public int getReservationID() {
+
         return reservationID;
     }
     public int getRoomNumber() {
@@ -22,8 +53,8 @@ public class Reservation {
     public int getOccupancy() {
         return occupancy;
     }
-    public float getTotalCost() {
-        return totalCost;
+    public double getCost() {
+        return cost;
     }
     public int getDurationOfStay() {
         return durationOfStay;
@@ -31,8 +62,20 @@ public class Reservation {
     public Date getArrivalDate() {
         return arrivalDate;
     }
+    /**
+     * format Date to string
+     * @return formatted Date in string
+     */
+    public String getArrivalDateToString() {
+        DateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy");
+        String strDate = dateFormat.format(arrivalDate);
+        return strDate;
+    }
     public int getAccountID() {
         return accountID;
+    }
+    public boolean isCancelled() {
+        return cancelled;
     }
 
     public void setReservationID(int reservationID) {
@@ -44,8 +87,8 @@ public class Reservation {
     public void setOccupancy(int occupancy) {
         this.occupancy = occupancy;
     }
-    public void setTotalCost(float totalCost) {
-        this.totalCost = totalCost;
+    public void setCost(double cost) {
+        this.cost = cost;
     }
     public void setDurationOfStay(int durationOfStay) {
         this.durationOfStay = durationOfStay;
@@ -55,5 +98,32 @@ public class Reservation {
     }
     public void setAccountID(int accountID) {
         this.accountID = accountID;
+    }
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
+
+    // other functions
+
+    /**
+     * Reservation data is formatted into a string for processing
+     * @return string of formatted Reservation data
+     */
+    public String reservationToString() {
+        String str = getReservationID() + ", " + getRoomNumber() + ", " + getOccupancy() +
+                ", " + getCost() + ", " + getDurationOfStay() + ", " + getArrivalDateToString() +
+                ", " + getAccountID() + ", " + isCancelled();
+
+        return str;
+    }
+    /**
+     * Calculate the total cost of reservation before taxes
+     * @param reservationID reservation ID
+     * @return return total cost of reservation [cost * duration]
+     */
+    public String getReservationTotalCost(int reservationID) {
+        double totalCost = getCost() * getDurationOfStay();
+        String roundOff = String.format("%.2f", totalCost);
+        return roundOff;
     }
 }

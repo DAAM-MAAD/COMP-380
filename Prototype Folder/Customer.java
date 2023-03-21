@@ -8,6 +8,23 @@ public class Customer {
     private String customerAddress;
     private String customerEmail;
 
+    // constructors
+    public Customer(){};
+
+    /**
+     * create Customer with provided parameters
+     * @param cName customer's name
+     * @param age customer's age
+     * @param address customer's address
+     * @param email customer's email
+     */
+    public Customer(String cName, int age, String address, String email) {
+        this.customerName = cName;
+        this.customerAge = age;
+        this.customerAddress = address;
+        this.customerEmail = email;
+    }
+
     // getters
     public String getCustomerName() {
         return customerName;
@@ -36,6 +53,26 @@ public class Customer {
         this.customerEmail = email;
     }
 
+    // functions
+    /*
+    make reservation - thru database class
+    cancel reservation - thru database class
+    modify reservation - thru database class
+    see rooms and amenities - thru database class
+    see rooms prices - thru database class
+    make payment - thru database class
+    recieve room confirmation - thru database class
+    file complaint - thru database class
+    leave rating - thru database class
+     */
 
-
+    /**
+     * Customer data is formatted into a string for processing
+     * @return string of formatted Customer data
+     */
+    public String customerToString() {
+        String str = getCustomerName() + " " + getCustomerAge() + " " +
+                getCustomerAddress() + " " + getCustomerEmail();
+        return str;
+    }
 }
