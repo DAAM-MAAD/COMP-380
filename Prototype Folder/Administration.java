@@ -1,4 +1,4 @@
-package com.com380;
+//package com.com380;
 
 public class Administration {
     private String confirmationNotice;
