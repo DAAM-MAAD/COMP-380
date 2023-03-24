@@ -1,96 +1,133 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
-import java.awt.*;
-import java.awt.image.*;
 import java.lang.*;
-import javax.imageio.*;
-import javax.swing.border.Border;
-import java.io.*;
-
 
 public class gui implements ActionListener {
-    // Screen Resolution Variables
-    int horizontalMax=0;
-    int vericalMax=0;
+	
+	JFrame mainFrame = new JFrame ("MAAD Hotel");
+	//Dimension screenSize= Toolkit.getDefaultToolkit().getScreenSize();;
+    //int preferredX = (int)screenSize.getWidth();
+    //int preferredY = (int)screenSize.getHeight();
+   // Dimension preferred = new Dimension ((int)screenSize.getWidth(), (int)screenSize.getHeight());
+	gui () {
+		//JFrame mainFrame = new JFrame ("MAAD Hotel");
 
-    gui() {
-        // Creating windows frame, titling it, asnd making it visible
+		mainFrame();
+	}
+	
+	private void mainFrame() {
+        //System.out.print(preferred);
 
-        //Creating main frame for main menu
-        JFrame main = new JFrame("MAAD Hotel");
+        //mainFrame.setPreferredSize(new Dimension (0,0));
 
-
-        // Favicon
+		
+		// Set GUI's dimensions
+        mainFrame.setMinimumSize(new Dimension(1000, 500));
+		
+		
+		// Favicon and Images
         ImageIcon favicon = null;
         ImageIcon logo = null;
         java.net.URL imgURL = gui.class.getResource("favicon.png");
-        java.net.URL imgURL2 = gui.class.getResource("test.png");
+        java.net.URL imgURL2 = gui.class.getResource("logo.png");
+        
+        //Favicon is the logo on the top left of the window
         favicon = new ImageIcon(imgURL);
+        
+        // Logo when signing in
         logo = new ImageIcon(imgURL2);
         // Youtube video explaining how to scale https://www.youtube.com/watch?v=eZrdU3BvI4E
+        
+        
+        //Trying to scale logo
         Image getLogo = logo.getImage();
         Image scaledLogo = getLogo.getScaledInstance(1164, 966, Image.SCALE_SMOOTH);
-
         logo = new ImageIcon(scaledLogo);
-        main.setIconImage(favicon.getImage());
-
-        // Setting frame dimensions
-        Dimension preferred = main.getPreferredSize();
-        System.out.print(preferred);
-
-        main.setPreferredSize(preferred);
-        main.setMinimumSize(new Dimension(1000, 500));
-
-
-        // PANEL: Main Menu and Image
+ 
+        //Setting Favicon
+        mainFrame.setIconImage(favicon.getImage());
+		
+        
+ // Panels
+        
+        // MainMenu Panel
         JPanel mainMenu = new JPanel(new GridLayout(0, 2));
+       // mainMenu.setMaximumSize((new Dimension(40, 40)));
+        JButton Login = new JButton("Login");
+        JButton Exit = new JButton("Exit");
+        Exit.setActionCommand("Exit");
+        Exit.addActionListener(this);
+        Login.setActionCommand("Login");
+        Login.addActionListener(this);
+      //  login.setPreferredSize(new Dimension(40, 40));
+        mainMenu.add(Login);
+        mainMenu.add(Exit);
+        
+        
+        // Image Panel
+        // Setting dimensions
         JPanel imagePanel = new JPanel(new GridLayout(2, 3));
-
-        mainMenu.setMaximumSize((new Dimension(40, 40)));
-        imagePanel.setPreferredSize((new Dimension(500, 430)));
-
-        imagePanel.add(new JLabel(logo), BorderLayout.CENTER);
+        imagePanel.setPreferredSize((new Dimension(500, 700)));
+        
+        
+        //Adding Logo and Slogan
+        JLabel logoLabel = new JLabel(logo);
+        imagePanel.add(logoLabel, BorderLayout.CENTER);
         JLabel slogan = new JLabel("Reserve with MAAD Hotesls!") ;
-        slogan.setVerticalAlignment(JLabel.BOTTOM);
+        //slogan.setVerticalAlignment(JLabel.);
         slogan.setHorizontalAlignment(JLabel.CENTER);
         slogan.setPreferredSize(new Dimension(200, 200));
         imagePanel.add(slogan);
-
-        //Login and Exit Buttons
-        JButton login = new JButton("Login");
-        login.setPreferredSize(new Dimension(40, 60));
-        JButton Exit = new JButton("Exit");
-        Exit.addActionListener(this);
-        login.setPreferredSize(new Dimension(40, 40));
-        mainMenu.add(login);
-        mainMenu.add(Exit);
-
-
-        main.add(imagePanel, BorderLayout.CENTER);
-        main.add(mainMenu, BorderLayout.SOUTH);
-
-
-        main.pack();
-        main.setLocationRelativeTo(null);
-        main.setVisible(true);
-
-
-
-    }
-
-    //Listener for exit key
-    @Override
+		
+// Packing It, Setting to the middle, Setting it visible
+        // Adding the mainPanel
+        mainFrame.add(imagePanel, BorderLayout.CENTER);
+        mainFrame.add(mainMenu, BorderLayout.SOUTH);
+        
+        
+        //Pack, Locate, and Visibility
+        mainFrame.pack();
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setVisible(true);
+        
+        //Handling if Users Closes the window too early
+        // Source: https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
+        mainFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+            	// Tosses a prompt for confirmation 
+                if (JOptionPane.showConfirmDialog(mainFrame, 
+                    "Are you sure you want to close this window?", "Close Window?", 
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+                    System.exit(0);
+                }
+                // Do nothing, close option tab
+                mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            }
+        });
+        
+	}
+	
+	
+	@Override
     public void actionPerformed(ActionEvent e) {
-        System.exit(99);
+		// source: https://stackoverflow.com/questions/5936261/how-to-add-action-listener-that-listens-to-multiple-buttons
+		String action = e.getActionCommand().toString();
+		
+		switch (action) {
+		case "Exit":
+			JOptionPane.showMessageDialog(mainFrame, "Thank you visiting MAAD Hotel. Application will now close.");
+			System.exit(420);
+		break;
+		case "Login":
+			System.out.print("login");
+		break;
+		default:
+			JOptionPane.showMessageDialog(mainFrame, "Sorry! Skill Issue");
+		}
     }
 
-    //@Override
-    public Dimension getPreferredSize() {
-        Dimension screenSize= Toolkit.getDefaultToolkit().getScreenSize();;
-        return (new Dimension ((int)screenSize.getWidth(), (int)screenSize.getHeight()));
-    }
 }
-
-
