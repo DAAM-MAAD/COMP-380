@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,7 +8,7 @@ import java.lang.*;
 public class gui implements ActionListener {
 
     JFrame mainFrame = new JFrame("MAAD Hotel");
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     ;
 
     //int preferredX = (int)screenSize.getWidth();
@@ -19,7 +20,7 @@ public class gui implements ActionListener {
         mainFrame();
     }
 
-    private void mainFrame() {
+     void mainFrame() {
         //System.out.print(preferred);
 
         //mainFrame.setPreferredSize(new Dimension (0,0));
@@ -57,7 +58,7 @@ public class gui implements ActionListener {
         // MainMenu Panel
         JPanel mainMenu = new JPanel(new GridLayout(0, 2));
         // mainMenu.setMaximumSize((new Dimension(40, 40)));
-        JButton Login = new JButton("Login");
+        JButton Login = new JButton("User Login");
         JButton Exit = new JButton("Exit");
         Exit.setActionCommand("Exit");
         Exit.addActionListener(this);
@@ -66,6 +67,18 @@ public class gui implements ActionListener {
         //  login.setPreferredSize(new Dimension(40, 40));
         mainMenu.add(Login);
         mainMenu.add(Exit);
+
+        //Admin Panrl
+        // Current Bug: Not scaling properly. We got a wide boy.
+        JPanel adminPanel = new JPanel(new GridLayout(1, 2));
+        JButton adminLogin = new JButton("Administrator Login");
+        adminLogin.setMaximumSize(new Dimension(40, 40));
+        adminLogin.setHorizontalAlignment(JButton.LEFT);
+        adminLogin.setVerticalAlignment(JButton.TOP);
+        adminLogin.setActionCommand("adminLogin");
+        adminLogin.addActionListener(this);
+        adminPanel.add(adminLogin);
+        adminPanel.setMaximumSize(new Dimension(40, 40));
 
 
         // Image Panel
@@ -86,6 +99,7 @@ public class gui implements ActionListener {
 // Packing It, Setting to the middle, Setting it visible
         // Adding the mainPanel
         mainFrame.add(imagePanel, BorderLayout.CENTER);
+        mainFrame.add(adminPanel, BorderLayout.NORTH);
         mainFrame.add(mainMenu, BorderLayout.SOUTH);
 
 
@@ -114,12 +128,50 @@ public class gui implements ActionListener {
     }
 
 
+    //
+    //
+    // FRAMES
+    //
+    //
     void loginFrame() {
         // Source: https://study.com/academy/lesson/adding-jtexfields-jbuttons-tool-tips-to-a-jframe-in-java.html
-        JFrame loginFrame = new JFrame("MAAD Hotel: Login");
+        JFrame loginFrame = new JFrame("MAAD Hotel: User Login");
         loginFrame.setMinimumSize(new Dimension(1200, 1000));
         loginFrame.show();
         mainFrame.dispose();
+
+// INPUTS Section
+        //create label for username
+        JLabel userLabel = new JLabel();
+        userLabel.setText("Enter Username:");      //set label value for textField1
+        userLabel.setMaximumSize(new Dimension(1200, 40));
+
+        //create text field to get username from the user
+        JTextField user = new JTextField(15);    //set length of the text
+        user.setMaximumSize(new Dimension(1200, 40));
+
+        //create label for password
+        JLabel passLabel = new JLabel();
+        passLabel.setText("Enter Password:");      //set label value for textField2
+        passLabel.setMaximumSize(new Dimension(1200, 40));
+
+        //create text field to get password from the user
+        JPasswordField password = new JPasswordField(15);    //set length for the password
+        password.setMaximumSize(new Dimension(1200, 40));
+        //create submit button
+        JButton b1 = new JButton("SUBMIT"); //set label to button
+
+        loginFrame.add(userLabel);
+        loginFrame.add(user);
+        loginFrame.add(passLabel);
+        loginFrame.add(password);
+        loginFrame.add(b1);
+
+        // Source: https://stackoverflow.com/questions/761341/error-upon-assigning-layout-boxlayout-cant-be-shared
+        loginFrame.getContentPane().setLayout(new BoxLayout(loginFrame.getContentPane(), BoxLayout.Y_AXIS));
+
+
+
         loginFrame.pack();
         loginFrame.setLocationRelativeTo(null);
         loginFrame.setVisible(true);
@@ -143,18 +195,51 @@ public class gui implements ActionListener {
 
     }
 
-    void reservationFrame() {
-        JFrame reservationFrame = new JFrame("MAAD Hotel: Login");
-        reservationFrame.setMinimumSize(new Dimension(1200, 1000));
-        reservationFrame.show();
-        mainFrame.dispose();
-        reservationFrame.pack();
-        reservationFrame.setLocationRelativeTo(null);
-        reservationFrame.setVisible(true);
+    void adminFrame() {
+        // Source: https://study.com/academy/lesson/adding-jtexfields-jbuttons-tool-tips-to-a-jframe-in-java.html
+        // Report Generation, Review Rooms, and something else
+        JFrame adminFrame = new JFrame("MAAD Hotel: Administrator Login");
+        adminFrame.setMinimumSize(new Dimension(1200, 1000));
+        adminFrame.show();
+        adminFrame.dispose();
+        adminFrame.pack();
+        adminFrame.setLocationRelativeTo(null);
+        adminFrame.setVisible(true);
 
 
         // Closing WIndows
-        reservationFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+        adminFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                // Tosses a prompt for confirmation
+                if (JOptionPane.showConfirmDialog(mainFrame,
+                        "Are you sure you want to close this window?", "Close Window?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+                // Do nothing, close option tab
+                mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            }
+        });
+
+    }
+
+    void userFrame() {
+        // UserFrame
+        // Tasks: Review Rooms, Edit, Cancel, and Reserve.
+        //
+        JFrame userFrame = new JFrame("MAAD Hotel: Welcome.");
+        userFrame.setMinimumSize(new Dimension(1200, 1000));
+        userFrame.show();
+        mainFrame.dispose();
+        userFrame.pack();
+        userFrame.setLocationRelativeTo(null);
+        userFrame.setVisible(true);
+
+
+        // Closing WIndows
+        userFrame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 // Tosses a prompt for confirmation
@@ -179,17 +264,18 @@ public class gui implements ActionListener {
         switch (action) {
             case "Exit":
                 JOptionPane.showMessageDialog(mainFrame, "Thank you visiting MAAD Hotel. Application will now close.");
-                System.out.print("Exit");
+                System.out.println("Exit");
                 System.exit(420);
                 break;
             case "Login":
                 loginFrame();
-                System.out.print("login");
+                System.out.println("login");
                 break;
-            case "Login ":
-                // Need the account portin for this
-                reservationFrame();
-
+            case "Authenticate":
+                // Need the account portion for this
+                userFrame();
+                System.out.println("entering user");
+                break;
             default:
                 JOptionPane.showMessageDialog(mainFrame, "Sorry! Skill Issue");
         }
