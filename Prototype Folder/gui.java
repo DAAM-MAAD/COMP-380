@@ -4,10 +4,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 public class gui implements ActionListener {
 
     JFrame mainFrame = new JFrame("MAAD Hotel");
+    JFrame adminLoginFrame = new JFrame("MAAD Hotel: Administrator Login");
+    JFrame loginFrame = new JFrame("MAAD Hotel: User Login");
+    JFrame userFrame = new JFrame("MAAD Hotel: Welcome.");
+    JFrame adminFrame = new JFrame("MAAD Hotel: Welcome.");
+
     //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     ;
 
@@ -135,7 +142,7 @@ public class gui implements ActionListener {
     //
     void loginFrame() {
         // Source: https://study.com/academy/lesson/adding-jtexfields-jbuttons-tool-tips-to-a-jframe-in-java.html
-        JFrame loginFrame = new JFrame("MAAD Hotel: User Login");
+//        JFrame loginFrame = new JFrame("MAAD Hotel: User Login");
         loginFrame.setMinimumSize(new Dimension(1200, 1000));
         loginFrame.show();
         mainFrame.dispose();
@@ -159,13 +166,14 @@ public class gui implements ActionListener {
         JPasswordField password = new JPasswordField(15);    //set length for the password
         password.setMaximumSize(new Dimension(1200, 40));
         //create submit button
-        JButton b1 = new JButton("SUBMIT"); //set label to button
-
+        JButton submit = new JButton("Login"); //set label to button
+        submit.setActionCommand("Authenticate");
+        submit.addActionListener(this);
         loginFrame.add(userLabel);
         loginFrame.add(user);
         loginFrame.add(passLabel);
         loginFrame.add(password);
-        loginFrame.add(b1);
+        loginFrame.add(submit);
 
         // Source: https://stackoverflow.com/questions/761341/error-upon-assigning-layout-boxlayout-cant-be-shared
         loginFrame.getContentPane().setLayout(new BoxLayout(loginFrame.getContentPane(), BoxLayout.Y_AXIS));
@@ -195,20 +203,50 @@ public class gui implements ActionListener {
 
     }
 
-    void adminFrame() {
+    void adminLoginFrame() {
         // Source: https://study.com/academy/lesson/adding-jtexfields-jbuttons-tool-tips-to-a-jframe-in-java.html
         // Report Generation, Review Rooms, and something else
-        JFrame adminFrame = new JFrame("MAAD Hotel: Administrator Login");
-        adminFrame.setMinimumSize(new Dimension(1200, 1000));
-        adminFrame.show();
-        adminFrame.dispose();
-        adminFrame.pack();
-        adminFrame.setLocationRelativeTo(null);
-        adminFrame.setVisible(true);
+//        JFrame adminLoginFrame = new JFrame("MAAD Hotel: Administrator Login");
+        adminLoginFrame.setMinimumSize(new Dimension(1200, 1000));
+        adminLoginFrame.show();
+        mainFrame.dispose();
+
+        //create label for username
+        JLabel userLabel = new JLabel();
+        userLabel.setText("Enter Username:");      //set label value for textField1
+        userLabel.setMaximumSize(new Dimension(1200, 40));
+
+        //create text field to get username from the user
+        JTextField user = new JTextField(15);    //set length of the text
+        user.setMaximumSize(new Dimension(1200, 40));
+
+        //create label for password
+        JLabel passLabel = new JLabel();
+        passLabel.setText("Enter Password:");      //set label value for textField2
+        passLabel.setMaximumSize(new Dimension(1200, 40));
+
+        //create text field to get password from the user
+        JPasswordField password = new JPasswordField(15);    //set length for the password
+        password.setMaximumSize(new Dimension(1200, 40));
+        //create submit button
+        JButton submit = new JButton("Login"); //set label to button
+        submit.setActionCommand("Authenticate ");
+        submit.addActionListener(this);
+        adminLoginFrame.add(userLabel);
+        adminLoginFrame.add(user);
+        adminLoginFrame.add(passLabel);
+        adminLoginFrame.add(password);
+        adminLoginFrame.add(submit);
+
+        // Source: https://stackoverflow.com/questions/761341/error-upon-assigning-layout-boxlayout-cant-be-shared
+        adminLoginFrame.getContentPane().setLayout(new BoxLayout(adminLoginFrame.getContentPane(), BoxLayout.Y_AXIS));
+        adminLoginFrame.pack();
+        adminLoginFrame.setLocationRelativeTo(null);
+        adminLoginFrame.setVisible(true);
 
 
         // Closing WIndows
-        adminFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+        adminLoginFrame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 // Tosses a prompt for confirmation
@@ -229,10 +267,10 @@ public class gui implements ActionListener {
         // UserFrame
         // Tasks: Review Rooms, Edit, Cancel, and Reserve.
         //
-        JFrame userFrame = new JFrame("MAAD Hotel: Welcome.");
+//        JFrame userFrame = new JFrame("MAAD Hotel: Welcome.");
         userFrame.setMinimumSize(new Dimension(1200, 1000));
         userFrame.show();
-        mainFrame.dispose();
+        loginFrame.dispose();
         userFrame.pack();
         userFrame.setLocationRelativeTo(null);
         userFrame.setVisible(true);
@@ -256,10 +294,44 @@ public class gui implements ActionListener {
 
     }
 
+    void adminFrame() {
+        // UserFrame
+        // Tasks: Review Rooms, Edit, Cancel, and Reserve.
+        //
+//        JFrame adminFrame = new JFrame("MAAD Hotel: Welcome.");
+        adminFrame.setMinimumSize(new Dimension(1200, 1000));
+        adminFrame.show();
+        adminLoginFrame.dispose();
+
+
+        adminFrame.pack();
+        adminFrame.setLocationRelativeTo(null);
+        adminFrame.setVisible(true);
+
+
+        // Closing WIndows
+        adminFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                // Tosses a prompt for confirmation
+                if (JOptionPane.showConfirmDialog(mainFrame,
+                        "Are you sure you want to close this window?", "Close Window?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+                // Do nothing, close option tab
+                mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            }
+        });
+
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         // source: https://stackoverflow.com/questions/5936261/how-to-add-action-listener-that-listens-to-multiple-buttons
         String action = e.getActionCommand().toString();
+
 
         switch (action) {
             case "Exit":
@@ -269,16 +341,34 @@ public class gui implements ActionListener {
                 break;
             case "Login":
                 loginFrame();
-                System.out.println("login");
+                System.out.println("Entering user login. Time: "+timeLog() );
                 break;
             case "Authenticate":
                 // Need the account portion for this
+                System.out.println("Logging in as User. Time: " +timeLog() );
+
                 userFrame();
-                System.out.println("entering user");
+                break;
+            case "adminLogin":
+                System.out.println("Entering Admin Login. Time: " +timeLog() );
+                adminLoginFrame();
+                break;
+            case "Authenticate ":
+                System.out.println("Logging in as adminFrame"  +timeLog() );
+                adminFrame();
                 break;
             default:
                 JOptionPane.showMessageDialog(mainFrame, "Sorry! Skill Issue");
         }
+    }
+
+
+    // Source: https://www.w3schools.com/java/java_date.asp
+    public String timeLog(){
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formattedDate = myDateObj.format(myFormatObj);
+        return formattedDate;
     }
 
 }
