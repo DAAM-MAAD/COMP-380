@@ -12,6 +12,7 @@ public class gui implements ActionListener {
     JFrame mainFrame = new JFrame("MAAD Hotel");
     JFrame adminLoginFrame = new JFrame("MAAD Hotel: Administrator Login");
     JFrame loginFrame = new JFrame("MAAD Hotel: User Login");
+    JFrame CreateAccFrame = new JFrame("MAAD Hotel: Create an account");
     JFrame userFrame = new JFrame("MAAD Hotel: Welcome.");
     JFrame adminFrame = new JFrame("MAAD Hotel: Welcome.");
 
@@ -63,17 +64,22 @@ public class gui implements ActionListener {
         // Panels
 
         // MainMenu Panel
-        JPanel mainMenu = new JPanel(new GridLayout(0, 2));
+        JPanel mainMenu = new JPanel(new GridLayout(3, 1));
         // mainMenu.setMaximumSize((new Dimension(40, 40)));
         JButton Login = new JButton("User Login");
         JButton Exit = new JButton("Exit");
+        JButton CreateAcc = new JButton("Create an Account");
         Exit.setActionCommand("Exit");
         Exit.addActionListener(this);
         Login.setActionCommand("Login");
         Login.addActionListener(this);
+        CreateAcc.setActionCommand("Create Account");
+        CreateAcc.addActionListener(this);
         //  login.setPreferredSize(new Dimension(40, 40));
+        mainMenu.add(CreateAcc);
         mainMenu.add(Login);
         mainMenu.add(Exit);
+        //CreateAcc.setHorizontalAlignment(50);
 
         //Admin Panrl
         // Current Bug: Not scaling properly. We got a wide boy.
@@ -187,6 +193,81 @@ public class gui implements ActionListener {
 
         // Closing WIndows
         loginFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                // Tosses a prompt for confirmation
+                if (JOptionPane.showConfirmDialog(mainFrame,
+                        "Are you sure you want to close this window?", "Close Window?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+                // Do nothing, close option tab
+                mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            }
+        });
+
+    }
+
+    void CreateAccFrame() {
+        // Source: https://study.com/academy/lesson/adding-jtexfields-jbuttons-tool-tips-to-a-jframe-in-java.html
+//        JFrame loginFrame = new JFrame("MAAD Hotel: User Login");
+        CreateAccFrame.setMinimumSize(new Dimension(1200, 1000));
+        CreateAccFrame.show();
+        mainFrame.dispose();
+
+// INPUTS Section
+        //create label for username
+        JLabel FirstNameLabel = new JLabel();
+        FirstNameLabel.setText("Enter name:");      //set label value for textField1
+        FirstNameLabel.setMaximumSize(new Dimension(1200, 40));
+
+        //create text field to get username from the user
+        JTextField FirstName = new JTextField(15);    //set length of the text
+        FirstName.setMaximumSize(new Dimension(1200, 40));
+
+        //create label for password
+        JLabel LastNameLabel = new JLabel();
+        LastNameLabel.setText("Enter Last name:");      //set label value for textField2
+        LastNameLabel.setMaximumSize(new Dimension(1200, 40));
+
+        //create text field to get password from the user
+        JPasswordField LastName = new JPasswordField(15);    //set length for the password
+        LastName.setMaximumSize(new Dimension(1200, 40));
+
+        //create label for age
+        JLabel AgeLabel = new JLabel();
+        AgeLabel.setText("Enter Age:");      //set label value for textField1
+        AgeLabel.setMaximumSize(new Dimension(1200, 40));
+
+        //create text field to get age from the user
+        JTextField Age = new JTextField(15);    //set length of the text
+        Age.setMaximumSize(new Dimension(1200, 40));
+
+        //create submit button
+        JButton submit = new JButton("Create an Account"); //set label to button
+        submit.setActionCommand("Authenticate");
+        submit.addActionListener(this);
+        CreateAccFrame.add(FirstNameLabel);
+        CreateAccFrame.add(FirstName);
+        CreateAccFrame.add(LastNameLabel);
+        CreateAccFrame.add(LastName);
+        CreateAccFrame.add(AgeLabel);
+        CreateAccFrame.add(Age);
+        CreateAccFrame.add(submit);
+
+        // Source: https://stackoverflow.com/questions/761341/error-upon-assigning-layout-boxlayout-cant-be-shared
+        CreateAccFrame.getContentPane().setLayout(new BoxLayout(CreateAccFrame.getContentPane(), BoxLayout.Y_AXIS));
+
+
+
+        CreateAccFrame.pack();
+        CreateAccFrame.setLocationRelativeTo(null);
+        CreateAccFrame.setVisible(true);
+
+
+        // Closing WIndows
+        CreateAccFrame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 // Tosses a prompt for confirmation
@@ -343,6 +424,12 @@ public class gui implements ActionListener {
                 loginFrame();
                 System.out.println("Entering user login. Time: "+timeLog() );
                 break;
+
+            case "Create Account":
+                CreateAccFrame();
+                System.out.println("Entering user Creating account. Time: "+timeLog() );
+                break;
+
             case "Authenticate":
                 // Need the account portion for this
                 System.out.println("Logging in as User. Time: " +timeLog() );
