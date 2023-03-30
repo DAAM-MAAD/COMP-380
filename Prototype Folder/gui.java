@@ -219,7 +219,7 @@ public class gui implements ActionListener {
 // INPUTS Section
         //create label for user name
         JLabel FirstNameLabel = new JLabel();
-        FirstNameLabel.setText("Enter name:");      //set label value for textField1
+        FirstNameLabel.setText("Enter First name:");      //set label value for textField1
         FirstNameLabel.setMaximumSize(new Dimension(1200, 40));
 
         //create text field to get username from the user
@@ -262,10 +262,19 @@ public class gui implements ActionListener {
         JTextField email = new JTextField(15);
         email.setMaximumSize(new Dimension(1200,40));
 
+         //create label for password
+         JLabel NewpassLabel = new JLabel();
+         NewpassLabel.setText("Create New Password:");      //set label value for textField2
+         NewpassLabel.setMaximumSize(new Dimension(1200, 40));
+ 
+         //create text field to get password from the user
+         JPasswordField Newpassword = new JPasswordField(15);    //set length for the password
+         Newpassword.setMaximumSize(new Dimension(1200, 40));
+
 
         //create submit button
         JButton submit = new JButton("Create an Account"); //set label to button
-        submit.setActionCommand("Authenticate");
+        submit.setActionCommand("Create user");
         submit.addActionListener(this);
         CreateAccFrame.add(FirstNameLabel);
         CreateAccFrame.add(FirstName);
@@ -277,6 +286,8 @@ public class gui implements ActionListener {
         CreateAccFrame.add(Address);
         CreateAccFrame.add(EmailAddressLabel);
         CreateAccFrame.add(email);
+        CreateAccFrame.add(NewpassLabel);
+        CreateAccFrame.add(Newpassword);
         CreateAccFrame.add(submit);
 
         // Source: https://stackoverflow.com/questions/761341/error-upon-assigning-layout-boxlayout-cant-be-shared
@@ -450,6 +461,12 @@ public class gui implements ActionListener {
 
             case "Create Account":
                 CreateAccFrame();
+                button.addActionListener(new ActionListener(){
+                    public void actionPerformed(ActionEvent ae){
+                       String textFieldValue = testField.getText();
+                       // .... do some operation on value ...
+                    }
+                 })
                 System.out.println("Entering user Creating account. Time: "+timeLog() );
                 break;
 
