@@ -8,7 +8,8 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 public class gui implements ActionListener {
-
+    String User ="";
+    String Address = "";
     JFrame mainFrame = new JFrame("MAAD Hotel");
     JFrame adminLoginFrame = new JFrame("MAAD Hotel: Administrator Login");
     JFrame loginFrame = new JFrame("MAAD Hotel: User Login");
@@ -48,7 +49,7 @@ public class gui implements ActionListener {
         favicon = new ImageIcon(imgURL);
 
         // Logo when signing in
-        logo = new ImageIcon(imgURL2);
+       logo = new ImageIcon(imgURL2);
         // Youtube video explaining how to scale https://www.youtube.com/watch?v=eZrdU3BvI4E
 
 
@@ -64,22 +65,21 @@ public class gui implements ActionListener {
         // Panels
 
         // MainMenu Panel
-        JPanel mainMenu = new JPanel(new GridLayout(3, 1));
-        // mainMenu.setMaximumSize((new Dimension(40, 40)));
-        JButton Login = new JButton("User Login");
-        JButton Exit = new JButton("Exit");
-        JButton CreateAcc = new JButton("Create an Account");
-        Exit.setActionCommand("Exit");
-        Exit.addActionListener(this);
-        Login.setActionCommand("Login");
-        Login.addActionListener(this);
-        CreateAcc.setActionCommand("Create Account");
-        CreateAcc.addActionListener(this);
-        //  login.setPreferredSize(new Dimension(40, 40));
-        mainMenu.add(CreateAcc);
-        mainMenu.add(Login);
-        mainMenu.add(Exit);
-        //CreateAcc.setHorizontalAlignment(50);
+         JPanel mainMenu = new JPanel(new GridLayout(0, 3));
+         // mainMenu.setMaximumSize((new Dimension(40, 40)));
+         JButton Login = new JButton("User Login");
+         JButton Exit = new JButton("Exit");
+         JButton CreateAcc = new JButton("Create an Account");
+         Exit.setActionCommand("Exit");
+         Exit.addActionListener(this);
+         Login.setActionCommand("Login");
+         Login.addActionListener(this);
+         CreateAcc.setActionCommand("Create Account");
+         CreateAcc.addActionListener(this);
+         //  login.setPreferredSize(new Dimension(40, 40));
+         mainMenu.add(CreateAcc);
+         mainMenu.add(Login);
+         mainMenu.add(Exit);
 
         //Admin Panrl
         // Current Bug: Not scaling properly. We got a wide boy.
@@ -103,7 +103,7 @@ public class gui implements ActionListener {
         //Adding Logo and Slogan
         JLabel logoLabel = new JLabel(logo);
         imagePanel.add(logoLabel, BorderLayout.CENTER);
-        JLabel slogan = new JLabel("Reserve with MAAD Hotesls!");
+        JLabel slogan = new JLabel("Reserve with MAAD Hotels!");
         //slogan.setVerticalAlignment(JLabel.);
         slogan.setHorizontalAlignment(JLabel.CENTER);
         slogan.setPreferredSize(new Dimension(200, 200));
@@ -386,6 +386,10 @@ public class gui implements ActionListener {
         userFrame.setMinimumSize(new Dimension(1200, 1000));
         userFrame.show();
         loginFrame.dispose();
+
+        //BODY
+
+
         userFrame.pack();
         userFrame.setLocationRelativeTo(null);
         userFrame.setVisible(true);
