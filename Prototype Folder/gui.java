@@ -217,7 +217,7 @@ public class gui implements ActionListener {
         mainFrame.dispose();
 
 // INPUTS Section
-        //create label for username
+        //create label for user name
         JLabel FirstNameLabel = new JLabel();
         FirstNameLabel.setText("Enter name:");      //set label value for textField1
         FirstNameLabel.setMaximumSize(new Dimension(1200, 40));
@@ -226,12 +226,12 @@ public class gui implements ActionListener {
         JTextField FirstName = new JTextField(15);    //set length of the text
         FirstName.setMaximumSize(new Dimension(1200, 40));
 
-        //create label for password
+        //create label for lastname
         JLabel LastNameLabel = new JLabel();
         LastNameLabel.setText("Enter Last name:");      //set label value for textField2
         LastNameLabel.setMaximumSize(new Dimension(1200, 40));
 
-        //create text field to get password from the user
+        //create text field to get lastname from the user
         JPasswordField LastName = new JPasswordField(15);    //set length for the password
         LastName.setMaximumSize(new Dimension(1200, 40));
 
@@ -244,6 +244,25 @@ public class gui implements ActionListener {
         JTextField Age = new JTextField(15);    //set length of the text
         Age.setMaximumSize(new Dimension(1200, 40));
 
+        //create text field to get address from the user
+        JLabel addressLabel = new JLabel();
+        addressLabel.setText("Enter Residential Address:"); 
+        addressLabel.setMaximumSize(new Dimension(1200,40)); 
+
+        //create text field to get Address from the user
+        JTextField Address = new JTextField(15);
+        Address.setMaximumSize(new Dimension(1200,40));
+
+        //create text field to get eamil address from the user
+        JLabel  EmailAddressLabel = new JLabel();
+        EmailAddressLabel.setText("Enter Email Address:");
+        EmailAddressLabel.setMaximumSize(new Dimension(1200,40)); 
+     
+        //create text field to get email Address from the user
+        JTextField email = new JTextField(15);
+        email.setMaximumSize(new Dimension(1200,40));
+
+
         //create submit button
         JButton submit = new JButton("Create an Account"); //set label to button
         submit.setActionCommand("Authenticate");
@@ -254,6 +273,10 @@ public class gui implements ActionListener {
         CreateAccFrame.add(LastName);
         CreateAccFrame.add(AgeLabel);
         CreateAccFrame.add(Age);
+        CreateAccFrame.add(addressLabel);
+        CreateAccFrame.add(Address);
+        CreateAccFrame.add(EmailAddressLabel);
+        CreateAccFrame.add(email);
         CreateAccFrame.add(submit);
 
         // Source: https://stackoverflow.com/questions/761341/error-upon-assigning-layout-boxlayout-cant-be-shared
