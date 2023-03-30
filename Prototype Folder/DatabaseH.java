@@ -13,9 +13,9 @@ import java.util.*;
 public class DatabaseH {
 
     // class variables
-    private String roomsFile = "Rooms.txt";
-    private String accountsFile = "Accounts.txt";
-    private String reservationFile = "Reservations.txt";
+    private String roomsFile = "COMP-380/Rooms.txt";
+    private String accountsFile = "COMP-380/Accounts.txt";
+    private String reservationFile = "COMP-380/Reservations.txt";
     // private String accountInfo;
     private int occupancy;
     private int hotelRoomMax = 10;
