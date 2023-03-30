@@ -10,12 +10,15 @@ import java.time.format.DateTimeFormatter;
 public class gui implements ActionListener {
     String User ="";
     String Address = "";
+    String FirstName ="";
+
     JFrame mainFrame = new JFrame("MAAD Hotel");
     JFrame adminLoginFrame = new JFrame("MAAD Hotel: Administrator Login");
     JFrame loginFrame = new JFrame("MAAD Hotel: User Login");
     JFrame CreateAccFrame = new JFrame("MAAD Hotel: Create an account");
     JFrame userFrame = new JFrame("MAAD Hotel: Welcome.");
     JFrame adminFrame = new JFrame("MAAD Hotel: Welcome.");
+    JFrame HomePage = new JFrame("user home page");
 
     //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     ;
@@ -27,8 +30,31 @@ public class gui implements ActionListener {
         //JFrame mainFrame = new JFrame ("MAAD Hotel");
 
         mainFrame();
+        
     }
+    //  void HomePage(){
 
+    //     HomePage.setMinimumSize(new Dimension(1200, 1000));
+    //     HomePage.show();
+    //     CreateAccFrame.dispose();
+
+    //     JPanel mainMenu = new JPanel(new GridLayout(3, 0));
+    //     // mainMenu.setMaximumSize((new Dimension(40, 40)));
+    //     JButton Login = new JButton("User Login");
+    //     JButton Exit = new JButton("Exit");
+    //     JButton CreateAcc = new JButton("Create an Account");
+    //     Exit.setActionCommand("Exit");
+    //     Exit.addActionListener(this);
+    //     Login.setActionCommand("Login");
+    //     Login.addActionListener(this);
+    //     CreateAcc.setActionCommand("Create Account");
+    //     CreateAcc.addActionListener(this);
+    //     //  login.setPreferredSize(new Dimension(40, 40));
+    //     mainMenu.add(CreateAcc);
+    //     mainMenu.add(Login);
+    //     mainMenu.add(Exit);
+
+     //}
      void mainFrame() {
         //System.out.print(preferred);
 
@@ -65,7 +91,7 @@ public class gui implements ActionListener {
         // Panels
 
         // MainMenu Panel
-         JPanel mainMenu = new JPanel(new GridLayout(0, 3));
+         JPanel mainMenu = new JPanel(new GridLayout(3, 0));
          // mainMenu.setMaximumSize((new Dimension(40, 40)));
          JButton Login = new JButton("User Login");
          JButton Exit = new JButton("Exit");
@@ -465,15 +491,14 @@ public class gui implements ActionListener {
 
             case "Create Account":
                 CreateAccFrame();
-                button.addActionListener(new ActionListener(){
-                    public void actionPerformed(ActionEvent ae){
-                       String textFieldValue = testField.getText();
-                       // .... do some operation on value ...
-                    }
-                 })
+            
                 System.out.println("Entering user Creating account. Time: "+timeLog() );
                 break;
 
+            case "Create user":
+                HomePage();
+                System.out.println("Entering home page. Time: "+timeLog() );
+                break;
             case "Authenticate":
                 // Need the account portion for this
                 System.out.println("Logging in as User. Time: " +timeLog() );
