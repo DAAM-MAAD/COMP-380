@@ -1,4 +1,4 @@
-//package com.com380;
+package com.com380;
 
 import java.io.*;
 import java.lang.reflect.Array;
@@ -172,7 +172,7 @@ public class DatabaseH {
             int occupancy = Integer.parseInt(str[2].trim());
             double totalCost = Double.parseDouble(str[3].trim());
             int durationOfStay = Integer.parseInt(str[4].trim());
-            Date arrivalDate = new SimpleDateFormat("dd/MM/yyyy").parse(str[5].trim());
+            Date arrivalDate = new SimpleDateFormat("M/dd/y").parse(str[5].trim());
             int accountID = Integer.parseInt(str[6].trim());
             boolean cancel = Boolean.parseBoolean(str[7].trim());
 
@@ -508,6 +508,54 @@ public class DatabaseH {
     reservation as cancelled
      */
 
+
+    /*
+        check if room is available with roomVacant.
+        If not available, print statement that room is not available.
+        If room is available:
+            generate reservation number
+            insert into reservation arraylist
+            insert accountNum in main database
+
+     */
+    public void makeReservation(int accID, int roomNum, int stayLength) {
+        // Generate a reservation number random with range from 100 to 999.
+        int resNum = (int)Math.floor(Math.random() * (999 - 100 + 1) + 100);
+        Room selectRoom = null;
+
+
+        SimpleDateFormat formatter = new SimpleDateFormat("M/dd/y");
+        Date today = new Date();
+        System.out.println("Reservation made today :" + formatter.format(today));
+
+        // Checking if reservation number is already in use
+        if (roomVacant(roomNum)) {
+            for (Reservation r : resList) {
+                if (r.getReservationID() == resNum)
+                {
+                    resNum = (int)Math.floor(Math.random() * (999 - 100 + 1) + 100);
+                }
+            }
+        }
+        else {
+            System.out.println("Room selected is not vacant.");
+        }
+        // Store Room in local variable
+        for (Room r : db.keySet()) {
+            if (r.getRoomNumber() == roomNum) {
+                selectRoom = r;
+            }
+        }
+        Reservation newRes = new Reservation(resNum, accID, selectRoom, today, stayLength);
+
+        // Insert New Reservation to reservation list
+        resList.add(newRes);
+        // Update database with data from reservation array list
+        updateDBWithRes();
+    }
+    public void updateRoomWithAcIDInDB(int roomNumber, int accID) {}
+
+
     /**
      * cancel reservation with reservation number
      * @param reservationNumber reservation number
@@ -558,4 +606,5 @@ public class DatabaseH {
             }
         }
     }
+
 }

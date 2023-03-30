@@ -1,4 +1,4 @@
-//package com.com380;
+package com.com380;
 
 import java.rmi.server.RemoteServer;
 import java.text.DateFormat;
@@ -17,6 +17,16 @@ public class Reservation {
 
     // constructor
     public Reservation() {
+    }
+    public Reservation(int rID, int accID, Room roomPick, Date arrivalD, int stayLength){
+        this.reservationID = rID;
+        this.roomNumber = roomPick.getRoomNumber();
+        this.occupancy = roomPick.getOccupancy();
+        this.cost = roomPick.getRoomPrice();
+        this.durationOfStay = stayLength;
+        this.arrivalDate = arrivalD;
+        this.accountID = accID;
+        this.cancelled = false;
     }
 
     /**
@@ -67,7 +77,7 @@ public class Reservation {
      * @return formatted Date in string
      */
     public String getArrivalDateToString() {
-        DateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("M/dd/y");
         String strDate = dateFormat.format(arrivalDate);
         return strDate;
     }

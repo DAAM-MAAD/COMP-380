@@ -1,4 +1,4 @@
-//package com.com380;
+package com.com380;
 
 public class Room {
 
@@ -10,6 +10,7 @@ public class Room {
     private String roomType;
     private String amenities;
     private int accountID;
+    private boolean cancelled;
 
     // constructor
     public Room() {};
@@ -56,6 +57,9 @@ public class Room {
     public int getAccountID() {
         return accountID;
     }
+    public boolean isCancelled() {
+        return cancelled;
+    }
 
     // setters
     public void setRoomNumber(int n) {
@@ -79,7 +83,9 @@ public class Room {
     public void setAccountID(int accountID) {
         this.accountID = accountID;
     }
-
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
     // functions
     /**
      * Room data is formatted into a string for processing

@@ -1,0 +1,10 @@
+101, true, 2, 299.99, "classic", "ass dsf df sdf ", 0
+102, true, 2, 299.99, "classic", "ass dsf df sdf ", 0
+103, true, 2, 299.99, "classic", "ass dsf df sdf ", 0
+104, true, 2, 299.99, "classic", "ass dsf df sdf ", 0
+105, true, 4, 699.99, "premium", "ass dsf df sdf ", 0
+106, true, 4, 699.99, "premium", "ass dsf df sdf ", 0
+107, true, 4, 699.99, "deluxe", "ass dsf df sdf ", 0
+108, true, 4, 699.99, "classic", "ass dsf df sdf ", 0
+109, false, 8, 999.99, "pool", "ass dsf df sdf ", 10
+110, true, 8, 999.99, "foundation", "ass dsf df sdf ", 0
