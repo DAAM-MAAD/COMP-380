@@ -11,7 +11,10 @@ public class gui implements ActionListener {
     String User ="";
     String Address = "";
     String FirstName ="";
-
+    String LastName = ""; 
+    String Age = "";
+    String email = "";
+    String Newpassword ="";
     JFrame mainFrame = new JFrame("MAAD Hotel");
     JFrame adminLoginFrame = new JFrame("MAAD Hotel: Administrator Login");
     JFrame loginFrame = new JFrame("MAAD Hotel: User Login");
@@ -32,29 +35,29 @@ public class gui implements ActionListener {
         mainFrame();
         
     }
-    //  void HomePage(){
+      void HomePage(){
 
-    //     HomePage.setMinimumSize(new Dimension(1200, 1000));
-    //     HomePage.show();
-    //     CreateAccFrame.dispose();
+        HomePage.setMinimumSize(new Dimension(1200, 1000));
+        HomePage.show();
+        CreateAccFrame.dispose();
 
-    //     JPanel mainMenu = new JPanel(new GridLayout(3, 0));
+         JPanel HomePage = new JPanel(new GridLayout(3, 1));
     //     // mainMenu.setMaximumSize((new Dimension(40, 40)));
-    //     JButton Login = new JButton("User Login");
-    //     JButton Exit = new JButton("Exit");
-    //     JButton CreateAcc = new JButton("Create an Account");
-    //     Exit.setActionCommand("Exit");
-    //     Exit.addActionListener(this);
-    //     Login.setActionCommand("Login");
-    //     Login.addActionListener(this);
-    //     CreateAcc.setActionCommand("Create Account");
-    //     CreateAcc.addActionListener(this);
-    //     //  login.setPreferredSize(new Dimension(40, 40));
-    //     mainMenu.add(CreateAcc);
-    //     mainMenu.add(Login);
-    //     mainMenu.add(Exit);
+        JButton Reservation = new JButton("Make Reservation");
+        JButton Exit = new JButton("Exit");
+        JButton RoomInfo = new JButton("Rooms and Ammenities");
+        Exit.setActionCommand("Exit");
+        Exit.addActionListener(this);
+        RoomInfo.setActionCommand("");
+        RoomInfo.addActionListener(this);
+        Reservation.setActionCommand("");
+        Reservation.addActionListener(this);
+        //  login.setPreferredSize(new Dimension(40, 40));
+        HomePage.add(Reservation);
+        HomePage.add(RoomInfo);
+        HomePage.add(Exit);
 
-     //}
+      }
      void mainFrame() {
         //System.out.print(preferred);
 
