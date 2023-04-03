@@ -1,7 +1,5 @@
 
 
-import java.rmi.server.RemoteServer;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -12,19 +10,21 @@ public class Reservation {
     private double cost;
     private int durationOfStay;
     private Date arrivalDate;
+    private Date dateMade;
     private int accountID;
     private boolean cancelled;
 
     // constructor
     public Reservation() {
     }
-    public Reservation(int rID, int accID, Room roomPick, Date arrivalD, int stayLength){
+    public Reservation(int rID, int accID, Room roomPick, Date arrivalD, Date resMade, int stayLength){
         this.reservationID = rID;
         this.roomNumber = roomPick.getRoomNumber();
         this.occupancy = roomPick.getOccupancy();
         this.cost = roomPick.getRoomPrice();
         this.durationOfStay = stayLength;
         this.arrivalDate = arrivalD;
+        this.dateMade = resMade;
         this.accountID = accID;
         this.cancelled = false;
     }
@@ -38,17 +38,19 @@ public class Reservation {
      * @param cost room cost
      * @param stay  duration of reservation in days
      * @param mmddyyyy  arrival date of reservation
+     * @param resMade when the reservation was made
      * @param aID   account ID that made reservation
      * @param cancel    status of reservation regarding cancellation
      */
     public Reservation(int rID, int rNum, int occ, double cost, int stay,
-                       Date mmddyyyy, int aID, boolean cancel) {
+                       Date mmddyyyy, Date resMade, int aID, boolean cancel) {
         this.reservationID = rID;
         this.roomNumber = rNum;
         this.occupancy = occ;
         this.cost = cost;
         this.durationOfStay = stay;
         this.arrivalDate = mmddyyyy;
+        this.dateMade = resMade;
         this.accountID = aID;
         this.cancelled = cancel;
     }
@@ -72,6 +74,7 @@ public class Reservation {
     public Date getArrivalDate() {
         return arrivalDate;
     }
+    public Date getDateMade() { return dateMade;}
     /**
      * format Date to string
      * @return formatted Date in string
@@ -79,6 +82,11 @@ public class Reservation {
     public String getArrivalDateToString() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("M/dd/y");
         String strDate = dateFormat.format(arrivalDate);
+        return strDate;
+    }
+    public String getMadeDateToString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("M/dd/y");
+        String strDate = dateFormat.format(dateMade);
         return strDate;
     }
     public int getAccountID() {
@@ -122,7 +130,7 @@ public class Reservation {
     public String reservationToString() {
         String str = getReservationID() + ", " + getRoomNumber() + ", " + getOccupancy() +
                 ", " + getCost() + ", " + getDurationOfStay() + ", " + getArrivalDateToString() +
-                ", " + getAccountID() + ", " + isCancelled();
+                ", " + getMadeDateToString() + ", " + getAccountID() + ", " + isCancelled();
 
         return str;
     }
