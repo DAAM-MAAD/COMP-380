@@ -1,11 +1,9 @@
 
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -13,9 +11,9 @@ import java.util.*;
 public class DatabaseH {
 
     // class variables
-    private String roomsFile = "COMP-380/Rooms.txt";
-    private String accountsFile = "COMP-380/Accounts.txt";
-    private String reservationFile = "COMP-380/Reservations.txt";
+    private String roomsFile = "Rooms.txt";
+    private String accountsFile = "Accounts.txt";
+    private String reservationFile = "Reservations.txt";
     // private String accountInfo;
     private int occupancy;
     private int hotelRoomMax = 10;
@@ -144,11 +142,12 @@ public class DatabaseH {
         while (inputFile.hasNext()) {
             String[] str = inputFile.nextLine().split(",");
             int accountID = Integer.parseInt(str[0].trim());
-            String accountPassword = str[1].trim();
-            String customerData = str[2].trim();
+            String userName = str[1].trim();
+            String accountPassword = str[2].trim();
+            String customerData = str[3].trim();
 
             if (!str.equals("")) {
-                Account ac = new Account(accountID, accountPassword, customerData);
+                Account ac = new Account(accountID, userName, accountPassword, customerData);
                 acList.add(ac);
             }
         }
@@ -166,19 +165,20 @@ public class DatabaseH {
 
         while (inputFile.hasNext()) {
             String[] str = inputFile.nextLine().split(",");
-            //reservationID, roomNumber, occupancy, totalCost, durationOfStay, arrivalDate, accountID
+            //reservationID, roomNumber, occupancy, totalCost, durationOfStay, arrivalDate, madeDate, accountID
             int reservationID = Integer.parseInt(str[0].trim());
             int roomNumber = Integer.parseInt(str[1].trim());
             int occupancy = Integer.parseInt(str[2].trim());
             double totalCost = Double.parseDouble(str[3].trim());
             int durationOfStay = Integer.parseInt(str[4].trim());
             Date arrivalDate = new SimpleDateFormat("M/dd/y").parse(str[5].trim());
-            int accountID = Integer.parseInt(str[6].trim());
-            boolean cancel = Boolean.parseBoolean(str[7].trim());
+            Date resMade = new SimpleDateFormat("M/dd/y").parse(str[6].trim());
+            int accountID = Integer.parseInt(str[7].trim());
+            boolean cancel = Boolean.parseBoolean(str[8].trim());
 
             if (!str.equals("")) {
                 Reservation res = new Reservation(reservationID, roomNumber, occupancy,
-                        totalCost, durationOfStay, arrivalDate, accountID, cancel);
+                        totalCost, durationOfStay, arrivalDate, resMade, accountID, cancel);
                 resList.add(res);
             }
         }
@@ -209,6 +209,25 @@ public class DatabaseH {
             }
         }
     }
+
+    // Login in verification
+    public boolean customerLogin(String userN, String pass) {
+        for (Account a : acList) {
+            if (a.getUserName().equals(userN) && a.getAccountPassword().equals(pass)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean adminLogin(int adminID, String pass) {
+        Administration ad = new Administration();
+        if (adminID == ad.getAdminID() && pass.equals(ad.getPassword())) {
+            return true;
+        }
+        return false;
+    }
+
 
     // Alter database
 
@@ -292,13 +311,21 @@ public class DatabaseH {
     }
     /**
      * Create an account with passed parameters.
-     * @param acNumber  account number
      * @param passwd    account password
      * @param c         customer class
      */
-    public void makeAccount(int acNumber, String passwd, Customer c) {
+    public void makeAccount(String userN, String passwd, Customer c) {
+        int newAccountNumber = (int)Math.floor(Math.random() * (99 - 10 + 1) + 10);
+
+        for (Account a : acList) {
+            if (a.getAccountID() == newAccountNumber)
+            {
+                newAccountNumber = (int)Math.floor(Math.random() * (99 - 10 + 1) + 10);
+            }
+        }
         Account acc = new Account();
-        acc.setAccountID(acNumber);
+        acc.setAccountID(newAccountNumber);
+        acc.setUserName(userN);
         acc.setAccountPassword(passwd);
         acc.setCustomerData(c.customerToString());
         acList.add(acc);
@@ -472,7 +499,7 @@ public class DatabaseH {
         }
     }
 
-    // Write to files when program ends
+    // Write to file when program ends
     public void writeToRoomFile() throws IOException {
 
         String fileName = getRoomsFile();
@@ -508,7 +535,6 @@ public class DatabaseH {
     reservation as cancelled
      */
 
-
     /*
         check if room is available with roomVacant.
         If not available, print statement that room is not available.
@@ -518,15 +544,19 @@ public class DatabaseH {
             insert accountNum in main database
 
      */
-    public void makeReservation(int accID, int roomNum, int stayLength) {
+    public void makeReservation(int accID, int roomNum, String arrivalDate, int stayLength) throws ParseException {
         // Generate a reservation number random with range from 100 to 999.
         int resNum = (int)Math.floor(Math.random() * (999 - 100 + 1) + 100);
         Room selectRoom = null;
 
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
-        SimpleDateFormat formatter = new SimpleDateFormat("M/dd/y");
-        Date today = new Date();
-        System.out.println("Reservation made today :" + formatter.format(today));
+        Format f = new SimpleDateFormat("MM/dd/yyyy");
+        String strDate = f.format(new Date());
+        Date date1=new SimpleDateFormat("MM/dd/yyyy").parse(strDate);
+
+        Date resDate =new SimpleDateFormat("MMddyyyy").parse(arrivalDate);
+        System.out.println("Reservation made today for: " + formatter.format(resDate));
 
         // Checking if reservation number is already in use
         if (roomVacant(roomNum)) {
@@ -539,6 +569,7 @@ public class DatabaseH {
         }
         else {
             System.out.println("Room selected is not vacant.");
+            return;
         }
         // Store Room in local variable
         for (Room r : db.keySet()) {
@@ -546,7 +577,7 @@ public class DatabaseH {
                 selectRoom = r;
             }
         }
-        Reservation newRes = new Reservation(resNum, accID, selectRoom, today, stayLength);
+        Reservation newRes = new Reservation(resNum, accID, selectRoom, resDate, date1, stayLength);
 
         // Insert New Reservation to reservation list
         resList.add(newRes);
