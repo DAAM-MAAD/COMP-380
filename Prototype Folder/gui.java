@@ -21,7 +21,7 @@ public class gui implements ActionListener {
     JFrame CreateAccFrame = new JFrame("MAAD Hotel: Create an account");
     JFrame userFrame = new JFrame("MAAD Hotel: Welcome.");
     JFrame adminFrame = new JFrame("MAAD Hotel: Welcome.");
-    JFrame HomePage = new JFrame("user home page");
+    JFrame HomePageFrame= new JFrame("user home page");
 
     //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     ;
@@ -33,16 +33,17 @@ public class gui implements ActionListener {
         //JFrame mainFrame = new JFrame ("MAAD Hotel");
 
         mainFrame();
+     
         
     }
-      void HomePage(){
+      void HomePageFrame(){
 
-        HomePage.setMinimumSize(new Dimension(1200, 1000));
-        HomePage.show();
+        HomePageFrame.setMinimumSize(new Dimension(1200, 1000));
+        HomePageFrame.show();
         CreateAccFrame.dispose();
 
-         JPanel HomePage = new JPanel(new GridLayout(3, 1));
-    //     // mainMenu.setMaximumSize((new Dimension(40, 40)));
+        JPanel HomePage = new JPanel(new GridLayout(3, 1));
+         // mainMenu.setMaximumSize((new Dimension(40, 40)));
         JButton Reservation = new JButton("Make Reservation");
         JButton Exit = new JButton("Exit");
         JButton RoomInfo = new JButton("Rooms and Ammenities");
@@ -57,6 +58,28 @@ public class gui implements ActionListener {
         HomePage.add(RoomInfo);
         HomePage.add(Exit);
 
+        HomePageFrame.add(HomePage, BorderLayout.SOUTH);
+
+         //Pack, Locate, and Visibility
+         HomePageFrame.pack();
+         HomePageFrame.setLocationRelativeTo(null);
+         HomePageFrame.setVisible(true);
+         //Handling if Users Closes the window too early
+         // Source: https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
+         HomePageFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                // Tosses a prompt for confirmation
+                if (JOptionPane.showConfirmDialog(mainFrame,
+                        "Are you sure you want to close this window?", "Close Window?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+                // Do nothing, close option tab
+                mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            }
+        });
       }
      void mainFrame() {
         //System.out.print(preferred);
