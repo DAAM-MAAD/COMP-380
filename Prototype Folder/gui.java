@@ -40,13 +40,12 @@ public class gui implements ActionListener {
       void HomePageFrame(){
 
         
-          CreateAccFrame.dispose();
-          loginFrame.dispose();
+        CreateAccFrame.dispose();
+        loginFrame.dispose();
           
-          JPanel HomePage = new JPanel();
-       
-          HomePage.setBackground(Color.gray);  
-          // mainMenu.setMaximumSize((new Dimension(40, 40)));
+        JPanel HomePage = new JPanel();
+        HomePage.setBackground(Color.gray);  
+         // mainMenu.setMaximumSize((new Dimension(40, 40)));
         JButton Reservation = new JButton("Make Reservation");
          
         Reservation.setBackground(Color.yellow);  
@@ -59,7 +58,7 @@ public class gui implements ActionListener {
         
 
         JButton RoomInfo = new JButton("Rooms and Ammenities");
-        RoomInfo.setBounds(100,0,800,0);    
+        RoomInfo.setBounds(100,0,800,900);    
         RoomInfo.setBackground(Color.green);   
         
         Exit.setActionCommand("Exit");
@@ -73,20 +72,22 @@ public class gui implements ActionListener {
         //  login.setPreferredSize(new Dimension(40, 40));
         HomePage.add(Reservation);
         HomePage.add(RoomInfo);
+        HomePage.add(Cancel);
         HomePage.add(Exit);
 
-        HomePageFrame.add(HomePage, BorderLayout.SOUTH);
+        HomePageFrame.add(HomePage, BorderLayout.NORTH);
 
         //Pack, Locate, and Visibility
         
                 
         HomePageFrame.setMinimumSize(new Dimension(1200, 1000));
         HomePageFrame.pack();
+        //HomePageFrame.setLayout(new BorderLayout(0,500));
         HomePageFrame.setVisible(true);
         
-         //Handling if Users Closes the window too early
-         // Source: https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
-         HomePageFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+        //Handling if Users Closes the window too early
+        // Source: https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
+        HomePageFrame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 // Tosses a prompt for confirmation
@@ -247,7 +248,7 @@ public class gui implements ActionListener {
         JButton submit = new JButton("Login"); //set label to button
         //A
 
-        submit.setActionCommand("Create");
+        submit.setActionCommand("Authenticate");
         submit.addActionListener(this);
         loginFrame.add(userLabel);
         loginFrame.add(user);
@@ -548,15 +549,17 @@ public class gui implements ActionListener {
                 System.out.println("Entering user Creating account. Time: "+timeLog() );
                 break;
 
-            case "Create user":
+            case "Create user":  
+               
                 JOptionPane.showMessageDialog(null, "Account has been created");
                 System.out.println(User + "'s Account has been created. Time: "+timeLog() );
 
                 int dialogButton = JOptionPane.YES_NO_OPTION;
                 JOptionPane.showConfirmDialog (null, "Would you like to sign in?","Confirmation", dialogButton);
                 if(dialogButton == JOptionPane.YES_OPTION) {
-                    System.out.println(User+ "'s entererd  home page. Time: "+timeLog() );
                     HomePageFrame();
+                    System.out.println(User+ "'s entererd  home page. Time: "+timeLog() );
+                  
                     if(dialogButton == JOptionPane.NO_OPTION) {
                         JOptionPane.showMessageDialog(null,"Returning to main menu.");
                         mainFrame();
