@@ -38,32 +38,49 @@ public class gui implements ActionListener {
     }
       void HomePageFrame(){
 
-        HomePageFrame.setMinimumSize(new Dimension(1200, 1000));
-        HomePageFrame.show();
-        CreateAccFrame.dispose();
-
-        JPanel HomePage = new JPanel(new GridLayout(3, 1));
-         // mainMenu.setMaximumSize((new Dimension(40, 40)));
+        
+          CreateAccFrame.dispose();
+          loginFrame.dispose();
+          
+          JPanel HomePage = new JPanel();
+       
+          HomePage.setBackground(Color.gray);  
+          // mainMenu.setMaximumSize((new Dimension(40, 40)));
         JButton Reservation = new JButton("Make Reservation");
+         
+        Reservation.setBackground(Color.yellow);  
+        
+        JButton Cancel = new JButton("Cancel Reservation");
+        Cancel.setBackground(Color.CYAN);
+
+
         JButton Exit = new JButton("Exit");
+        
+
         JButton RoomInfo = new JButton("Rooms and Ammenities");
+        RoomInfo.setBounds(100,0,800,0);    
+        RoomInfo.setBackground(Color.green);   
+        
         Exit.setActionCommand("Exit");
         Exit.addActionListener(this);
         RoomInfo.setActionCommand("");
         RoomInfo.addActionListener(this);
         Reservation.setActionCommand("");
         Reservation.addActionListener(this);
+        Cancel.setActionCommand("");
+        Cancel.addActionListener(this);
         //  login.setPreferredSize(new Dimension(40, 40));
-        HomePage.add(Reservation);
-        HomePage.add(RoomInfo);
-        HomePage.add(Exit);
+        HomePage.add(Reservation);HomePage.add(RoomInfo);HomePage.add(Cancel);HomePage.add(Exit);
+        
+        HomePageFrame.add(HomePage);
 
-        HomePageFrame.add(HomePage, BorderLayout.SOUTH);
-
-         //Pack, Locate, and Visibility
-         HomePageFrame.pack();
-         HomePageFrame.setLocationRelativeTo(null);
-         HomePageFrame.setVisible(true);
+        //Pack, Locate, and Visibility
+        
+                
+        HomePageFrame.setMinimumSize(new Dimension(1200, 1000));
+        HomePageFrame.pack();
+        HomePageFrame.setVisible(true);
+        
          //Handling if Users Closes the window too early
          // Source: https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
          HomePageFrame.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -430,40 +447,40 @@ public class gui implements ActionListener {
 
     }
 
-    void userFrame() {
-        // UserFrame
-        // Tasks: Review Rooms, Edit, Cancel, and Reserve.
-        //
-//        JFrame userFrame = new JFrame("MAAD Hotel: Welcome.");
-        userFrame.setMinimumSize(new Dimension(1200, 1000));
-        userFrame.show();
-        loginFrame.dispose();
+//     void userFrame() {
+//         // UserFrame
+//         // Tasks: Review Rooms, Edit, Cancel, and Reserve.
+//         //
+// //        JFrame userFrame = new JFrame("MAAD Hotel: Welcome.");
+//         userFrame.setMinimumSize(new Dimension(1200, 1000));
+//         userFrame.show();
+//         loginFrame.dispose();
 
-        //BODY
-
-
-        userFrame.pack();
-        userFrame.setLocationRelativeTo(null);
-        userFrame.setVisible(true);
+//         //BODY
 
 
-        // Closing WIndows
-        userFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                // Tosses a prompt for confirmation
-                if (JOptionPane.showConfirmDialog(mainFrame,
-                        "Are you sure you want to close this window?", "Close Window?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    System.exit(0);
-                }
-                // Do nothing, close option tab
-                mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            }
-        });
+//         userFrame.pack();
+//         userFrame.setLocationRelativeTo(null);
+//         userFrame.setVisible(true);
 
-    }
+
+//         // Closing WIndows
+//         userFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+//             @Override
+//             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+//                 // Tosses a prompt for confirmation
+//                 if (JOptionPane.showConfirmDialog(mainFrame,
+//                         "Are you sure you want to close this window?", "Close Window?",
+//                         JOptionPane.YES_NO_OPTION,
+//                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+//                     System.exit(0);
+//                 }
+//                 // Do nothing, close option tab
+//                 mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+//             }
+//         });
+
+//     }
 
     void adminFrame() {
         // UserFrame
@@ -527,9 +544,10 @@ public class gui implements ActionListener {
                 break;
             case "Authenticate":
                 // Need the account portion for this
+                HomePageFrame();
                 System.out.println("Logging in as User. Time: " +timeLog() );
 
-                userFrame();
+                //userFrame();
                 break;
             case "adminLogin":
                 System.out.println("Entering Admin Login. Time: " +timeLog() );
