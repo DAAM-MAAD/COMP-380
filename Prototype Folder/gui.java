@@ -522,7 +522,7 @@ public class gui implements ActionListener {
                 break;
 
             case "Create user":
-                HomePage();
+                HomePageFrame();
                 System.out.println("Entering home page. Time: "+timeLog() );
                 break;
             case "Authenticate":
