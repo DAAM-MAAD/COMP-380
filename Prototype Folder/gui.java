@@ -8,6 +8,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 public class gui implements ActionListener {
+   // GLOBALS
     String User ="";
     String Address = "";
     String FirstName ="";
@@ -54,6 +55,7 @@ public class gui implements ActionListener {
         Reservation.setActionCommand("");
         Reservation.addActionListener(this);
         //  login.setPreferredSize(new Dimension(40, 40));
+
         HomePage.add(Reservation);
         HomePage.add(RoomInfo);
         HomePage.add(Exit);
@@ -225,7 +227,9 @@ public class gui implements ActionListener {
         password.setMaximumSize(new Dimension(1200, 40));
         //create submit button
         JButton submit = new JButton("Login"); //set label to button
-        submit.setActionCommand("Authenticate");
+        //A
+
+        submit.setActionCommand("Create");
         submit.addActionListener(this);
         loginFrame.add(userLabel);
         loginFrame.add(user);
@@ -305,6 +309,9 @@ public class gui implements ActionListener {
         JTextField Address = new JTextField(15);
         Address.setMaximumSize(new Dimension(1200,40));
 
+        ///AB TESTS
+
+
         //create text field to get eamil address from the user
         JLabel  EmailAddressLabel = new JLabel();
         EmailAddressLabel.setText("Enter Email Address:");
@@ -328,6 +335,8 @@ public class gui implements ActionListener {
         JButton submit = new JButton("Create an Account"); //set label to button
         submit.setActionCommand("Create user");
         submit.addActionListener(this);
+
+
         CreateAccFrame.add(FirstNameLabel);
         CreateAccFrame.add(FirstName);
         CreateAccFrame.add(LastNameLabel);
@@ -357,14 +366,14 @@ public class gui implements ActionListener {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 // Tosses a prompt for confirmation
-                if (JOptionPane.showConfirmDialog(mainFrame,
+                if (JOptionPane.showConfirmDialog(CreateAccFrame,
                         "Are you sure you want to close this window?", "Close Window?",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
                     System.exit(0);
                 }
                 // Do nothing, close option tab
-                mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                CreateAccFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             }
         });
 
@@ -522,8 +531,20 @@ public class gui implements ActionListener {
                 break;
 
             case "Create user":
-                HomePage();
-                System.out.println("Entering home page. Time: "+timeLog() );
+                JOptionPane.showMessageDialog(null, "Account has been created");
+                System.out.println(User + "'s Account has been created. Time: "+timeLog() );
+
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                JOptionPane.showConfirmDialog (null, "Would you like to sign in?","Confirmation", dialogButton);
+                if(dialogButton == JOptionPane.YES_OPTION) {
+                    System.out.println(User+ "'s entererd  home page. Time: "+timeLog() );
+                    HomePageFrame();
+                    if(dialogButton == JOptionPane.NO_OPTION) {
+                        JOptionPane.showMessageDialog(null,"Returning to main menu.");
+                        mainFrame();
+                    }
+                }
+
                 break;
             case "Authenticate":
                 // Need the account portion for this
@@ -533,12 +554,15 @@ public class gui implements ActionListener {
                 break;
             case "adminLogin":
                 System.out.println("Entering Admin Login. Time: " +timeLog() );
+
                 adminLoginFrame();
                 break;
             case "Authenticate ":
                 System.out.println("Logging in as adminFrame"  +timeLog() );
                 adminFrame();
                 break;
+            case "Create ":
+
             default:
                 JOptionPane.showMessageDialog(mainFrame, "Sorry! Skill Issue");
         }
@@ -553,4 +577,10 @@ public class gui implements ActionListener {
         return formattedDate;
     }
 
+    public boolean authenticateUser(String user,char[]  passwd) {
+        boolean authenticate = false;
+
+
+        return authenticate;
+    }
 }
