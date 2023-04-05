@@ -26,11 +26,24 @@ public class gui implements ActionListener {
     JFrame userFrame = new JFrame("MAAD Hotel: Welcome.");
     JFrame adminFrame = new JFrame("MAAD Hotel: Welcome.");
     JFrame HomePageFrame= new JFrame("user home page");
+
+    JFrame reservationFrame = new JFrame("MAAD Hotel: Reservation");
     /**
      * Database is activated when gui runs. This will enable the use of the Database
      * within this class
      */
     DatabaseH db = new DatabaseH();
+    Customer guest = new Customer();
+
+    int userAccountID;
+    int roomNumber;
+    String arrivalDate;
+    int stayLength;
+    int newRoomNumber;
+    double minPrice;
+    double maxPrice;
+    String roomType;
+    int reservationID;
 
 
     // Favicon and Images
@@ -433,8 +446,11 @@ public class gui implements ActionListener {
                 else {
                     String fullName = firstName + " " + lastName;
                     int ageInt = Integer.parseInt(age);
-                    Customer temp = new Customer(fullName, ageInt, address, emailAddress);
-                    db.makeAccount(User, newPassword, temp);
+                    guest.setCustomerName(fullName);
+                    guest.setCustomerAge(ageInt);
+                    guest.setCustomerAddress(address);
+                    guest.setCustomerEmail(emailAddress);
+                    db.makeAccount(User, newPassword, guest);
 
                     if (e.getSource() == submit) {
                         mainFrame.getContentPane().removeAll();
@@ -442,7 +458,7 @@ public class gui implements ActionListener {
                         JOptionPane.showMessageDialog(null, "You have successfully created an account.");
                         CreateAccFrame.dispose();
 
-                        mainFrame(); // replace this with correct next frame
+                        reservationFrame(); // Go to reservation page next
                     }
                 }
             }
@@ -608,6 +624,64 @@ public class gui implements ActionListener {
         });
     }
 
+    void reservationFrame() {
+        reservationFrame.setMinimumSize(new Dimension(1200, 1000));
+        reservationFrame.setIconImage(favicon.getImage());
+        reservationFrame.show();
+        mainFrame.dispose();
+
+/*
+        //create label for username
+        JLabel userLabel = new JLabel();
+        userLabel.setText("Enter Username:");      //set label value for textField1
+        userLabel.setMaximumSize(new Dimension(1200, 40));
+
+        //create text field to get username from the user
+        JTextField user = new JTextField(15);    //set length of the text
+        user.setMaximumSize(new Dimension(1200, 40));
+*/
+        JLabel welcomeText = new JLabel();
+        welcomeText.setText("Welcome " + guest.getCustomerName() + ".");
+
+        JLabel arrival = new JLabel();
+        arrival.setText("Arrival - Date");
+
+        JLabel stay = new JLabel();
+        stay.setText("Length of stay");
+
+        JLabel guestCount = new JLabel();
+        guestCount.setText("Number of guests");
+
+        reservationFrame.add(welcomeText);
+
+        reservationFrame.getContentPane().setLayout(new BoxLayout(reservationFrame.getContentPane(), BoxLayout.Y_AXIS));
+
+        reservationFrame.pack();
+        reservationFrame.setLocationRelativeTo(null);
+        reservationFrame.setVisible(true);
+
+        // Closing WIndows
+        reservationFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                // Tosses a prompt for confirmation
+                if (JOptionPane.showConfirmDialog(reservationFrame,
+                        "Are you sure you want to close this window?", "Close Window?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    try {
+                        db.closeDB();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.exit(0);
+                }
+                // Do nothing, close option tab
+                reservationFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            }
+        });
+
+    }
 
 //     void userFrame() {
 //         // UserFrame
