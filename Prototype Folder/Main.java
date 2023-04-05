@@ -14,33 +14,26 @@ public class Main {
         Customer third = new Customer("Jareth Morticia", 23, "84 East Piper Dr Hoffman Estates IL 60169", "256281@mailtrail.xyz");
 
 
+*/
+/*        db.makeAccount("Boss", "one", first);
+        db.makeAccount("Under-Boss", "two", second);
+        db.makeAccount("Bottom", "three", third);
+        db.writeToAccountFile();*//*
 
-        *//*Account one = new Account(10, "two", first.customerToString());
-        Account two = new Account(11, "two", second.customerToString());
-        Account three = new Account(12, "two", third.customerToString());*//*
 
-        *//*db.makeAccount("two", first);
-        db.makeAccount("two", second);
-        db.makeAccount("two", third);*//*
+       */
+/* db.makeReservation(58, 104, "04102023", 4);
+        db.makeReservation(13, 103, "04122023", 6);
 
-        //db.makeReservation(76, 104, 4);
-        //db.makeReservation(40, 103, 6);
+        db.writeToReservationFile();*//*
+
+
+        //System.out.println(db.customerLogin("Under-Boss", "two"));
         //db.changeRoom(104, 103);
         //db.cancelReservation(305);
 
         //db.removeAccount(49);
 
-        *//*String a = db.getReservationBill(896);
-        System.out.println(a);*//*
-
-
-        *//*db.writeToAccountFile();
-        db.writeToReservationFile();
-        db.writeToRoomFile();*//*
-
-        db.displayAccounts();
-        db.displayAvailableRooms();
-        db.displayDB();
-        db.displayReservations();
     }
-}*/
+}
+*/

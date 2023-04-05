@@ -7,8 +7,6 @@ public class Report {
     int cancellations;
     int numberOfNewGuests;
 
-
-
     // filter by methods
     /*
     https://www.hotelogix.com/blog/8-must-have-hotel-reports-with-cloud-property-management-system/

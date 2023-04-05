@@ -3,19 +3,22 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.*;
+import java.text.ParseException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 public class gui implements ActionListener {
-   // GLOBALS
+    // GLOBALS
     String User ="";
-    String Address = "";
-    String FirstName ="";
-    String LastName = ""; 
-    String Age = "";
-    String email = "";
-    String Newpassword ="";
+    String address = "";
+    String firstName ="";
+    String lastName = "";
+    String age = "";
+    String emailAddress = "";
+    String newPassword ="";
     JFrame mainFrame = new JFrame("MAAD Hotel");
     JFrame adminLoginFrame = new JFrame("MAAD Hotel: Administrator Login");
     JFrame loginFrame = new JFrame("MAAD Hotel: User Login");
@@ -23,44 +26,63 @@ public class gui implements ActionListener {
     JFrame userFrame = new JFrame("MAAD Hotel: Welcome.");
     JFrame adminFrame = new JFrame("MAAD Hotel: Welcome.");
     JFrame HomePageFrame= new JFrame("user home page");
+    /**
+     * Database is activated when gui runs. This will enable the use of the Database
+     * within this class
+     */
+    DatabaseH db = new DatabaseH();
+
+
+    // Favicon and Images
+    java.net.URL imgURL = gui.class.getResource("favicon.png");
+    java.net.URL imgURL2 = gui.class.getResource("logo.png");
+
+    //Favicon is the logo on the top left of the window
+    ImageIcon favicon = new ImageIcon(imgURL);
+
+    // Logo when signing in
+    ImageIcon logo = new ImageIcon(imgURL2);
+    // Youtube video explaining how to scale https://www.youtube.com/watch?v=eZrdU3BvI4E
+
+    //Trying to scale logo
+    Image getLogo = logo.getImage();
+    Image scaledLogo = getLogo.getScaledInstance(1164, 966, Image.SCALE_SMOOTH);
+    ImageIcon logoFinal = new ImageIcon(scaledLogo);
+
 
     //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     ;
-
     //int preferredX = (int)screenSize.getWidth();
     //int preferredY = (int)screenSize.getHeight();
     // Dimension preferred = new Dimension ((int)screenSize.getWidth(), (int)screenSize.getHeight());
-    gui() {
+    gui() throws FileNotFoundException, ParseException {
         //JFrame mainFrame = new JFrame ("MAAD Hotel");
 
         mainFrame();
-     
-        
-    }
-      void HomePageFrame(){
 
-        
+    }
+    void HomePageFrame(){
         CreateAccFrame.dispose();
         loginFrame.dispose();
-          
+
+        HomePageFrame.setIconImage(favicon.getImage());
+
         JPanel HomePage = new JPanel();
-        HomePage.setBackground(Color.gray);  
-         // mainMenu.setMaximumSize((new Dimension(40, 40)));
+        HomePage.setBackground(Color.gray);
+        // mainMenu.setMaximumSize((new Dimension(40, 40)));
         JButton Reservation = new JButton("Make Reservation");
-         
-        Reservation.setBackground(Color.yellow);  
-        
+
+        Reservation.setBackground(Color.yellow);
+
         JButton Cancel = new JButton("Cancel Reservation");
         Cancel.setBackground(Color.CYAN);
 
-
         JButton Exit = new JButton("Exit");
-        
 
         JButton RoomInfo = new JButton("Rooms and Ammenities");
-        RoomInfo.setBounds(100,0,800,900);    
-        RoomInfo.setBackground(Color.green);   
-        
+        RoomInfo.setBounds(100,0,800,900);
+        RoomInfo.setBackground(Color.green);
+
         Exit.setActionCommand("Exit");
         Exit.addActionListener(this);
         RoomInfo.setActionCommand("");
@@ -78,13 +100,12 @@ public class gui implements ActionListener {
         HomePageFrame.add(HomePage, BorderLayout.NORTH);
 
         //Pack, Locate, and Visibility
-        
-                
+
         HomePageFrame.setMinimumSize(new Dimension(1200, 1000));
         HomePageFrame.pack();
         //HomePageFrame.setLayout(new BorderLayout(0,500));
         HomePageFrame.setVisible(true);
-        
+
         //Handling if Users Closes the window too early
         // Source: https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
         HomePageFrame.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -95,24 +116,27 @@ public class gui implements ActionListener {
                         "Are you sure you want to close this window?", "Close Window?",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    try {
+                        db.closeDB();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     System.exit(0);
                 }
                 // Do nothing, close option tab
                 mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             }
         });
-      }
-     void mainFrame() {
+    }
+    void mainFrame() {
         //System.out.print(preferred);
 
         //mainFrame.setPreferredSize(new Dimension (0,0));
 
-
         // Set GUI's dimensions
-        mainFrame.setMinimumSize(new Dimension(1200, 1000));
+        mainFrame.setMinimumSize(new Dimension(800, 500));
 
-
-        // Favicon and Images
+    /*    // Favicon and Images
         ImageIcon favicon = null;
         ImageIcon logo = null;
         java.net.URL imgURL = gui.class.getResource("favicon.png");
@@ -122,37 +146,35 @@ public class gui implements ActionListener {
         favicon = new ImageIcon(imgURL);
 
         // Logo when signing in
-       logo = new ImageIcon(imgURL2);
+        logo = new ImageIcon(imgURL2);
         // Youtube video explaining how to scale https://www.youtube.com/watch?v=eZrdU3BvI4E
-
 
         //Trying to scale logo
         Image getLogo = logo.getImage();
         Image scaledLogo = getLogo.getScaledInstance(1164, 966, Image.SCALE_SMOOTH);
         logo = new ImageIcon(scaledLogo);
-
+*/
         //Setting Favicon
         mainFrame.setIconImage(favicon.getImage());
-
 
         // Panels
 
         // MainMenu Panel
-         JPanel mainMenu = new JPanel(new GridLayout(3, 0));
-         // mainMenu.setMaximumSize((new Dimension(40, 40)));
-         JButton Login = new JButton("User Login");
-         JButton Exit = new JButton("Exit");
-         JButton CreateAcc = new JButton("Create an Account");
-         Exit.setActionCommand("Exit");
-         Exit.addActionListener(this);
-         Login.setActionCommand("Login");
-         Login.addActionListener(this);
-         CreateAcc.setActionCommand("Create Account");
-         CreateAcc.addActionListener(this);
-         //  login.setPreferredSize(new Dimension(40, 40));
-         mainMenu.add(CreateAcc);
-         mainMenu.add(Login);
-         mainMenu.add(Exit);
+        JPanel mainMenu = new JPanel(new GridLayout(3, 0));
+        // mainMenu.setMaximumSize((new Dimension(40, 40)));
+        JButton Login = new JButton("User Login");
+        JButton Exit = new JButton("Exit");
+        JButton CreateAcc = new JButton("Create an Account");
+        Exit.setActionCommand("Exit");
+        Exit.addActionListener(this);
+        Login.setActionCommand("Login");
+        Login.addActionListener(this);
+        CreateAcc.setActionCommand("Create Account");
+        CreateAcc.addActionListener(this);
+        //  login.setPreferredSize(new Dimension(40, 40));
+        mainMenu.add(CreateAcc);
+        mainMenu.add(Login);
+        mainMenu.add(Exit);
 
         //Admin Panrl
         // Current Bug: Not scaling properly. We got a wide boy.
@@ -166,12 +188,10 @@ public class gui implements ActionListener {
         adminPanel.add(adminLogin);
         adminPanel.setMaximumSize(new Dimension(40, 40));
 
-
         // Image Panel
         // Setting dimensions
         JPanel imagePanel = new JPanel(new GridLayout(2, 3));
         imagePanel.setPreferredSize((new Dimension(500, 700)));
-
 
         //Adding Logo and Slogan
         JLabel logoLabel = new JLabel(logo);
@@ -188,7 +208,6 @@ public class gui implements ActionListener {
         mainFrame.add(adminPanel, BorderLayout.NORTH);
         mainFrame.add(mainMenu, BorderLayout.SOUTH);
 
-
         //Pack, Locate, and Visibility
         mainFrame.pack();
         mainFrame.setLocationRelativeTo(null);
@@ -204,25 +223,25 @@ public class gui implements ActionListener {
                         "Are you sure you want to close this window?", "Close Window?",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    try {
+                        db.closeDB();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     System.exit(0);
                 }
                 // Do nothing, close option tab
                 mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             }
         });
-
     }
 
-
-    //
-    //
     // FRAMES
-    //
-    //
     void loginFrame() {
         // Source: https://study.com/academy/lesson/adding-jtexfields-jbuttons-tool-tips-to-a-jframe-in-java.html
 //        JFrame loginFrame = new JFrame("MAAD Hotel: User Login");
         loginFrame.setMinimumSize(new Dimension(1200, 1000));
+        loginFrame.setIconImage(favicon.getImage());
         loginFrame.show();
         mainFrame.dispose();
 
@@ -249,7 +268,23 @@ public class gui implements ActionListener {
         //A
 
         submit.setActionCommand("Authenticate");
-        submit.addActionListener(this);
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                User = user.getText();
+                newPassword = String.valueOf(password.getPassword());
+
+                // when verified, has access. If not, need to pop a message
+                if (db.customerLogin(User, newPassword)) {
+                    System.out.println("Customer login.");
+
+                }
+                else {
+                    System.out.println("Customer failed to login.");
+                }
+
+            }
+        });
         loginFrame.add(userLabel);
         loginFrame.add(user);
         loginFrame.add(passLabel);
@@ -259,12 +294,9 @@ public class gui implements ActionListener {
         // Source: https://stackoverflow.com/questions/761341/error-upon-assigning-layout-boxlayout-cant-be-shared
         loginFrame.getContentPane().setLayout(new BoxLayout(loginFrame.getContentPane(), BoxLayout.Y_AXIS));
 
-
-
         loginFrame.pack();
         loginFrame.setLocationRelativeTo(null);
         loginFrame.setVisible(true);
-
 
         // Closing WIndows
         loginFrame.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -275,19 +307,24 @@ public class gui implements ActionListener {
                         "Are you sure you want to close this window?", "Close Window?",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    try {
+                        db.closeDB();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     System.exit(0);
                 }
                 // Do nothing, close option tab
                 mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             }
         });
-
     }
 
     void CreateAccFrame() {
         // Source: https://study.com/academy/lesson/adding-jtexfields-jbuttons-tool-tips-to-a-jframe-in-java.html
 //        JFrame loginFrame = new JFrame("MAAD Hotel: User Login");
         CreateAccFrame.setMinimumSize(new Dimension(1200, 1000));
+        CreateAccFrame.setIconImage(favicon.getImage());
         CreateAccFrame.show();
         mainFrame.dispose();
 
@@ -307,7 +344,7 @@ public class gui implements ActionListener {
         LastNameLabel.setMaximumSize(new Dimension(1200, 40));
 
         //create text field to get lastname from the user
-        JPasswordField LastName = new JPasswordField(15);    //set length for the password
+        JTextField LastName = new JTextField(15);    //set length for the password
         LastName.setMaximumSize(new Dimension(1200, 40));
 
         //create label for age
@@ -321,8 +358,8 @@ public class gui implements ActionListener {
 
         //create text field to get address from the user
         JLabel addressLabel = new JLabel();
-        addressLabel.setText("Enter Residential Address:"); 
-        addressLabel.setMaximumSize(new Dimension(1200,40)); 
+        addressLabel.setText("Enter Residential Address:");
+        addressLabel.setMaximumSize(new Dimension(1200,40));
 
         //create text field to get Address from the user
         JTextField Address = new JTextField(15);
@@ -330,31 +367,54 @@ public class gui implements ActionListener {
 
         ///AB TESTS
 
-
         //create text field to get eamil address from the user
         JLabel  EmailAddressLabel = new JLabel();
         EmailAddressLabel.setText("Enter Email Address:");
-        EmailAddressLabel.setMaximumSize(new Dimension(1200,40)); 
-     
+        EmailAddressLabel.setMaximumSize(new Dimension(1200,40));
+
         //create text field to get email Address from the user
         JTextField email = new JTextField(15);
         email.setMaximumSize(new Dimension(1200,40));
 
-         //create label for password
-         JLabel NewpassLabel = new JLabel();
-         NewpassLabel.setText("Create New Password:");      //set label value for textField2
-         NewpassLabel.setMaximumSize(new Dimension(1200, 40));
- 
-         //create text field to get password from the user
-         JPasswordField Newpassword = new JPasswordField(15);    //set length for the password
-         Newpassword.setMaximumSize(new Dimension(1200, 40));
+        //create label for username
+        JLabel UserNameLabel = new JLabel();
+        UserNameLabel.setText("Enter User Name:");
+        UserNameLabel.setMaximumSize(new Dimension(1200, 40));
 
+        //create text field to get username from the user
+        JTextField userName = new JTextField(15);
+        userName.setMaximumSize(new Dimension(1200,40));
+
+        //create label for password
+        JLabel NewpassLabel = new JLabel();
+        NewpassLabel.setText("Create New Password:");      //set label value for textField2
+        NewpassLabel.setMaximumSize(new Dimension(1200, 40));
+
+        //create text field to get password from the user
+        JPasswordField Newpassword = new JPasswordField(15);    //set length for the password
+        Newpassword.setMaximumSize(new Dimension(1200, 40));
 
         //create submit button
         JButton submit = new JButton("Create an Account"); //set label to button
         submit.setActionCommand("Create user");
-        submit.addActionListener(this);
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                firstName = FirstName.getText();
+                lastName = LastName.getText();
+                age = Age.getText();
+                address = Address.getText();
+                emailAddress = email.getText();
+                User = userName.getText();
+                newPassword = String.valueOf(Newpassword.getPassword());
 
+                String fullName = firstName + " " + lastName;
+                int ageInt = Integer.parseInt(age);
+
+                Customer temp = new Customer(fullName, ageInt, address, emailAddress);
+                db.makeAccount(User, newPassword, temp);
+            }
+        });
 
         CreateAccFrame.add(FirstNameLabel);
         CreateAccFrame.add(FirstName);
@@ -366,6 +426,8 @@ public class gui implements ActionListener {
         CreateAccFrame.add(Address);
         CreateAccFrame.add(EmailAddressLabel);
         CreateAccFrame.add(email);
+        CreateAccFrame.add(UserNameLabel);
+        CreateAccFrame.add(userName);
         CreateAccFrame.add(NewpassLabel);
         CreateAccFrame.add(Newpassword);
         CreateAccFrame.add(submit);
@@ -373,12 +435,9 @@ public class gui implements ActionListener {
         // Source: https://stackoverflow.com/questions/761341/error-upon-assigning-layout-boxlayout-cant-be-shared
         CreateAccFrame.getContentPane().setLayout(new BoxLayout(CreateAccFrame.getContentPane(), BoxLayout.Y_AXIS));
 
-
-
         CreateAccFrame.pack();
         CreateAccFrame.setLocationRelativeTo(null);
         CreateAccFrame.setVisible(true);
-
 
         // Closing WIndows
         CreateAccFrame.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -389,13 +448,17 @@ public class gui implements ActionListener {
                         "Are you sure you want to close this window?", "Close Window?",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    try {
+                        db.closeDB();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     System.exit(0);
                 }
                 // Do nothing, close option tab
                 CreateAccFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             }
         });
-
     }
 
     void adminLoginFrame() {
@@ -403,6 +466,7 @@ public class gui implements ActionListener {
         // Report Generation, Review Rooms, and something else
 //        JFrame adminLoginFrame = new JFrame("MAAD Hotel: Administrator Login");
         adminLoginFrame.setMinimumSize(new Dimension(1200, 1000));
+        adminLoginFrame.setIconImage(favicon.getImage());
         adminLoginFrame.show();
         mainFrame.dispose();
 
@@ -426,7 +490,25 @@ public class gui implements ActionListener {
         //create submit button
         JButton submit = new JButton("Login"); //set label to button
         submit.setActionCommand("Authenticate ");
-        submit.addActionListener(this);
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                User = user.getText();
+                newPassword = String.valueOf(password.getPassword());
+                int adminInt = Integer.parseInt(User);
+
+                // Verify admin ID and password
+                if (db.adminLogin(adminInt, newPassword)) {
+                    // if verified, go to the next screen
+                    System.out.println("Admin successfully login.");
+                }
+                else {
+                    // if failed, promote a message
+                    System.out.println("Admin failed login.");
+
+                }
+            }
+        });
         adminLoginFrame.add(userLabel);
         adminLoginFrame.add(user);
         adminLoginFrame.add(passLabel);
@@ -439,7 +521,6 @@ public class gui implements ActionListener {
         adminLoginFrame.setLocationRelativeTo(null);
         adminLoginFrame.setVisible(true);
 
-
         // Closing WIndows
         adminLoginFrame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -449,14 +530,19 @@ public class gui implements ActionListener {
                         "Are you sure you want to close this window?", "Close Window?",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    try {
+                        db.closeDB();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     System.exit(0);
                 }
                 // Do nothing, close option tab
                 mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             }
         });
-
     }
+
 
 //     void userFrame() {
 //         // UserFrame
@@ -468,7 +554,6 @@ public class gui implements ActionListener {
 //         loginFrame.dispose();
 
 //         //BODY
-
 
 //         userFrame.pack();
 //         userFrame.setLocationRelativeTo(null);
@@ -499,14 +584,13 @@ public class gui implements ActionListener {
         //
 //        JFrame adminFrame = new JFrame("MAAD Hotel: Welcome.");
         adminFrame.setMinimumSize(new Dimension(1200, 1000));
+        adminFrame.setIconImage(favicon.getImage());
         adminFrame.show();
         adminLoginFrame.dispose();
-
 
         adminFrame.pack();
         adminFrame.setLocationRelativeTo(null);
         adminFrame.setVisible(true);
-
 
         // Closing WIndows
         adminFrame.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -517,13 +601,17 @@ public class gui implements ActionListener {
                         "Are you sure you want to close this window?", "Close Window?",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    try {
+                        db.closeDB();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     System.exit(0);
                 }
                 // Do nothing, close option tab
                 mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             }
         });
-
     }
 
     @Override
@@ -531,11 +619,15 @@ public class gui implements ActionListener {
         // source: https://stackoverflow.com/questions/5936261/how-to-add-action-listener-that-listens-to-multiple-buttons
         String action = e.getActionCommand().toString();
 
-
         switch (action) {
             case "Exit":
                 JOptionPane.showMessageDialog(mainFrame, "Thank you visiting MAAD Hotel. Application will now close.");
                 System.out.println("Exit");
+                try {
+                    db.closeDB();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
                 System.exit(420);
                 break;
             case "Login":
@@ -545,12 +637,12 @@ public class gui implements ActionListener {
 
             case "Create Account":
                 CreateAccFrame();
-            
+
                 System.out.println("Entering user Creating account. Time: "+timeLog() );
                 break;
 
-            case "Create user":  
-               
+            case "Create user":
+
                 JOptionPane.showMessageDialog(null, "Account has been created");
                 System.out.println(User + "'s Account has been created. Time: "+timeLog() );
 
@@ -559,13 +651,12 @@ public class gui implements ActionListener {
                 if(dialogButton == JOptionPane.YES_OPTION) {
                     HomePageFrame();
                     System.out.println(User+ "'s entererd  home page. Time: "+timeLog() );
-                  
+
                     if(dialogButton == JOptionPane.NO_OPTION) {
                         JOptionPane.showMessageDialog(null,"Returning to main menu.");
                         mainFrame();
                     }
                 }
-
                 break;
             case "Authenticate":
                 // Need the account portion for this
@@ -590,7 +681,6 @@ public class gui implements ActionListener {
         }
     }
 
-
     // Source: https://www.w3schools.com/java/java_date.asp
     public String timeLog(){
         LocalDateTime myDateObj = LocalDateTime.now();
@@ -601,7 +691,6 @@ public class gui implements ActionListener {
 
     public boolean authenticateUser(String user,char[]  passwd) {
         boolean authenticate = false;
-
 
         return authenticate;
     }

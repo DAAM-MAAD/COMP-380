@@ -529,6 +529,11 @@ public class DatabaseH {
         outputFile.close();
     }
 
+    public void closeDB() throws IOException {
+        writeToAccountFile();
+        writeToReservationFile();
+        writeToRoomFile();
+    }
     // Reservation changes
     /*
     When removing a reservation, free room, remove accountId from room, then set

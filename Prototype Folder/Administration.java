@@ -1,8 +1,8 @@
 
 
 public class Administration {
-    private int adminID;
-    private String password;
+    private int adminID = 100;
+    private String password = "password";
 
     // constructor
     public Administration(){}
