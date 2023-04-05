@@ -267,6 +267,22 @@ public class gui implements ActionListener {
         JButton submit = new JButton("Login"); //set label to button
         //A
 
+
+        //create back button
+        JButton back = new JButton("Back"); // set label to button
+        back.setActionCommand("Go back");
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == back) {
+                    mainFrame.getContentPane().removeAll();
+                    loginFrame.getContentPane().removeAll();
+                    loginFrame.dispose();
+                    mainFrame(); // replace this with correct next frame
+                }
+            }
+        });
+
         submit.setActionCommand("Authenticate");
         submit.addActionListener(new ActionListener() {
             @Override
@@ -290,6 +306,7 @@ public class gui implements ActionListener {
         loginFrame.add(passLabel);
         loginFrame.add(password);
         loginFrame.add(submit);
+        loginFrame.add(back);
 
         // Source: https://stackoverflow.com/questions/761341/error-upon-assigning-layout-boxlayout-cant-be-shared
         loginFrame.getContentPane().setLayout(new BoxLayout(loginFrame.getContentPane(), BoxLayout.Y_AXIS));
@@ -408,11 +425,41 @@ public class gui implements ActionListener {
                 User = userName.getText();
                 newPassword = String.valueOf(Newpassword.getPassword());
 
-                String fullName = firstName + " " + lastName;
-                int ageInt = Integer.parseInt(age);
+                if(FirstName.getText().isEmpty() || LastName.getText().isEmpty() || Age.getText().isEmpty() ||
+                Address.getText().isEmpty() || email.getText().isEmpty() || userName.getText().isEmpty() ||
+                Newpassword.getPassword().length == 0) {
+                    JOptionPane.showMessageDialog(null, "Please fill in all sections.");
+                }
+                else {
+                    String fullName = firstName + " " + lastName;
+                    int ageInt = Integer.parseInt(age);
+                    Customer temp = new Customer(fullName, ageInt, address, emailAddress);
+                    db.makeAccount(User, newPassword, temp);
 
-                Customer temp = new Customer(fullName, ageInt, address, emailAddress);
-                db.makeAccount(User, newPassword, temp);
+                    if (e.getSource() == submit) {
+                        mainFrame.getContentPane().removeAll();
+                        CreateAccFrame.getContentPane().removeAll();
+                        JOptionPane.showMessageDialog(null, "You have successfully created an account.");
+                        CreateAccFrame.dispose();
+
+                        mainFrame(); // replace this with correct next frame
+                    }
+                }
+            }
+        });
+
+        //create back button
+        JButton back = new JButton("Back"); // set label to button
+        back.setActionCommand("Go back");
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == back) {
+                    mainFrame.getContentPane().removeAll();
+                    CreateAccFrame.getContentPane().removeAll();
+                    CreateAccFrame.dispose();
+                    mainFrame(); // replace this with correct next frame
+                }
             }
         });
 
@@ -431,6 +478,7 @@ public class gui implements ActionListener {
         CreateAccFrame.add(NewpassLabel);
         CreateAccFrame.add(Newpassword);
         CreateAccFrame.add(submit);
+        CreateAccFrame.add(back);
 
         // Source: https://stackoverflow.com/questions/761341/error-upon-assigning-layout-boxlayout-cant-be-shared
         CreateAccFrame.getContentPane().setLayout(new BoxLayout(CreateAccFrame.getContentPane(), BoxLayout.Y_AXIS));
@@ -509,11 +557,28 @@ public class gui implements ActionListener {
                 }
             }
         });
+
+
+        //create back button
+        JButton back = new JButton("Back"); // set label to button
+        back.setActionCommand("Go back");
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == back) {
+                    mainFrame.getContentPane().removeAll();
+                    adminLoginFrame.getContentPane().removeAll();
+                    adminLoginFrame.dispose();
+                    mainFrame(); // replace this with correct next frame
+                }
+            }
+        });
         adminLoginFrame.add(userLabel);
         adminLoginFrame.add(user);
         adminLoginFrame.add(passLabel);
         adminLoginFrame.add(password);
         adminLoginFrame.add(submit);
+        adminLoginFrame.add(back);
 
         // Source: https://stackoverflow.com/questions/761341/error-upon-assigning-layout-boxlayout-cant-be-shared
         adminLoginFrame.getContentPane().setLayout(new BoxLayout(adminLoginFrame.getContentPane(), BoxLayout.Y_AXIS));
