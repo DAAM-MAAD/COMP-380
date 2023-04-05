@@ -8,7 +8,7 @@ public class Hotel{
 
         new gui();
 
-        System.out.println("got it working lets goo");
+
 
 
     }

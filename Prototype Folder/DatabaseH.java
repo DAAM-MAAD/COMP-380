@@ -144,7 +144,7 @@ public class DatabaseH {
             int accountID = Integer.parseInt(str[0].trim());
             String userName = str[1].trim();
             String accountPassword = str[2].trim();
-            String customerData = str[3].trim();
+            String customerData = str[2].trim();
 
             if (!str.equals("")) {
                 Account ac = new Account(accountID, userName, accountPassword, customerData);
@@ -172,7 +172,7 @@ public class DatabaseH {
             double totalCost = Double.parseDouble(str[3].trim());
             int durationOfStay = Integer.parseInt(str[4].trim());
             Date arrivalDate = new SimpleDateFormat("M/dd/y").parse(str[5].trim());
-            Date resMade = new SimpleDateFormat("M/dd/y").parse(str[6].trim());
+            Date resMade = new SimpleDateFormat("M/dd/y").parse(str[7].trim());
             int accountID = Integer.parseInt(str[7].trim());
             boolean cancel = Boolean.parseBoolean(str[8].trim());
 
