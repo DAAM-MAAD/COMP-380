@@ -100,7 +100,7 @@ public class gui implements ActionListener {
         Exit.addActionListener(this);
         RoomInfo.setActionCommand("");
         RoomInfo.addActionListener(this);
-        Reservation.setActionCommand("");
+        Reservation.setActionCommand("Make Reservation");
         Reservation.addActionListener(this);
         Cancel.setActionCommand("");
         Cancel.addActionListener(this);
@@ -431,42 +431,43 @@ public class gui implements ActionListener {
         //create submit button
         JButton submit = new JButton("Create an Account"); //set label to button
         submit.setActionCommand("Create user");
-        submit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                firstName = FirstName.getText();
-                lastName = LastName.getText();
-                age = Age.getText();
-                address = Address.getText();
-                emailAddress = email.getText();
-                User = userName.getText();
-                newPassword = String.valueOf(Newpassword.getPassword());
+        submit.addActionListener(this);
+        // submit.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         firstName = FirstName.getText();
+        //         lastName = LastName.getText();
+        //         age = Age.getText();
+        //         address = Address.getText();
+        //         emailAddress = email.getText();
+        //         User = userName.getText();
+        //         newPassword = String.valueOf(Newpassword.getPassword());
 
-                if(FirstName.getText().isEmpty() || LastName.getText().isEmpty() || Age.getText().isEmpty() ||
-                        Address.getText().isEmpty() || email.getText().isEmpty() || userName.getText().isEmpty() ||
-                        Newpassword.getPassword().length == 0) {
-                    JOptionPane.showMessageDialog(null, "Please fill in all sections.");
-                }
-                else {
-                    String fullName = firstName + " " + lastName;
-                    int ageInt = Integer.parseInt(age);
-                    guest.setCustomerName(fullName);
-                    guest.setCustomerAge(ageInt);
-                    guest.setCustomerAddress(address);
-                    guest.setCustomerEmail(emailAddress);
-                    db.makeAccount(User, newPassword, guest);
+        //         if(FirstName.getText().isEmpty() || LastName.getText().isEmpty() || Age.getText().isEmpty() ||
+        //                 Address.getText().isEmpty() || email.getText().isEmpty() || userName.getText().isEmpty() ||
+        //                 Newpassword.getPassword().length == 0) {
+        //             JOptionPane.showMessageDialog(null, "Please fill in all sections.");
+        //         }
+        //         else {
+        //             String fullName = firstName + " " + lastName;
+        //             int ageInt = Integer.parseInt(age);
+        //             guest.setCustomerName(fullName);
+        //             guest.setCustomerAge(ageInt);
+        //             guest.setCustomerAddress(address);
+        //             guest.setCustomerEmail(emailAddress);
+        //             db.makeAccount(User, newPassword, guest);
 
-                    if (e.getSource() == submit) {
-                        mainFrame.getContentPane().removeAll();
-                        CreateAccFrame.getContentPane().removeAll();
-                        JOptionPane.showMessageDialog(null, "You have successfully created an account.");
-                        CreateAccFrame.dispose();
+        //             if (e.getSource() == submit) {
+        //                 mainFrame.getContentPane().removeAll();
+        //                 CreateAccFrame.getContentPane().removeAll();
+        //                 JOptionPane.showMessageDialog(null, "You have successfully created an account.");
+        //                 CreateAccFrame.dispose();
 
-                        reservationFrame(); // Go to reservation page next
-                    }
-                }
-            }
-        });
+                        // HomePageFrame(); // Go to reservation page next
+        //             }
+        //         }
+        //     }
+        // });
 
         //create back button
         JButton back = new JButton("Back"); // set label to button
@@ -640,8 +641,8 @@ public class gui implements ActionListener {
     void reservationFrame() {
         reservationFrame.setMinimumSize(new Dimension(1200, 1000));
         reservationFrame.setIconImage(favicon.getImage());
-        reservationFrame.show();
-        mainFrame.dispose();
+        
+        HomePageFrame.dispose();
 
 /*
         //create label for username
@@ -653,21 +654,44 @@ public class gui implements ActionListener {
         JTextField user = new JTextField(15);    //set length of the text
         user.setMaximumSize(new Dimension(1200, 40));
 */
+ 
         JLabel welcomeText = new JLabel();
         welcomeText.setText("Welcome " + guest.getCustomerName() + ".");
+        
 
-        JLabel arrival = new JLabel();
-        arrival.setText("Arrival - Date");
-
-        JLabel stay = new JLabel();
-        stay.setText("Length of stay");
+        JLabel arrivalLabel = new JLabel();
+        arrivalLabel.setText("Arrival - Date");
+        arrivalLabel.setMaximumSize(new Dimension(1200,40));
+        JTextField arrvial = new JTextField("mm-D-year");
+        arrvial.setMaximumSize(new Dimension(1200,40));
+       
+        JLabel stayLable = new JLabel();
+        stayLable.setText("Length of stay");
+        stayLable.setMaximumSize(new Dimension(1200,40));
+        JTextField stay = new JTextField(5);
+        stay.setMaximumSize(new Dimension(1200,40));
 
         JLabel guestCount = new JLabel();
         guestCount.setText("Number of guests");
+        guestCount.setMaximumSize(new Dimension(1200,40));
+        JTextField guests = new JTextField();
+       guests.setMaximumSize(new Dimension(1200,40));
+
+
+        JLabel NumberOfRoomsLable = new JLabel();
+        NumberOfRoomsLable.setText("Number of rooms:");
+       NumberOfRoomsLable.setMaximumSize(new Dimension(1200,40));
+
+        JTextField NumberOfRoom = new JTextField();
+        NumberOfRoom.setMaximumSize(new Dimension(1200,40));
+
+
+        JButton submit = new JButton("Make Reservation"); //set label to button
+        submit.setActionCommand("");
 
         //create back button
         JButton back = new JButton("Back"); // set label to button
-        back.setActionCommand("Go back");
+       // back.setActionCommand("Go back");
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -680,22 +704,30 @@ public class gui implements ActionListener {
                     loginFrame.dispose();
                     CreateAccFrame.dispose();
 
-                    mainFrame(); // replace this with correct next frame
+                    HomePageFrame(); // replace this with correct next frame
                 }
             }
         });
 
         reservationFrame.add(welcomeText);
-        reservationFrame.add(arrival);
+        // reservationFrame.add(welcomeText);
+        reservationFrame.add(arrivalLabel);
+        reservationFrame.add(arrvial);
+        reservationFrame.add(stayLable);
         reservationFrame.add(stay);
         reservationFrame.add(guestCount);
+        reservationFrame.add(guests);
+        reservationFrame.add(NumberOfRoomsLable);
+        reservationFrame.add(NumberOfRoom);
+        reservationFrame.add(submit);
         reservationFrame.add(back);
-
+       //  reservationFrame.setSize(200,200);
+      
 
         reservationFrame.getContentPane().setLayout(new BoxLayout(reservationFrame.getContentPane(), BoxLayout.Y_AXIS));
-
+         
         reservationFrame.pack();
-        reservationFrame.setLocationRelativeTo(null);
+        adminLoginFrame.setLocationRelativeTo(null);
         reservationFrame.setVisible(true);
 
         // Closing WIndows
@@ -762,7 +794,7 @@ public class gui implements ActionListener {
 //        JFrame adminFrame = new JFrame("MAAD Hotel: Welcome.");
         adminFrame.setMinimumSize(new Dimension(1200, 1000));
         adminFrame.setIconImage(favicon.getImage());
-        adminFrame.show();
+     
         adminLoginFrame.dispose();
 
         adminFrame.pack();
@@ -835,6 +867,11 @@ public class gui implements ActionListener {
                     }
                 }
                 break;
+            case "Make Reservation":
+                reservationFrame();
+                System.out.println("Entering user Make reservation. Time: "+timeLog() );
+                break;
+
             case "Authenticate":
                 // Need the account portion for this
                 HomePageFrame();
