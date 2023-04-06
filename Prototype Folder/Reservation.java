@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Reservation {
+    private static final double TAX_RATE = .17;
     private int reservationID;
     private int roomNumber;
     private int occupancy;
@@ -13,6 +14,7 @@ public class Reservation {
     private Date dateMade;
     private int accountID;
     private boolean cancelled;
+    private double totalCostWithTax;
 
     // constructor
     public Reservation() {
@@ -27,8 +29,13 @@ public class Reservation {
         this.dateMade = resMade;
         this.accountID = accID;
         this.cancelled = false;
+        this.totalCostWithTax = getTotalCostWithTax();
     }
 
+    public double getTotalCostWithTax() {
+        return totalCostWithTax;
+    }
+    
     /**
      * create Reservation with provided parameters
      *
@@ -53,6 +60,7 @@ public class Reservation {
         this.dateMade = resMade;
         this.accountID = aID;
         this.cancelled = cancel;
+        this.totalCostWithTax = getTotalCostWithTax();
     }
     // getters and setters
     public int getReservationID() {
@@ -141,7 +149,33 @@ public class Reservation {
      */
     public String getReservationTotalCost(int reservationID) {
         double totalCost = getCost() * getDurationOfStay();
-        String roundOff = String.format("%.2f", totalCost);
+        double totalCostWithTax = totalCost * (1 + TAX_RATE);
+        String roundOff = String.format("%.2f", totalCostWithTax);
+        this.totalCostWithTax = totalCostWithTax;
         return roundOff;
+    }
+    
+
+    /**
+     * Format reservation arrival date as a string
+     * @param date reservation arrival date
+     * @return formatted date string (e.g. "May 5, 2023")
+     */
+    public String formatArrivalDate(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
+        String strDate = dateFormat.format(date);
+        return strDate;
+    }
+    
+    /**
+     * Format reservation made date as a string
+     * @param date reservation made date
+     * @return formatted date string (e.g. "May 5, 2023")
+     */
+
+    public String formatMadeDate(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
+        String strDate = dateFormat.format(date);
+        return strDate;
     }
 }

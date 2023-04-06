@@ -313,8 +313,9 @@ public class DatabaseH {
      * Create an account with passed parameters.
      * @param passwd    account password
      * @param c         customer class
+     * @throws Exception
      */
-    public void makeAccount(String userN, String passwd, Customer c) {
+    public void makeAccount(String userN, String passwd, Customer c) throws Exception {
         int newAccountNumber = (int)Math.floor(Math.random() * (99 - 10 + 1) + 10);
 
         for (Account a : acList) {
