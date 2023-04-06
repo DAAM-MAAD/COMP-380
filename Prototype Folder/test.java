@@ -19,6 +19,6 @@ public class test {
      */
     private void $$$setupUI$$$() {
         final JPanel panel1 = new JPanel();
-        //panel1.setLayout(new// com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel1.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
     }
 }

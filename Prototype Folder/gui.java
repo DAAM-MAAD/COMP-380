@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 public class gui implements ActionListener {
     // GLOBALS
+
     String User ="";
     String address = "";
     String firstName ="";
@@ -149,24 +150,7 @@ public class gui implements ActionListener {
         // Set GUI's dimensions
         mainFrame.setMinimumSize(new Dimension(800, 500));
 
-    /*    // Favicon and Images
-        ImageIcon favicon = null;
-        ImageIcon logo = null;
-        java.net.URL imgURL = gui.class.getResource("favicon.png");
-        java.net.URL imgURL2 = gui.class.getResource("logo.png");
 
-        //Favicon is the logo on the top left of the window
-        favicon = new ImageIcon(imgURL);
-
-        // Logo when signing in
-        logo = new ImageIcon(imgURL2);
-        // Youtube video explaining how to scale https://www.youtube.com/watch?v=eZrdU3BvI4E
-
-        //Trying to scale logo
-        Image getLogo = logo.getImage();
-        Image scaledLogo = getLogo.getScaledInstance(1164, 966, Image.SCALE_SMOOTH);
-        logo = new ImageIcon(scaledLogo);
-*/
         //Setting Favicon
         mainFrame.setIconImage(favicon.getImage());
 
@@ -300,24 +284,24 @@ public class gui implements ActionListener {
             }
         });
 
-        submit.setActionCommand("Authenticate");
-        submit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                User = user.getText();
-                newPassword = String.valueOf(password.getPassword());
+            submit.setActionCommand("Authenticate");
+            submit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    User = user.getText();
+                    newPassword = String.valueOf(password.getPassword());
 
-                // when verified, has access. If not, need to pop a message
-                if (db.customerLogin(User, newPassword)) {
-                    System.out.println("Customer login.");
+                    // when verified, has access. If not, need to pop a message
+                    if (db.customerLogin(User, newPassword)) {
+                        System.out.println("Customer " + User + " login."  +timeLog()  );
+
+                    } else {
+                        System.out.println("Customer " + User+ " failed to login." +timeLog() );
+                    }
 
                 }
-                else {
-                    System.out.println("Customer failed to login.");
-                }
+            });
 
-            }
-        });
         loginFrame.add(userLabel);
         loginFrame.add(user);
         loginFrame.add(passLabel);
