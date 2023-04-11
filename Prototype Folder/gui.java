@@ -737,39 +737,7 @@ public class gui implements ActionListener {
 
     }
 
-//     void userFrame() {
-//         // UserFrame
-//         // Tasks: Review Rooms, Edit, Cancel, and Reserve.
-//         //
-// //        JFrame userFrame = new JFrame("MAAD Hotel: Welcome.");
-//         userFrame.setMinimumSize(new Dimension(1200, 1000));
-//         userFrame.show();
-//         loginFrame.dispose();
 
-//         //BODY
-
-//         userFrame.pack();
-//         userFrame.setLocationRelativeTo(null);
-//         userFrame.setVisible(true);
-
-
-//         // Closing WIndows
-//         userFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-//             @Override
-//             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-//                 // Tosses a prompt for confirmation
-//                 if (JOptionPane.showConfirmDialog(mainFrame,
-//                         "Are you sure you want to close this window?", "Close Window?",
-//                         JOptionPane.YES_NO_OPTION,
-//                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-//                     System.exit(0);
-//                 }
-//                 // Do nothing, close option tab
-//                 mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-//             }
-//         });
-
-//     }
 
     void adminFrame() {
         // UserFrame
