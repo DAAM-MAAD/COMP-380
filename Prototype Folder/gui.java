@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +10,8 @@ import java.lang.*;
 import java.text.ParseException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 
 public class gui implements ActionListener {
     // GLOBALS
@@ -628,48 +631,70 @@ public class gui implements ActionListener {
         
         HomePageFrame.dispose();
 
-/*
-        //create label for username
-        JLabel userLabel = new JLabel();
-        userLabel.setText("Enter Username:");      //set label value for textField1
-        userLabel.setMaximumSize(new Dimension(1200, 40));
-
-        //create text field to get username from the user
-        JTextField user = new JTextField(15);    //set length of the text
-        user.setMaximumSize(new Dimension(1200, 40));
-*/
- 
+        SpinnerModel value = new SpinnerNumberModel(0,0,4,1);
+        SpinnerModel value2 = new SpinnerNumberModel(0,0,4,1);
+        SpinnerModel value3 = new SpinnerNumberModel(0,0,4,1);
+        Date dates = new Date();
+        SpinnerDateModel date = new SpinnerDateModel(dates, null, null, Calendar.DATE);
         JLabel welcomeText = new JLabel();
         welcomeText.setText("Welcome " + guest.getCustomerName() + ".");
         
 
         JLabel arrivalLabel = new JLabel();
         arrivalLabel.setText("Arrival - Date");
-        arrivalLabel.setMaximumSize(new Dimension(1200,40));
-        JTextField arrvial = new JTextField("mm-D-year");
-        arrvial.setMaximumSize(new Dimension(1200,40));
+        arrivalLabel.setMaximumSize(new Dimension(120,40));
+        JSpinner dateSpinner = new JSpinner(date);
+        JSpinner.DateEditor de = new JSpinner.DateEditor(dateSpinner,"MM/dd/yyyy");
+        dateSpinner.setToolTipText("Hightlight the number to change");
+        dateSpinner.setEditor(de);
+        dateSpinner.setMaximumSize(new Dimension(100,40));
+        
+      //  JTextField arrvial = new JTextField("mm-D-year");
+        //arrvial.setMaximumSize(new Dimension(1200,40));
        
         JLabel stayLable = new JLabel();
         stayLable.setText("Length of stay");
         stayLable.setMaximumSize(new Dimension(1200,40));
         JTextField stay = new JTextField(5);
-        stay.setMaximumSize(new Dimension(1200,40));
+        stay.setMaximumSize(new Dimension(120,40));
 
         JLabel guestCount = new JLabel();
         guestCount.setText("Number of guests");
-        guestCount.setMaximumSize(new Dimension(1200,40));
-        JTextField guests = new JTextField();
-       guests.setMaximumSize(new Dimension(1200,40));
+        guestCount.setMaximumSize(new Dimension(120,40));
 
+        JLabel Adutls = new JLabel();
+        Adutls.setText("Adults");
+        JSpinner spinner = new JSpinner(value);
+        spinner.setMaximumSize(new Dimension(50,40));
+       
+
+        JLabel Children = new JLabel();
+        Children.setText("Children");
+        JSpinner secondspinner = new JSpinner(value2);
+        secondspinner.setMaximumSize(new Dimension(50,40));
+        // JTextField guests = new JTextField();
+        // guests.setMaximumSize(new Dimension(1200,40));
+        // JTextField children = new JTextField();
 
         JLabel NumberOfRoomsLable = new JLabel();
         NumberOfRoomsLable.setText("Number of rooms:");
-       NumberOfRoomsLable.setMaximumSize(new Dimension(1200,40));
+        NumberOfRoomsLable.setMaximumSize(new Dimension(120,40));
+        JSpinner thirdJSpinner = new JSpinner(value3);
+        thirdJSpinner.setMaximumSize(new Dimension(50,40));
 
-        JTextField NumberOfRoom = new JTextField();
-        NumberOfRoom.setMaximumSize(new Dimension(1200,40));
-
-
+        JLabel Roomselection = new JLabel();
+        Roomselection.setText("Room Selection");
+        Roomselection.setMaximumSize(new Dimension(120,40));
+        DefaultListModel<String> l1 = new DefaultListModel<>();  
+        l1.addElement("Classic - $150 per night");  
+        l1.addElement("Premium - $200 per night");  
+        l1.addElement("Deluxe - $250 per night");  
+        l1.addElement("Business - $275 per night");  
+        l1.addElement("Honeymoon (a floor seciton) - $300 per night"); 
+        JList<String> list = new JList<>(l1);
+        list.setMaximumSize(new Dimension(260,100));  
+       
+        
         JButton submit = new JButton("Make Reservation"); //set label to button
         submit.setActionCommand("");
 
@@ -695,10 +720,22 @@ public class gui implements ActionListener {
 
         reservationFrame.add(welcomeText);
         // reservationFrame.add(welcomeText);
+        reservationFrame.add(NumberOfRoomsLable);
+        reservationFrame.add(thirdJSpinner);
+        reservationFrame.add(guestCount);
+        reservationFrame.add(Adutls);
+        reservationFrame.add(spinner);
+        reservationFrame.add(Children);
+        reservationFrame.add(secondspinner);
+      //  reservationFrame.add(guests);
+       // reservationFrame.add(children);
         reservationFrame.add(arrivalLabel);
-        reservationFrame.add(arrvial);
+        reservationFrame.add(dateSpinner);
+      //  reservationFrame.add(arrvial);
         reservationFrame.add(stayLable);
         reservationFrame.add(stay);
+        reservationFrame.add(Roomselection);
+        reservationFrame.add(list);
         reservationFrame.add(submit);
         reservationFrame.add(back);
        //  reservationFrame.setSize(200,200);
