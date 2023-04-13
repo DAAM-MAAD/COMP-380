@@ -699,10 +699,6 @@ public class gui implements ActionListener {
         reservationFrame.add(arrvial);
         reservationFrame.add(stayLable);
         reservationFrame.add(stay);
-        reservationFrame.add(guestCount);
-        reservationFrame.add(guests);
-        reservationFrame.add(NumberOfRoomsLable);
-        reservationFrame.add(NumberOfRoom);
         reservationFrame.add(submit);
         reservationFrame.add(back);
        //  reservationFrame.setSize(200,200);
