@@ -4,6 +4,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.*;
@@ -692,12 +694,33 @@ public class gui implements ActionListener {
         l1.addElement("Business - $275 per night");  
         l1.addElement("Honeymoon (a floor seciton) - $300 per night"); 
         JList<String> list = new JList<>(l1);
-        list.setMaximumSize(new Dimension(260,100));  
-       
+        list.setMaximumSize(new Dimension(260,100));
         
+        JLabel RoomType = new JLabel();
+        RoomType.setText("Room type selection");
+        RoomType.setMaximumSize(new Dimension(120,40));
+        DefaultListModel<String> l2 = new DefaultListModel<>();
+        l2.addElement("1 king bed");
+        l2.addElement("2 queen bed");
+        JList<String> list2 = new JList<>(l2);
+        list2.setMaximumSize(new Dimension(100,50));
+
+        JCheckBox checkbox1 = new JCheckBox("Agree to Hotel policies and regualtions");
+ 
         JButton submit = new JButton("Make Reservation"); //set label to button
         submit.setActionCommand("");
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            
+                if(!checkbox1.isSelected()){
+                JOptionPane.showMessageDialog(null, "can't progessive forword if you don't agree with the hotel policies ");
+                }
+                
 
+             }
+                
+         });
         //create back button
         JButton back = new JButton("Back"); // set label to button
        // back.setActionCommand("Go back");
@@ -736,6 +759,9 @@ public class gui implements ActionListener {
         reservationFrame.add(stay);
         reservationFrame.add(Roomselection);
         reservationFrame.add(list);
+        reservationFrame.add(RoomType);
+        reservationFrame.add(list2);
+        reservationFrame.add(checkbox1);
         reservationFrame.add(submit);
         reservationFrame.add(back);
        //  reservationFrame.setSize(200,200);
