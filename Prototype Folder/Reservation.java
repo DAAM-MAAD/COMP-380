@@ -83,6 +83,13 @@ public class Reservation {
         return arrivalDate;
     }
     public Date getDateMade() { return dateMade;}
+    public int getAccountID() {
+        return accountID;
+    }
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
     /**
      * format Date to string
      * @return formatted Date in string
@@ -97,12 +104,7 @@ public class Reservation {
         String strDate = dateFormat.format(dateMade);
         return strDate;
     }
-    public int getAccountID() {
-        return accountID;
-    }
-    public boolean isCancelled() {
-        return cancelled;
-    }
+
 
     public void setReservationID(int reservationID) {
         this.reservationID = reservationID;

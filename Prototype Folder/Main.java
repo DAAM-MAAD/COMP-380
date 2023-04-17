@@ -1,39 +1,71 @@
-/*
+import javax.swing.plaf.nimbus.State;
 import java.io.*;
+import java.sql.ResultSet;
 import java.text.ParseException;
 import java.util.*;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) throws Exception {
 
         DatabaseH db = new DatabaseH();
 
-        Customer first = new Customer("Sulejman Adrian", 39, "238 Union Court Miami FL 33125", "jdgesq@symplysliphair.com");
-        Customer second = new Customer("Tintin Jareth", 55, "23 Hamilton Street Kaukauna WI 54130", "nitzrr@chantellegribbon.com");
-        Customer third = new Customer("Jareth Morticia", 23, "84 East Piper Dr Hoffman Estates IL 60169", "256281@mailtrail.xyz");
+        db.displayAccounts();
+        db.displayDB();
+        db.displayReservations();
 
+        db.writeToRoomFile();
+        db.writeToReservationFile();
+        db.writeToAccountFile();
 
-*/
-/*        db.makeAccount("Boss", "one", first);
-        db.makeAccount("Under-Boss", "two", second);
-        db.makeAccount("Bottom", "three", third);
-        db.writeToAccountFile();*//*
+        String sql;
+        String sqlRooms = "rooms1";
+        String sqlAccounts = "accounts1";
+        String sqlReservations = "reservations1";
 
+        //JDBC db = new JDBC();
 
-       */
-/* db.makeReservation(58, 104, "04102023", 4);
-        db.makeReservation(13, 103, "04122023", 6);
+        // Create SQL ROOMS
+        /*sql = "CREATE TABLE IF NOT EXISTS `" + sqlRooms + "` " +
+                "(\n" +
+                "  `RoomNumber` int NOT NULL,\n" +
+                "  `Vacant` tinyint DEFAULT NULL,\n" +
+                "  `Occupancy` int DEFAULT NULL,\n" +
+                "  `RoomPrice` double DEFAULT NULL,\n" +
+                "  `RoomType` varchar(45) DEFAULT NULL,\n" +
+                "  `Amenities` varchar(45) DEFAULT NULL,\n" +
+                "  `AccountID` int DEFAULT NULL,\n" +
+                "  PRIMARY KEY (`RoomNumber`)\n" +
+                ");";*/
 
-        db.writeToReservationFile();*//*
+        // Create SQL Accounts
+/*        sql = "CREATE TABLE IF NOT EXISTS `" + sqlAccounts + "` " +
+                "(\n" +
+                "  `AccountID` int NOT NULL,\n" +
+                "  `UserName` varchar(45) DEFAULT NULL,\n" +
+                "  `Password` varchar(45) DEFAULT NULL,\n" +
+                "  `CustomerInfo` varchar(45) DEFAULT NULL,\n" +
+                "  `Email` varchar(45) DEFAULT NULL,\n" +
+                "  PRIMARY KEY (`AccountID`)\n" +
+                ");";*/
 
+        // Create SQL Reservation
+/*        sql = "CREATE TABLE IF NOT EXISTS `" + sqlReservations + "` " +
+                "(\n" +
+                "  `ReservationID` int NOT NULL,\n" +
+                "  `RoomNumber` int DEFAULT NULL,\n" +
+                "  `NumberOfGuest` int DEFAULT NULL,\n" +
+                "  `RoomPrice` double DEFAULT NULL,\n" +
+                "  `StayLength` int DEFAULT NULL,\n" +
+                "  `ReservationDate` date DEFAULT NULL,\n" +
+                "  `ReservationMade` date DEFAULT NULL,\n" +
+                "  `AccountID` int DEFAULT NULL,\n" +
+                "  `Cancelled` tinyint DEFAULT NULL,\n" +
+                "  PRIMARY KEY (`ReservationID`)\n" +
+                ");";*/
 
-        //System.out.println(db.customerLogin("Under-Boss", "two"));
-        //db.changeRoom(104, 103);
-        //db.cancelReservation(305);
-
-        //db.removeAccount(49);
-
+        //db.execute(sql);
+        //db.closeConnection();
     }
 }
-*/
+
