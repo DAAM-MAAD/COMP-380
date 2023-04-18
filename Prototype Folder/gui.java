@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
@@ -32,6 +33,7 @@ public class gui implements ActionListener {
     JFrame userFrame = new JFrame("MAAD Hotel: Welcome.");
     JFrame adminFrame = new JFrame("MAAD Hotel: Welcome.");
     JFrame HomePageFrame= new JFrame("user home page");
+    JFrame PaymentFrame = new JFrame("make a payment");
 
     JFrame reservationFrame = new JFrame("MAAD Hotel: Reservation");
     /**
@@ -715,8 +717,11 @@ public class gui implements ActionListener {
             
                 if(!checkbox1.isSelected()){
                 JOptionPane.showMessageDialog(null, "can't progessive forword if you don't agree with the hotel policies ");
+                }else{
+                    reservationFrame.dispose();
+                    PaymentFrame();
                 }
-                
+               
 
              }
                 
@@ -770,7 +775,7 @@ public class gui implements ActionListener {
         reservationFrame.getContentPane().setLayout(new BoxLayout(reservationFrame.getContentPane(), BoxLayout.Y_AXIS));
          
         reservationFrame.pack();
-        adminLoginFrame.setLocationRelativeTo(null);
+        reservationFrame.setLocationRelativeTo(null);
         reservationFrame.setVisible(true);
 
         // Closing WIndows
@@ -796,7 +801,75 @@ public class gui implements ActionListener {
 
     }
 
+    void PaymentFrame(){
+        PaymentFrame.setMinimumSize(new Dimension(1200, 1000));
+        PaymentFrame.setIconImage(favicon.getImage());
+        reservationFrame.dispose();
+        Date dates = new Date();
+        SpinnerDateModel date = new SpinnerDateModel(dates, null, null, Calendar.DATE);
+        
+        
+        JLabel CardNum = new JLabel();
+        CardNum.setText("Enter Debit/Credit car number");
+        JTextField number = new JTextField();
+        number.setMaximumSize(new Dimension(120,40));
 
+        JLabel CardName = new JLabel("Enter name on card");
+        JTextField name = new JTextField();
+        name.setMaximumSize(new Dimension(120,40));
+
+        JLabel Expiration = new JLabel("Enter Expiration date");
+        JSpinner dateSpinner = new JSpinner(date);
+        JSpinner.DateEditor de = new JSpinner.DateEditor(dateSpinner,"MM-yyyy");
+        dateSpinner.setToolTipText("Hightlight the number to change");
+        dateSpinner.setEditor(de);
+        dateSpinner.setMaximumSize(new Dimension(100,40));
+
+        JLabel cVVJLabel = new JLabel("Enter the CVV");
+        JPasswordField cVVField = new JPasswordField();
+        cVVField.setMaximumSize(new Dimension(120,40));
+        JButton completeButton = new JButton("Complete Payment");
+        completeButton.setMaximumSize(new Dimension(150,40));
+
+        PaymentFrame.add(CardNum);
+        PaymentFrame.add(number);
+        PaymentFrame.add(CardName);
+        PaymentFrame.add(name);
+        PaymentFrame.add(Expiration);
+        PaymentFrame.add(dateSpinner);
+        PaymentFrame.add(cVVJLabel);
+        PaymentFrame.add(cVVField);
+        PaymentFrame.add(completeButton);
+
+        
+        PaymentFrame.getContentPane().setLayout(new BoxLayout(PaymentFrame.getContentPane(), BoxLayout.Y_AXIS));
+        PaymentFrame.pack();
+        PaymentFrame.setLocationRelativeTo(null);
+        PaymentFrame.setVisible(true);
+
+        PaymentFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                // Tosses a prompt for confirmation
+                if (JOptionPane.showConfirmDialog(PaymentFrame,
+                        "Are you sure you want to close this window?", "Close Window?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    try {
+                        db.closeDB();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.exit(0);
+                }
+                // Do nothing, close option tab
+                PaymentFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            }
+        });
+
+
+
+    }
 
     void adminFrame() {
         // UserFrame
