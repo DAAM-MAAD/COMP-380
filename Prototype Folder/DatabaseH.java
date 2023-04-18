@@ -50,12 +50,12 @@ public class DatabaseH {
             updateDBWithRes();
             setNumberOfAccounts();
         } else {
-            JDBC jdbc = new JDBC();
-            jdbc.jdbcHash = db;
-            jdbc.jdbcAcList = acList;
-            jdbc.jdbcResList = resList;
-            updateDBWithRes();
-            jdbc.pullSQLToHash();
+            // JDBC jdbc = new JDBC();
+            // jdbc.jdbcHash = db;
+            // jdbc.jdbcAcList = acList;
+            // jdbc.jdbcResList = resList;
+            // updateDBWithRes();
+            // jdbc.pullSQLToHash();
         }
     }
 

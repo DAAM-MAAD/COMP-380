@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,6 +32,7 @@ public class gui implements ActionListener {
     JFrame adminFrame = new JFrame("MAAD Hotel: Welcome.");
     JFrame HomePageFrame= new JFrame("user home page");
     JFrame PaymentFrame = new JFrame("make a payment");
+    JFrame cancleFrame = new JFrame("cancle reservation");
 
     JFrame reservationFrame = new JFrame("MAAD Hotel: Reservation");
     /**
@@ -73,7 +75,7 @@ public class gui implements ActionListener {
     //int preferredX = (int)screenSize.getWidth();
     //int preferredY = (int)screenSize.getHeight();
     // Dimension preferred = new Dimension ((int)screenSize.getWidth(), (int)screenSize.getHeight());
-    gui() throws FileNotFoundException, ParseException {
+    gui() throws FileNotFoundException, ParseException,SQLException {
         //JFrame mainFrame = new JFrame ("MAAD Hotel");
 
         mainFrame();
@@ -107,7 +109,7 @@ public class gui implements ActionListener {
         RoomInfo.addActionListener(this);
         Reservation.setActionCommand("Make Reservation");
         Reservation.addActionListener(this);
-        Cancel.setActionCommand("");
+        Cancel.setActionCommand("Cancle Reservation");
         Cancel.addActionListener(this);
         //  login.setPreferredSize(new Dimension(40, 40));
         HomePage.add(Reservation);
@@ -801,7 +803,7 @@ public class gui implements ActionListener {
     void PaymentFrame(){
         PaymentFrame.setMinimumSize(new Dimension(1200, 1000));
         PaymentFrame.setIconImage(favicon.getImage());
-        reservationFrame.dispose();
+       // reservationFrame.dispose();
         Date dates = new Date();
         SpinnerDateModel date = new SpinnerDateModel(dates, null, null, Calendar.DATE);
         
@@ -868,6 +870,55 @@ public class gui implements ActionListener {
 
     }
 
+
+
+
+    void cancleFrame(){
+        cancleFrame.setMinimumSize(new Dimension(1200, 1000));
+        cancleFrame.setIconImage(favicon.getImage());
+        HomePageFrame.dispose();
+
+        JLabel cancleCodLabel = new JLabel("Enter the Reservation I.D to cancel");
+        JTextField codeTextField = new JTextField();
+       codeTextField.setBounds(100, 100,200, 10);
+
+        JButton cancleButton = new JButton("Cancel Reservation");
+       // cancleButton.setMaximumSize(new Dimension(150,40));
+       cancleFrame.setLayout(new BorderLayout(100,100));
+       
+        cancleFrame.add(cancleCodLabel,BorderLayout.NORTH);
+        cancleFrame.add(codeTextField,BorderLayout.CENTER);
+        cancleFrame.add(cancleButton,BorderLayout.SOUTH);
+        
+       // cancleFrame.getContentPane().setLayout(new BoxLayout(cancleFrame.getContentPane(), BoxLayout.Y_AXIS));
+        //cancleFrame.pack();
+        cancleFrame.setVisible(true);
+
+        cancleFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                // Tosses a prompt for confirmation
+                if (JOptionPane.showConfirmDialog(cancleFrame,
+                        "Are you sure you want to close this window?", "Close Window?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    try {
+                        db.closeDB();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.exit(0);
+                }
+                // Do nothing, close option tab
+                cancleFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            }
+        });
+
+
+
+
+
+}
     void adminFrame() {
         // UserFrame
         // Tasks: Review Rooms, Edit, Cancel, and Reserve.
@@ -969,8 +1020,10 @@ public class gui implements ActionListener {
                 System.out.println("Logging in as adminFrame"  +timeLog() );
                 adminFrame();
                 break;
-            case "Create ":
-
+            case "Cancle Reservation":
+                cancleFrame();
+                System.out.println("Entering user Cancle reservation. Time: "+timeLog() );
+                break;
             default:
                 JOptionPane.showMessageDialog(mainFrame, "Sorry! Skill Issue");
         }
