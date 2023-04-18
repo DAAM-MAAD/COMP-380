@@ -10,7 +10,6 @@ public class Account {
     private int accountID;
     private String userName;
     private String accountPassword;
-    //private ArrayList<String> accountHistory;
     private String customerData;
 
     // constructor

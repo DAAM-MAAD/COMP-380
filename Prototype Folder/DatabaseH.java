@@ -1,8 +1,10 @@
 
-
 import java.io.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,9 +16,7 @@ public class DatabaseH {
     private String roomsFile = "Rooms.txt";
     private String accountsFile = "Accounts.txt";
     private String reservationFile = "Reservations.txt";
-    // private String accountInfo;
-    private int occupancy;
-    private int hotelRoomMax = 10;
+    private int hotelRoomMax = 500;
     private int numberOfAccounts = 5;
 
     // Databases
@@ -36,12 +36,27 @@ public class DatabaseH {
      * @throws FileNotFoundException
      * @throws ParseException
      */
-    public DatabaseH() throws FileNotFoundException, ParseException {
-        readRoomToDB();
-        readAccFileToList();
-        readResToList();
-        updateDBWithRes();
-        setNumberOfAccounts();
+    public DatabaseH() throws FileNotFoundException, ParseException, SQLException {
+    /*
+
+    */
+        Connection connection = null;
+        //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/maad", "root", "MAAD_password");
+
+        if (connection == null) {
+            readRoomToDB();
+            readAccFileToList();
+            readResToList();
+            updateDBWithRes();
+            setNumberOfAccounts();
+        } else {
+            JDBC jdbc = new JDBC();
+            jdbc.jdbcHash = db;
+            jdbc.jdbcAcList = acList;
+            jdbc.jdbcResList = resList;
+            updateDBWithRes();
+            jdbc.pullSQLToHash();
+        }
     }
 
     // getters
@@ -67,6 +82,17 @@ public class DatabaseH {
             }
         }
         return 0;
+    }
+
+    // getters for Databases
+    public LinkedHashMap<Room, Account> getDb() {
+        return db;
+    }
+    public ArrayList<Account> getAcList() {
+        return acList;
+    }
+    public ArrayList<Reservation> getResList() {
+        return resList;
     }
 
     /**
@@ -172,7 +198,7 @@ public class DatabaseH {
             double totalCost = Double.parseDouble(str[3].trim());
             int durationOfStay = Integer.parseInt(str[4].trim());
             Date arrivalDate = new SimpleDateFormat("M/dd/y").parse(str[5].trim());
-            Date resMade = new SimpleDateFormat("M/dd/y").parse(str[7].trim());
+            Date resMade = new SimpleDateFormat("M/dd/y").parse(str[6].trim());
             int accountID = Integer.parseInt(str[7].trim());
             boolean cancel = Boolean.parseBoolean(str[8].trim());
 
