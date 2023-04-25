@@ -827,7 +827,10 @@ public class gui implements ActionListener {
         JLabel selected_file = new JLabel();
         JPanel adminJPanel = new JPanel();
         adminJPanel.setSize(1000,500);
-        JButton genReportButton = new JButton("generate report", favicon);
+        JButton genReportButton = new JButton("generate Room report", favicon);
+        JButton genAccReportButton = new JButton("generate Account report", favicon);
+        JButton genReservReportButton = new JButton("generate Reservation report", favicon);
+
         //genReportButton.setMinimumSize(new Dimension(1000,10));
         //genReportButton.setHorizontalAlignment(JButton.CENTER);
        // genReportButton.setVerticalAlignment(JButton.TOP);
@@ -842,6 +845,8 @@ public class gui implements ActionListener {
        adminFrame.add(selected_file);
        adminFrame.add(panel,BorderLayout.CENTER);
        adminJPanel.add(genReportButton);
+       adminJPanel.add(genAccReportButton);
+       adminJPanel.add(genReservReportButton);
        adminFrame.add(adminJPanel,BorderLayout.NORTH);
        
       genReportButton.addActionListener(new ActionListener() {
@@ -868,12 +873,18 @@ public class gui implements ActionListener {
                                csv_data.addColumn(csvRecord.get(1));
                                csv_data.addColumn(csvRecord.get(2));
                                csv_data.addColumn(csvRecord.get(3));
+                               csv_data.addColumn(csvRecord.get(4));
+                               csv_data.addColumn(csvRecord.get(5));
+                               csv_data.addColumn(csvRecord.get(6));
                            } else {
                                Vector row = new Vector();
                                row.add(csvRecord.get(0));
                                row.add(csvRecord.get(1));
                                row.add(csvRecord.get(2));
                                row.add(csvRecord.get(3));
+                               row.add(csvRecord.get(4));
+                               row.add(csvRecord.get(5));
+                               row.add(csvRecord.get(6));
                                csv_data.addRow(row);
                            }
                        }
@@ -887,7 +898,109 @@ public class gui implements ActionListener {
                }
 
        });
-    
+
+
+     genAccReportButton.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+               File inf = new File("Accounts.csv");
+               // Rooms 8
+               // Reservations 9
+               // Accounts 4
+               String fi = inf.getName();
+               String filepath = inf.getPath();
+               System.out.print(filepath);
+               selected_file.setText(fi);
+               DefaultTableModel csv_data = new DefaultTableModel();
+
+                   try {
+
+                       int start = 0;
+                       InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filepath));
+                       org.apache.commons.csv.CSVParser csvParser = CSVFormat.DEFAULT.parse(inputStreamReader);
+                       for (CSVRecord csvRecord : csvParser) {
+                           if (start == 0) {
+                               start = 1;
+                               csv_data.addColumn(csvRecord.get(0));
+                               csv_data.addColumn(csvRecord.get(1));
+                               csv_data.addColumn(csvRecord.get(2));
+                               csv_data.addColumn(csvRecord.get(3));
+                               csv_data.addColumn(csvRecord.get(4));
+                               csv_data.addColumn(csvRecord.get(5));
+                               csv_data.addColumn(csvRecord.get(6));
+                           } else {
+                               Vector row = new Vector();
+                               row.add(csvRecord.get(0));
+                               row.add(csvRecord.get(1));
+                               row.add(csvRecord.get(2));
+                               row.add(csvRecord.get(3));
+                               row.add(csvRecord.get(4));
+                               row.add(csvRecord.get(5));
+                               row.add(csvRecord.get(6));
+                               csv_data.addRow(row);
+                           }
+                       }
+
+                   } catch (Exception ex) {
+                       System.out.println("Error in Parsing CSV File");
+                   }
+
+                   jTable1.setModel(csv_data);
+
+               }
+
+       });
+
+       genReservReportButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            File inf = new File("Reservations.csv");
+            // Rooms 8
+            // Reservations 9
+            // Accounts 4
+            String fi = inf.getName();
+            String filepath = inf.getPath();
+            System.out.print(filepath);
+            selected_file.setText(fi);
+            DefaultTableModel csv_data = new DefaultTableModel();
+
+                try {
+
+                    int start = 0;
+                    InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filepath));
+                    org.apache.commons.csv.CSVParser csvParser = CSVFormat.DEFAULT.parse(inputStreamReader);
+                    for (CSVRecord csvRecord : csvParser) {
+                        if (start == 0) {
+                            start = 1;
+                            csv_data.addColumn(csvRecord.get(0));
+                            csv_data.addColumn(csvRecord.get(1));
+                            csv_data.addColumn(csvRecord.get(2));
+                            csv_data.addColumn(csvRecord.get(3));
+                            csv_data.addColumn(csvRecord.get(4));
+                            csv_data.addColumn(csvRecord.get(5));
+                            csv_data.addColumn(csvRecord.get(6));
+                        } else {
+                            Vector row = new Vector();
+                            row.add(csvRecord.get(0));
+                            row.add(csvRecord.get(1));
+                            row.add(csvRecord.get(2));
+                            row.add(csvRecord.get(3));
+                            row.add(csvRecord.get(4));
+                            row.add(csvRecord.get(5));
+                            row.add(csvRecord.get(6));
+                            csv_data.addRow(row);
+                        }
+                    }
+
+                } catch (Exception ex) {
+                    System.out.println("Error in Parsing CSV File");
+                }
+
+                jTable1.setModel(csv_data);
+
+            }
+
+    });
+
+
        
         // adminJPanel.add(genReportButton);
 
