@@ -81,6 +81,30 @@ public class gui implements ActionListener {
         mainFrame();
 
     }
+
+    void CloseWindowListener(JFrame frame) {
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                // Tosses a prompt for confirmation
+                if (JOptionPane.showConfirmDialog(frame,
+                        "Are you sure you want to close this window?", "Close Window?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    try {
+                        db.closeDB();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.exit(0);
+                }
+                // Do nothing, close option tab
+                frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            }
+        });
+    }
+    
+
     void HomePageFrame(){
         CreateAccFrame.dispose();
         loginFrame.dispose();
@@ -126,27 +150,12 @@ public class gui implements ActionListener {
         //HomePageFrame.setLayout(new BorderLayout(0,500));
         HomePageFrame.setVisible(true);
 
+        //Closing Windows
+        CloseWindowListener(HomePageFrame);
+
         //Handling if Users Closes the window too early
         // Source: https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
-        HomePageFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                // Tosses a prompt for confirmation
-                if (JOptionPane.showConfirmDialog(mainFrame,
-                        "Are you sure you want to close this window?", "Close Window?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    try {
-                        db.closeDB();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    System.exit(0);
-                }
-                // Do nothing, close option tab
-                mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            }
-        });
+          
     }
     void mainFrame() {
         //System.out.print(preferred);
@@ -216,27 +225,12 @@ public class gui implements ActionListener {
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
 
+        //Closing Window
+        CloseWindowListener(mainFrame);
+
         //Handling if Users Closes the window too early
         // Source: https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
-        mainFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                // Tosses a prompt for confirmation
-                if (JOptionPane.showConfirmDialog(mainFrame,
-                        "Are you sure you want to close this window?", "Close Window?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    try {
-                        db.closeDB();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    System.exit(0);
-                }
-                // Do nothing, close option tab
-                mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            }
-        });
+        
     }
 
     // FRAMES
@@ -322,26 +316,10 @@ public class gui implements ActionListener {
         loginFrame.setLocationRelativeTo(null);
         loginFrame.setVisible(true);
 
-        // Closing WIndows
-        loginFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                // Tosses a prompt for confirmation
-                if (JOptionPane.showConfirmDialog(mainFrame,
-                        "Are you sure you want to close this window?", "Close Window?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    try {
-                        db.closeDB();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    System.exit(0);
-                }
-                // Do nothing, close option tab
-                mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            }
-        });
+         // Closing WIndows
+        CloseWindowListener(loginFrame);
+
+       
     }
 
     void CreateAccFrame() {
@@ -349,7 +327,6 @@ public class gui implements ActionListener {
 //        JFrame loginFrame = new JFrame("MAAD Hotel: User Login");
         CreateAccFrame.setMinimumSize(new Dimension(1200, 1000));
         CreateAccFrame.setIconImage(favicon.getImage());
-        CreateAccFrame.show();
         mainFrame.dispose();
 
 // INPUTS Section
@@ -502,26 +479,9 @@ public class gui implements ActionListener {
         CreateAccFrame.setLocationRelativeTo(null);
         CreateAccFrame.setVisible(true);
 
-        // Closing WIndows
-        CreateAccFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                // Tosses a prompt for confirmation
-                if (JOptionPane.showConfirmDialog(CreateAccFrame,
-                        "Are you sure you want to close this window?", "Close Window?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    try {
-                        db.closeDB();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    System.exit(0);
-                }
-                // Do nothing, close option tab
-                CreateAccFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            }
-        });
+        // Closing Window
+        CloseWindowListener(CreateAccFrame);
+
     }
 
     void adminLoginFrame() {
@@ -530,7 +490,6 @@ public class gui implements ActionListener {
 //        JFrame adminLoginFrame = new JFrame("MAAD Hotel: Administrator Login");
         adminLoginFrame.setMinimumSize(new Dimension(1200, 1000));
         adminLoginFrame.setIconImage(favicon.getImage());
-        adminLoginFrame.show();
         mainFrame.dispose();
 
         //create label for username
@@ -553,27 +512,28 @@ public class gui implements ActionListener {
         //create submit button
         JButton submit = new JButton("Login"); //set label to button
         submit.setActionCommand("Authenticate ");
-        submit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                User = user.getText();
-                newPassword = String.valueOf(password.getPassword());
-                int adminInt = Integer.parseInt(User);
+        submit.addActionListener(this);
+        // submit.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         User = user.getText();
+        //         newPassword = String.valueOf(password.getPassword());
+        //         int adminInt = Integer.parseInt(User);
 
-                // Verify admin ID and password
-                if (db.adminLogin(adminInt, newPassword)) {
-                    // if verified, go to the next screen
-                    System.out.println("Admin successfully login.");
-                    JOptionPane.showMessageDialog(mainFrame, "Admin successful login.");
-                    reservationFrame();
-                }
-                else {
-                    // if failed, promote a message
-                    System.out.println("Admin failed login.");
-                    JOptionPane.showMessageDialog(mainFrame, "Admin failed login.");
-                }
-            }
-        });
+        //         // Verify admin ID and password
+        //         if (db.adminLogin(adminInt, newPassword)) {
+        //             // if verified, go to the next screen
+        //             System.out.println("Admin successfully login.");
+        //             JOptionPane.showMessageDialog(mainFrame, "Admin successful login.");
+        //             reservationFrame();
+        //         }
+        //         else {
+        //             // if failed, promote a message
+        //             System.out.println("Admin failed login.");
+        //             JOptionPane.showMessageDialog(mainFrame, "Admin failed login.");
+        //         }
+        //     }
+        //});
 
 
         //create back button
@@ -606,26 +566,9 @@ public class gui implements ActionListener {
         adminLoginFrame.setLocationRelativeTo(null);
         adminLoginFrame.setVisible(true);
 
-        // Closing WIndows
-        adminLoginFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                // Tosses a prompt for confirmation
-                if (JOptionPane.showConfirmDialog(mainFrame,
-                        "Are you sure you want to close this window?", "Close Window?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    try {
-                        db.closeDB();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    System.exit(0);
-                }
-                // Do nothing, close option tab
-                mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            }
-        });
+        // Closing Windows
+        CloseWindowListener(adminLoginFrame);
+
     }
 
     void reservationFrame() {
@@ -777,26 +720,8 @@ public class gui implements ActionListener {
         reservationFrame.setLocationRelativeTo(null);
         reservationFrame.setVisible(true);
 
-        // Closing WIndows
-        reservationFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                // Tosses a prompt for confirmation
-                if (JOptionPane.showConfirmDialog(reservationFrame,
-                        "Are you sure you want to close this window?", "Close Window?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    try {
-                        db.closeDB();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    System.exit(0);
-                }
-                // Do nothing, close option tab
-                reservationFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            }
-        });
+        // Closing Windows
+        CloseWindowListener(reservationFrame);
 
     }
 
@@ -846,26 +771,8 @@ public class gui implements ActionListener {
         PaymentFrame.setLocationRelativeTo(null);
         PaymentFrame.setVisible(true);
 
-        PaymentFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                // Tosses a prompt for confirmation
-                if (JOptionPane.showConfirmDialog(PaymentFrame,
-                        "Are you sure you want to close this window?", "Close Window?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    try {
-                        db.closeDB();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    System.exit(0);
-                }
-                // Do nothing, close option tab
-                PaymentFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            }
-        });
-
+        //Closing Windows
+        CloseWindowListener(PaymentFrame);
 
 
     }
@@ -894,32 +801,15 @@ public class gui implements ActionListener {
         //cancleFrame.pack();
         cancleFrame.setVisible(true);
 
-        cancleFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                // Tosses a prompt for confirmation
-                if (JOptionPane.showConfirmDialog(cancleFrame,
-                        "Are you sure you want to close this window?", "Close Window?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    try {
-                        db.closeDB();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    System.exit(0);
-                }
-                // Do nothing, close option tab
-                cancleFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            }
-        });
+        //Closing Windows
+        CloseWindowListener(cancleFrame);
 
 
 
 
 
 }
-    void adminFrame() {
+    void adminHomeFrame() {
         // UserFrame
         // Tasks: Review Rooms, Edit, Cancel, and Reserve.
         //
@@ -928,31 +818,25 @@ public class gui implements ActionListener {
         adminFrame.setIconImage(favicon.getImage());
      
         adminLoginFrame.dispose();
+        JPanel adminJPanel = new JPanel();
+        adminJPanel.setSize(1000,500);
+        JButton genReportButton = new JButton("generate report", favicon);
+        //genReportButton.setMinimumSize(new Dimension(1000,10));
+        //genReportButton.setHorizontalAlignment(JButton.CENTER);
+       // genReportButton.setVerticalAlignment(JButton.TOP);
+        
+        adminJPanel.add(genReportButton);
+
+        adminFrame.add(adminJPanel,BorderLayout.NORTH);
+
 
         adminFrame.pack();
-        adminFrame.setLocationRelativeTo(null);
+        adminFrame.setLayout(null);
         adminFrame.setVisible(true);
 
-        // Closing WIndows
-        adminFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                // Tosses a prompt for confirmation
-                if (JOptionPane.showConfirmDialog(mainFrame,
-                        "Are you sure you want to close this window?", "Close Window?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    try {
-                        db.closeDB();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    System.exit(0);
-                }
-                // Do nothing, close option tab
-                mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            }
-        });
+        // Closing Windows
+        CloseWindowListener(adminFrame);
+
     }
 
     @Override
@@ -1018,7 +902,7 @@ public class gui implements ActionListener {
                 break;
             case "Authenticate ":
                 System.out.println("Logging in as adminFrame"  +timeLog() );
-                adminFrame();
+                adminHomeFrame();
                 break;
             case "Cancle Reservation":
                 cancleFrame();
