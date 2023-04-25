@@ -1,18 +1,25 @@
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Vector;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 
 public class gui implements ActionListener {
     // GLOBALS
@@ -817,16 +824,76 @@ public class gui implements ActionListener {
         adminFrame.setIconImage(favicon.getImage());
      
         adminLoginFrame.dispose();
+        JLabel selected_file = new JLabel();
         JPanel adminJPanel = new JPanel();
         adminJPanel.setSize(1000,500);
         JButton genReportButton = new JButton("generate report", favicon);
         //genReportButton.setMinimumSize(new Dimension(1000,10));
         //genReportButton.setHorizontalAlignment(JButton.CENTER);
        // genReportButton.setVerticalAlignment(JButton.TOP);
-        
-        adminJPanel.add(genReportButton);
 
-        adminFrame.add(adminJPanel,BorderLayout.NORTH);
+       
+       JPanel panel = new JPanel();
+       panel.setBounds(0, 0, 900, 900);
+       JTable jTable1 = new JTable();
+       JScrollPane sp = new JScrollPane(jTable1);
+       
+       panel.add(sp);
+       adminFrame.add(selected_file);
+       adminFrame.add(panel,BorderLayout.CENTER);
+       adminJPanel.add(genReportButton);
+       adminFrame.add(adminJPanel,BorderLayout.NORTH);
+       
+      genReportButton.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+               JFileChooser filechooser = new JFileChooser();
+
+               int i = filechooser.showOpenDialog(null);
+               if (i == JFileChooser.APPROVE_OPTION) {
+                   File f = filechooser.getSelectedFile();
+                   String filepath = f.getPath();
+                   String fi = f.getName();
+                   //Parsing CSV Data
+                   System.out.print(filepath);
+                   selected_file.setText(fi);
+                   DefaultTableModel csv_data = new DefaultTableModel();
+
+                   try {
+
+                       int start = 0;
+                       InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filepath));
+                       org.apache.commons.csv.CSVParser csvParser = CSVFormat.DEFAULT.parse(inputStreamReader);
+                       for (CSVRecord csvRecord : csvParser) {
+                           if (start == 0) {
+                               start = 1;
+                               csv_data.addColumn(csvRecord.get(0));
+                               csv_data.addColumn(csvRecord.get(1));
+                               csv_data.addColumn(csvRecord.get(2));
+                               csv_data.addColumn(csvRecord.get(3));
+                           } else {
+                               Vector row = new Vector();
+                               row.add(csvRecord.get(0));
+                               row.add(csvRecord.get(1));
+                               row.add(csvRecord.get(2));
+                               row.add(csvRecord.get(3));
+                               csv_data.addRow(row);
+                           }
+                       }
+
+                   } catch (Exception ex) {
+                       System.out.println("Error in Parsing CSV File");
+                   }
+
+                   jTable1.setModel(csv_data);
+
+               }
+           }
+       });
+    
+       
+        // adminJPanel.add(genReportButton);
+
+        // adminFrame.add(adminJPanel,BorderLayout.NORTH);
 
 
         adminFrame.pack();
