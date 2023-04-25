@@ -1,0 +1,7 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "Prototype Folder/dependencies/commons-io-2.11.0.jar",
+        "Prototype Folder/dependencies/commons-csv-1.10.0.jar"
+    ]
+}
