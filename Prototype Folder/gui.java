@@ -530,7 +530,6 @@ public class gui implements ActionListener {
 //        JFrame adminLoginFrame = new JFrame("MAAD Hotel: Administrator Login");
         adminLoginFrame.setMinimumSize(new Dimension(1200, 1000));
         adminLoginFrame.setIconImage(favicon.getImage());
-        adminLoginFrame.show();
         mainFrame.dispose();
 
         //create label for username
@@ -553,27 +552,28 @@ public class gui implements ActionListener {
         //create submit button
         JButton submit = new JButton("Login"); //set label to button
         submit.setActionCommand("Authenticate ");
-        submit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                User = user.getText();
-                newPassword = String.valueOf(password.getPassword());
-                int adminInt = Integer.parseInt(User);
+        submit.addActionListener(this);
+        // submit.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         User = user.getText();
+        //         newPassword = String.valueOf(password.getPassword());
+        //         int adminInt = Integer.parseInt(User);
 
-                // Verify admin ID and password
-                if (db.adminLogin(adminInt, newPassword)) {
-                    // if verified, go to the next screen
-                    System.out.println("Admin successfully login.");
-                    JOptionPane.showMessageDialog(mainFrame, "Admin successful login.");
-                    reservationFrame();
-                }
-                else {
-                    // if failed, promote a message
-                    System.out.println("Admin failed login.");
-                    JOptionPane.showMessageDialog(mainFrame, "Admin failed login.");
-                }
-            }
-        });
+        //         // Verify admin ID and password
+        //         if (db.adminLogin(adminInt, newPassword)) {
+        //             // if verified, go to the next screen
+        //             System.out.println("Admin successfully login.");
+        //             JOptionPane.showMessageDialog(mainFrame, "Admin successful login.");
+        //             reservationFrame();
+        //         }
+        //         else {
+        //             // if failed, promote a message
+        //             System.out.println("Admin failed login.");
+        //             JOptionPane.showMessageDialog(mainFrame, "Admin failed login.");
+        //         }
+        //     }
+        //});
 
 
         //create back button
@@ -919,7 +919,7 @@ public class gui implements ActionListener {
 
 
 }
-    void adminFrame() {
+    void adminHomeFrame() {
         // UserFrame
         // Tasks: Review Rooms, Edit, Cancel, and Reserve.
         //
@@ -928,9 +928,20 @@ public class gui implements ActionListener {
         adminFrame.setIconImage(favicon.getImage());
      
         adminLoginFrame.dispose();
+        JPanel adminJPanel = new JPanel();
+        adminJPanel.setSize(1000,500);
+        JButton genReportButton = new JButton("generate report", favicon);
+        //genReportButton.setMinimumSize(new Dimension(1000,10));
+        //genReportButton.setHorizontalAlignment(JButton.CENTER);
+       // genReportButton.setVerticalAlignment(JButton.TOP);
+        
+        adminJPanel.add(genReportButton);
+
+        adminFrame.add(adminJPanel,BorderLayout.NORTH);
+
 
         adminFrame.pack();
-        adminFrame.setLocationRelativeTo(null);
+        adminFrame.setLayout(null);
         adminFrame.setVisible(true);
 
         // Closing WIndows
@@ -1018,7 +1029,7 @@ public class gui implements ActionListener {
                 break;
             case "Authenticate ":
                 System.out.println("Logging in as adminFrame"  +timeLog() );
-                adminFrame();
+                adminHomeFrame();
                 break;
             case "Cancle Reservation":
                 cancleFrame();
