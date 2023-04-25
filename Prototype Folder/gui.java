@@ -614,8 +614,8 @@ public class gui implements ActionListener {
         guestCount.setText("Number of guests");
         guestCount.setMaximumSize(new Dimension(120,40));
 
-        JLabel Adutls = new JLabel();
-        Adutls.setText("Adults");
+        JLabel Adults = new JLabel();
+        Adults.setText("Adults");
         JSpinner spinner = new JSpinner(value);
         spinner.setMaximumSize(new Dimension(50,40));
        
@@ -642,7 +642,7 @@ public class gui implements ActionListener {
         l1.addElement("Premium - $200 per night");  
         l1.addElement("Deluxe - $250 per night");  
         l1.addElement("Business - $275 per night");  
-        l1.addElement("Honeymoon (a floor seciton) - $300 per night"); 
+        l1.addElement("Honeymoon (a floor section) - $300 per night");
         JList<String> list = new JList<>(l1);
         list.setMaximumSize(new Dimension(260,100));
         
@@ -655,7 +655,7 @@ public class gui implements ActionListener {
         JList<String> list2 = new JList<>(l2);
         list2.setMaximumSize(new Dimension(100,50));
 
-        JCheckBox checkbox1 = new JCheckBox("Agree to Hotel policies and regualtions");
+        JCheckBox checkbox1 = new JCheckBox("Agree to Hotel policies and regulations");
  
         JButton submit = new JButton("Make Reservation"); //set label to button
         submit.setActionCommand("");
@@ -699,7 +699,7 @@ public class gui implements ActionListener {
         reservationFrame.add(NumberOfRoomsLable);
         reservationFrame.add(thirdJSpinner);
         reservationFrame.add(guestCount);
-        reservationFrame.add(Adutls);
+        reservationFrame.add(Adults);
         reservationFrame.add(spinner);
         reservationFrame.add(Children);
         reservationFrame.add(secondspinner);
@@ -846,17 +846,15 @@ public class gui implements ActionListener {
        
       genReportButton.addActionListener(new ActionListener() {
            public void actionPerformed(ActionEvent e) {
-               JFileChooser filechooser = new JFileChooser();
-
-               int i = filechooser.showOpenDialog(null);
-               if (i == JFileChooser.APPROVE_OPTION) {
-                   File f = filechooser.getSelectedFile();
-                   String filepath = f.getPath();
-                   String fi = f.getName();
-                   //Parsing CSV Data
-                   System.out.print(filepath);
-                   selected_file.setText(fi);
-                   DefaultTableModel csv_data = new DefaultTableModel();
+               File inf = new File("Rooms.csv");
+               // Rooms 8
+               // Reservations 9
+               // Accounts 4
+               String fi = inf.getName();
+               String filepath = inf.getPath();
+               System.out.print(filepath);
+               selected_file.setText(fi);
+               DefaultTableModel csv_data = new DefaultTableModel();
 
                    try {
 
@@ -887,7 +885,7 @@ public class gui implements ActionListener {
                    jTable1.setModel(csv_data);
 
                }
-           }
+
        });
     
        
@@ -966,7 +964,7 @@ public class gui implements ActionListener {
                 adminLoginFrame();
                 break;
             case "Authenticate ":
-                System.out.println("Logging in as adminFrame"  +timeLog() );
+                System.out.println("Logging in as Admin"  +timeLog() );
                 adminHomeFrame();
                 break;
             case "Cancel Reservation":
