@@ -191,9 +191,9 @@ import java.util.*;
 public class DatabaseH {
 
     // class variables
-    private String roomsFile = "Rooms.txt";
-    private String accountsFile = "Accounts.txt";
-    private String reservationFile = "Reservations.txt";
+    private String roomsFile = "Rooms.csv";
+    private String accountsFile = "Accounts.csv";
+    private String reservationFile = "Reservations.csv";
     private int hotelRoomMax = 500;
     private int numberOfAccounts = 5;
 
