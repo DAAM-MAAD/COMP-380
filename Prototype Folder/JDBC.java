@@ -5,6 +5,36 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+/**
+ * Represents a SQL connection
+ * @name Java DataBase Connecot
+ * @author Mathewos Yohannes
+ * @reviewed Mathewos Yohannes
+ * @version 1.0
+ * @Date  Mon Apr 17 16:59:44 2023 -0700
+ * @since 1.0
+ *
+ * @Description JDBC is the SQL connector to the Database. When the GUI is executed,
+ * if a SQL connection is detected by DatabaseH, then data is pulled from the SQL
+ * rather than the written files.
+ * @VIPfunctions
+ * JDBC() : creates an SQL connection
+ * closeConnection(): closes SQL connection when GUI closes
+ * insert(Reservation reservation): SQL queries for reservations to insert LinkedHashMap to SQL table
+ * insert(Account account): SQL queries for accounts to insert LinkedHashMap to SQL table
+ * insert(Room room): SQL queries for rooms to insert LinkedHashMap to SQL table
+ * pullSQLToHash(): pulls all SQL tables into LinkedHashMap
+ *
+ * @ClassMVPs (data structures, etc...)
+ * The following are only created when DatabaseH makes a connection.
+ * LinkedHashMap<Room, Account> jdbcHash;
+ * ArrayList<Account> jdbcAcList;
+ * ArrayList<Reservation> jdbcResList;
+ * @algorithms
+ *
+ * The functions below utilize while loop until there is no next:
+ * pullSQLToHash()
+ */
 
 public class JDBC {
     private static final String USERNAME = "root";

@@ -16,7 +16,7 @@ import java.util.Date;
 
 public class gui implements ActionListener {
     // GLOBALS
-
+    JTextField userName;
     String User ="";
     String address = "";
     String firstName ="";
@@ -28,11 +28,10 @@ public class gui implements ActionListener {
     JFrame adminLoginFrame = new JFrame("MAAD Hotel: Administrator Login");
     JFrame loginFrame = new JFrame("MAAD Hotel: User Login");
     JFrame CreateAccFrame = new JFrame("MAAD Hotel: Create an account");
-    JFrame userFrame = new JFrame("MAAD Hotel: Welcome.");
     JFrame adminFrame = new JFrame("MAAD Hotel: Welcome.");
-    JFrame HomePageFrame= new JFrame("user home page");
-    JFrame PaymentFrame = new JFrame("make a payment");
-    JFrame cancleFrame = new JFrame("cancle reservation");
+    JFrame HomePageFrame= new JFrame("MAAD Hotel: Welcome " + User);
+    JFrame PaymentFrame = new JFrame("MAAD Hotel: Payment");
+    JFrame cancelFrame = new JFrame("MAAD Hotel: Cancel Reservation ");
 
     JFrame reservationFrame = new JFrame("MAAD Hotel: Reservation");
     /**
@@ -383,7 +382,7 @@ public class gui implements ActionListener {
         UserNameLabel.setMaximumSize(new Dimension(1200, 40));
 
         //create text field to get username from the user
-        JTextField userName = new JTextField(15);
+         userName = new JTextField(15);
         userName.setMaximumSize(new Dimension(1200,40));
 
         //create label for password
@@ -780,9 +779,9 @@ public class gui implements ActionListener {
 
 
 
-    void cancleFrame(){
-        cancleFrame.setMinimumSize(new Dimension(1200, 1000));
-        cancleFrame.setIconImage(favicon.getImage());
+    void cancelFrame(){
+        cancelFrame.setMinimumSize(new Dimension(1200, 1000));
+        cancelFrame.setIconImage(favicon.getImage());
         HomePageFrame.dispose();
 
         JLabel cancleCodLabel = new JLabel("Enter the Reservation I.D to cancel");
@@ -791,18 +790,18 @@ public class gui implements ActionListener {
 
         JButton cancleButton = new JButton("Cancel Reservation");
        // cancleButton.setMaximumSize(new Dimension(150,40));
-       cancleFrame.setLayout(new BorderLayout(100,100));
+       cancelFrame.setLayout(new BorderLayout(100,100));
        
-        cancleFrame.add(cancleCodLabel,BorderLayout.NORTH);
-        cancleFrame.add(codeTextField,BorderLayout.CENTER);
-        cancleFrame.add(cancleButton,BorderLayout.SOUTH);
+        cancelFrame.add(cancleCodLabel,BorderLayout.NORTH);
+        cancelFrame.add(codeTextField,BorderLayout.CENTER);
+        cancelFrame.add(cancleButton,BorderLayout.SOUTH);
         
-       // cancleFrame.getContentPane().setLayout(new BoxLayout(cancleFrame.getContentPane(), BoxLayout.Y_AXIS));
-        //cancleFrame.pack();
-        cancleFrame.setVisible(true);
+       // cancelFrame.getContentPane().setLayout(new BoxLayout(cancelFrame.getContentPane(), BoxLayout.Y_AXIS));
+        //cancelFrame.pack();
+        cancelFrame.setVisible(true);
 
         //Closing Windows
-        CloseWindowListener(cancleFrame);
+        CloseWindowListener(cancelFrame);
 
 
 
@@ -867,6 +866,7 @@ public class gui implements ActionListener {
                 break;
 
             case "Create user":
+                User = userName.getText();
 
                 JOptionPane.showMessageDialog(null, "Account has been created");
                 System.out.println(User + "'s Account has been created. Time: "+timeLog() );
@@ -892,8 +892,6 @@ public class gui implements ActionListener {
                 // Need the account portion for this
                 HomePageFrame();
                 System.out.println("Logging in as User. Time: " +timeLog() );
-
-                //userFrame();
                 break;
             case "adminLogin":
                 System.out.println("Entering Admin Login. Time: " +timeLog() );
@@ -904,9 +902,9 @@ public class gui implements ActionListener {
                 System.out.println("Logging in as adminFrame"  +timeLog() );
                 adminHomeFrame();
                 break;
-            case "Cancle Reservation":
-                cancleFrame();
-                System.out.println("Entering user Cancle reservation. Time: "+timeLog() );
+            case "Cancel Reservation":
+                cancelFrame();
+                System.out.println("Entering user cancel reservation. Time: "+timeLog() );
                 break;
             default:
                 JOptionPane.showMessageDialog(mainFrame, "Sorry! Skill Issue");
@@ -921,9 +919,4 @@ public class gui implements ActionListener {
         return formattedDate;
     }
 
-    public boolean authenticateUser(String user,char[]  passwd) {
-        boolean authenticate = false;
-
-        return authenticate;
-    }
 }

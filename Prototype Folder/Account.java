@@ -3,7 +3,32 @@
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-
+/**
+ * Represents an account
+ * @name
+ * @author Mathewos Yohannes, Aryaman Mehta
+ * @reviewed Mathewos Yohannes, Aryaman Mehta
+ * @version 1.0
+ * @Date Sun Mar 5 17:51:21 2023 -0800
+ * @since 1.0
+ *
+ * @Description Account class is created when the user creates an account
+ * with the GUI. The account information is then used by the DatabaseH class
+ * and added to the ArrayList during run time. During the end of the program,
+ * the Account information stored in the ArrayList in the class DatabaseH is
+ * written to file for storage and in the SQL server using JDBC class.
+ * @VIPfunctions
+ * accountToString(): Converts Account information to string for easy use and storage
+ * in the hard files.
+ * hashPassword(): hashes passwords for extra protection
+ * authenticatePassword(String password): Authenticates the provided password against the account password hash
+ *
+ * @ClassMVPs (data structures, etc...) None
+ * @algorithms
+ * setAccountPassword(String s): the user password is checked to include the following to pass, UpperCase,
+ * LowerCase, and must have a digit.
+ *
+ */
 public class Account {
 
     // class variables

@@ -1,4 +1,24 @@
 
+/**
+ * Represents a customer
+ * @name
+ * @author Mathewos Yohannes
+ * @reviewed Mathewos Yohannes, Aryaman Mehta
+ * @version 1.0
+ * @Date  Sun Mar 5 17:51:29 2023 -0800
+ * @since 1.0
+ *
+ * @Description Customer class is created when a new Account class is created using the GUI.
+ * When the user selects the "Create New User" button, all the information they provide,
+ * will be stored as a Customer class for use by other classes such as DatabaseH.
+ * @VIPfunctions
+ * accountToString(): Converts Customer information to string for easy use and storage
+ * in the hard files.
+ *
+ * @ClassMVPs (data structures, etc...) None
+ * @algorithms None
+ *
+ */
 
 public class Customer {
 

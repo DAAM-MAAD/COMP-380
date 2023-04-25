@@ -1,5 +1,22 @@
 
 
+/**
+ * Represents an Administration
+ * @name Administration.java
+ * @author Mathewos Yohannes
+ * @reviewed Mathewos Yohannes, Aryaman Mehta
+ * @version 1.0
+ * @Date Sun Mar 5 17:50:38 2023 -0800
+ * @since 1.0
+ *
+ * @Description Administration class is simply used to store the Administration username
+ * and password.
+ * @VIPfunctions None
+ * @ClassMVPs (data structures, etc...) None
+ * @algorithms None
+ *
+ */
+
 public class Administration {
     private int adminID = 100;
     private String password = "password";

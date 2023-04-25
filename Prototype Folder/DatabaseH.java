@@ -9,6 +9,184 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+/**
+ * Represents a Database
+ * @name
+ * @author Mathewos Yohannes, Aryaman Mehta
+ * @reviewed Mathewos Yohannes, Aryaman Mehta
+ * @version 1.0
+ * @Date  Sun Mar 5 17:54:59 2023 -0800
+ * @since 1.0
+ *
+ * @Description DatabaseH is the work horse of backend. The DatabaseH has the LinkedHashMap
+ * that uses Room class as a key and the Account class as the value. As the hotel is a collection
+ * of rooms that the user can reserve, the setup of the primary database as:
+ * LinkedHashMap<`Room, Account>. DatabaseH also contains ArrayLists of the reservation data and the
+ * account data. With these 3 data storages, customer data is stored in an account class, which is then
+ * attached to a room through a reservation.
+ * @VIPfunctions
+ * getRoomByAccountID(int accID)
+ * usage:- Get Room account ID from Database. Helper function
+ * input:- account ID to be search from in database
+ * output:- room number account is occupying
+ *
+ * getReservationBill(int reservationID)
+ * usage:- Provide total cost of reservation with helper function.
+ *         Helper function is getReservationTotalCost(int reservationID)
+ * input:- reservation ID
+ * output:- the total cost of reservation in string format
+ *
+ * readRoomToDB()
+ * usage:- Reads data from "Rooms.txt" file to LinkedHashMap
+ * input:- text file / will be changed to csv file
+ * output:- Room class that is added to LinkedHashMap
+ *
+ * readAccFileToList()
+ * usage:- Reads data from "Accounts.txt" file to arraylist
+ * input:- text file / will be changed to csv file
+ * output:- Account class that is added to ArrayList
+ *
+ * readResToList()
+ * usage:- Reads data from the "Reservations.txt" file to arraylist
+ * input:- text file / will be changed to csv file
+ * output:- Reservation class that is added to ArrayList
+ *
+ * updateDBWithRes()
+ * usage:- Data from the "Reservations.txt" file updates the Database
+ * input:- ArrayLists containing Accounts and reservation. LinkedHashMap
+ * output:- Data in the reservation ArrayList is added to the LinkedHashMap
+ *
+ * customerLogin(String userN, String pass)
+ * usage:- used to very username and password of customer
+ * input:- username and password
+ * output:- boolean confirming match in files
+ *
+ * adminLogin(int adminID, String pass)
+ * usage:- used to very username and password of admin
+ * input:- username and password
+ * output:- boolean confirming match in files
+ *
+ * addAccountToRoom(int roomNumber, int accountNumber)
+ * usage:- Account class is added to Room in the Database
+ * input:- number of room that account will be attached to.
+ *         number of account that will be attached to room.
+ * output:- account is assigned to room number
+ *
+ * removeAccountFromRoom(int roomNumber, int accountNumber)
+ * usage:- Remove Account from the database and set Room's AccountID to null
+ * input:- roomNumber that will have Account removed from.
+ *         accountNumber that is being removed from database.
+ * output:- account is removed from room number
+ *
+ * roomVacant(int roomNumber)
+ * usage:- Database can check if a room is vacant
+ * input:- roomNumber to check for vacancy
+ * output:- true if Room is vacant else false if occupied
+ *
+ * checkRoomPrice(int roomNumber)
+ * usage:- Check the room price by room number
+ * input:- roomNumber for price check
+ * output:- the room's price
+ *
+ * checkOccupancy(int roomNumber)
+ * usage:- Check the room occupancy by room number
+ * input:- roomNumber for occupancy
+ * output:- the room's occupancy
+ *
+ * makeAccount(String userN, String passwd, Customer c)
+ * usage:- Create an account with passed parameters.
+ * input:- account password and customer class
+ * output:- account is created with set data
+ *
+ * removeAccount(int acNumber)
+ * usage:- remove Account from ArrayList of Accounts. At the same time,
+ *         remove account from database which empties a room
+ * input:- Account number to be removed
+ * output:- Account is deleted from ArrayList
+ *
+ * changeRoom(int currentRoom, int newRoom)
+ * usage:- Change rooms.
+ * input:- current room and new room to change to.
+ * output:- Accounts will be assigned to a new room.
+ *
+ * roomPriceRange(double min, double max)
+ * usage:- Display all rooms in database within price range
+ * input:- the minimum price of a room and the maximum price of a room
+ * output:- a list of rooms within price range
+ *
+ * roomsByType(String type)
+ * usage:- Display all rooms in database by room type
+ * input:- the type of room to search
+ * output:- list of rooms by type
+ *
+ * writeToRoomFile()
+ * usage:- Write to file when program ends
+ * input:- LinkedHashMap
+ * output:- file with current data regarding rooms
+ *
+ * writeToAccountFile()
+ * usage:- Write to file when program ends
+ * input:- ArrayList
+ * output:- file with current data regarding accounts
+ *
+ * writeToReservationFile()
+ * usage:- Write to file when program ends
+ * input:- ArrayList
+ * output:- file with current data regarding reservations
+ *
+ * makeReservation(int accID, int roomNum, String arrivalDate, int stayLength)
+ * usage:- function to make a reservation
+ * input:- accountID connected to the reservation.
+ *         room number for the reservation.
+ * 	       length of reservation.
+ * output:- reservation is added to reservation ArrayList
+ *
+ * cancelReservation(int reservationNumber)
+ * usage:- cancel reservation with reservation number
+ * input:- reservation number
+ * output:- reservation is removed from reservation ArrayList
+ *
+ * sendEmailConfirmationAccountID(int accountID)
+ * usage:- send email confirmation of account ID
+ * input:- account ID
+ * output:- email with confirmation information
+ *
+ * @ClassMVPs (data structures, etc...)
+ * LinkedHashMap<`Room, Account> db which is the primary database
+ * ArrayList<`Account> acList which is where Account information are stored
+ * ArrayList<`Reservation> resList which is where Reservation information are stored
+ *
+ * @algorithms
+ * The functions below utilize advanced for-loops to access their data:
+ * getRoomByAccountID(int accID)
+ * getReservationBill(int reservationID)
+ * setNumberOfAccounts()
+ * updateDBWithRes()
+ * customerLogin(String userN, String pass)
+ * adminLogin(int adminID, String pass)
+ * addAccountToRoom(int roomNumber, int accountNumber)
+ * addAccountToRoom(int roomNumber, int accountNumber)
+ * removeAccountFromRoom(int roomNumber, int accountNumber)
+ * roomVacant(int roomNumber)
+ * checkRoomPrice(int roomNumber)
+ * checkOccupancy(int roomNumber)
+ * makeAccount(String userN, String passwd, Customer c)
+ * removeAccount(int acNumber)
+ * changeRoom(int currentRoom, int newRoom)
+ * roomPriceRange(double min, double max)
+ * roomsByType(String type)
+ * writeToRoomFile()
+ * writeToAccountFile()
+ * writeToReservationFile()
+ * cancelReservation(int reservationNumber)
+ * sendEmailConfirmationAccountID(int accountID)
+ *
+ * The functions below utilize while loop until there is no next:
+ * readRoomToDB()
+ * readAccFileToList()
+ * readResToList()
+ *
+ */
 
 public class DatabaseH {
 

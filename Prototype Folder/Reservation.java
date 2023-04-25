@@ -1,3 +1,28 @@
+/**
+ * Represents a reservation
+ * @name
+ * @author Mathewos Yohannes, Aryaman Mehta
+ * @reviewed Mathewos Yohannes, Aryaman Mehta
+ * @version 1.0
+ * @Date  Sun Mar 5 17:51:09 2023 -0800
+ * @since 1.0
+ *
+ * @Description Reservation class is created when the user enters the "Make a Reservation" tag
+ * in the GUI. From here, the user will provide the necessary information to complete
+ * a reservation, which is then stored in an ArrayList in DatabaseH during run time.
+ * When the user exits the GUI, the information from the Arraylist in DatabaseH is stored
+ * in a local file and also in a table in SQL using the JDBC class.
+ * During the activation of the GUI, the information stored in the SQL table or the local file
+ * updates the main HashMap with its information.
+ * @VIPfunctions
+ * getArrivalDateToString(): format Date to string for the selected reservation date
+ * getMadeDateToString(): format Date to string for when the reservation is made
+ * reservationToString(): Reservation data is formatted into a string for processing
+ * getReservationTotalCost(int reservationID): Calculate the total cost of reservation before taxes
+ * @ClassMVPs (data structures, etc...) None
+ * @algorithms None
+ *
+ */
 
 
 import java.text.SimpleDateFormat;

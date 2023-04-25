@@ -1,3 +1,22 @@
+/**
+ * Represents a room
+ * @name
+ * @author Mathewos Yohannes
+ * @reviewed Mathewos Yohannes, Aryaman Mehta
+ * @version 1.0
+ * @Date Sun Mar 5 17:51:41 2023 -0800
+ * @since 1.0
+ *
+ * @Description The room class is not used directly by the GUI or the user. The room class is mainly used
+ * by class DatabaseH in an ArrayList to store all the room information.
+ * @VIPfunctions
+ * roomToString(): Room data is formatted into a string for processing
+ * roomToStringToFile(): write Room data from arraylist to file without tabs for file
+ * @ClassMVPs (data structures, etc...) None
+ * @algorithms None
+ *
+ */
+
 
 public class Room {
 
