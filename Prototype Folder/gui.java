@@ -114,6 +114,7 @@ public class gui implements ActionListener {
     void HomePageFrame(){
         CreateAccFrame.dispose();
         loginFrame.dispose();
+        PaymentFrame.dispose();
 
         HomePageFrame.setIconImage(favicon.getImage());
 
@@ -139,7 +140,7 @@ public class gui implements ActionListener {
         RoomInfo.addActionListener(this);
         Reservation.setActionCommand("Make Reservation");
         Reservation.addActionListener(this);
-        Cancel.setActionCommand("Cancle Reservation");
+        Cancel.setActionCommand("Cancel Reservation");
         Cancel.addActionListener(this);
         //  login.setPreferredSize(new Dimension(40, 40));
         HomePage.add(Reservation);
@@ -760,6 +761,23 @@ public class gui implements ActionListener {
         cVVField.setMaximumSize(new Dimension(120,40));
         JButton completeButton = new JButton("Complete Payment");
         completeButton.setMaximumSize(new Dimension(150,40));
+        completeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null,"Payment has been processed, you will be redirected to the home page.");
+                mainFrame.getContentPane().removeAll();
+                loginFrame.getContentPane().removeAll();
+                reservationFrame.dispose();
+                adminFrame.dispose();
+                adminLoginFrame.dispose();
+                loginFrame.dispose();
+                CreateAccFrame.dispose();
+                PaymentFrame.dispose();
+                HomePageFrame();
+
+            }
+
+        });
+        
 
         PaymentFrame.add(CardNum);
         PaymentFrame.add(number);
