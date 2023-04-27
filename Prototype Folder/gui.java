@@ -405,43 +405,47 @@ public class gui implements ActionListener {
         //create submit button
         JButton submit = new JButton("Create an Account"); //set label to button
         submit.setActionCommand("Create user");
-        submit.addActionListener(this);
-        // submit.addActionListener(new ActionListener() {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         firstName = FirstName.getText();
-        //         lastName = LastName.getText();
-        //         age = Age.getText();
-        //         address = Address.getText();
-        //         emailAddress = email.getText();
-        //         User = userName.getText();
-        //         newPassword = String.valueOf(Newpassword.getPassword());
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                firstName = FirstName.getText();
+                lastName = LastName.getText();
+                age = Age.getText();
+                address = Address.getText();
+                emailAddress = email.getText();
+                User = userName.getText();
+                newPassword = String.valueOf(Newpassword.getPassword());
 
-        //         if(FirstName.getText().isEmpty() || LastName.getText().isEmpty() || Age.getText().isEmpty() ||
-        //                 Address.getText().isEmpty() || email.getText().isEmpty() || userName.getText().isEmpty() ||
-        //                 Newpassword.getPassword().length == 0) {
-        //             JOptionPane.showMessageDialog(null, "Please fill in all sections.");
-        //         }
-        //         else {
-        //             String fullName = firstName + " " + lastName;
-        //             int ageInt = Integer.parseInt(age);
-        //             guest.setCustomerName(fullName);
-        //             guest.setCustomerAge(ageInt);
-        //             guest.setCustomerAddress(address);
-        //             guest.setCustomerEmail(emailAddress);
-        //             db.makeAccount(User, newPassword, guest);
+                if(FirstName.getText().isEmpty() || LastName.getText().isEmpty() || Age.getText().isEmpty() ||
+                        Address.getText().isEmpty() || email.getText().isEmpty() || userName.getText().isEmpty() ||
+                        Newpassword.getPassword().length == 0) {
+                    JOptionPane.showMessageDialog(null, "Please fill in all sections.");
+                }
+                else {
+                    String fullName = firstName + " " + lastName;
+                    int ageInt = Integer.parseInt(age);
+                    guest.setCustomerName(fullName);
+                    guest.setCustomerAge(ageInt);
+                    guest.setCustomerAddress(address);
+                    guest.setCustomerEmail(emailAddress);
+                    try {
+                        db.makeAccount(User, newPassword, guest);
+                    } catch (Exception e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
 
-        //             if (e.getSource() == submit) {
-        //                 mainFrame.getContentPane().removeAll();
-        //                 CreateAccFrame.getContentPane().removeAll();
-        //                 JOptionPane.showMessageDialog(null, "You have successfully created an account.");
-        //                 CreateAccFrame.dispose();
+                    if (e.getSource() == submit) {
+                        mainFrame.getContentPane().removeAll();
+                        CreateAccFrame.getContentPane().removeAll();
+                        JOptionPane.showMessageDialog(null, "You have successfully created an account.");
+                        CreateAccFrame.dispose();
 
-                        // HomePageFrame(); // Go to reservation page next
-        //             }
-        //         }
-        //     }
-        // });
+                        HomePageFrame(); // Go to reservation page next
+                    }
+                }
+            }
+        });
 
         //create back button
         JButton back = new JButton("Back"); // set label to button
