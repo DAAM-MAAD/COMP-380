@@ -1,25 +1,18 @@
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.Vector;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVRecord;
 
 public class gui implements ActionListener {
     // GLOBALS
@@ -47,6 +40,7 @@ public class gui implements ActionListener {
      */
     DatabaseH db = new DatabaseH();
     Customer guest = new Customer();
+    Account guestAccount = new Account();
 
     int userAccountID;
     int roomNumber;
@@ -57,7 +51,6 @@ public class gui implements ActionListener {
     double maxPrice;
     String roomType;
     int reservationID;
-
 
     // Favicon and Images
     java.net.URL imgURL = gui.class.getResource("favicon.png");
@@ -75,7 +68,6 @@ public class gui implements ActionListener {
     Image scaledLogo = getLogo.getScaledInstance(1164, 966, Image.SCALE_SMOOTH);
     ImageIcon logoFinal = new ImageIcon(scaledLogo);
 
-
     //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     ;
     //int preferredX = (int)screenSize.getWidth();
@@ -83,9 +75,7 @@ public class gui implements ActionListener {
     // Dimension preferred = new Dimension ((int)screenSize.getWidth(), (int)screenSize.getHeight());
     gui() throws FileNotFoundException, ParseException,SQLException {
         //JFrame mainFrame = new JFrame ("MAAD Hotel");
-
         mainFrame();
-
     }
 
     void CloseWindowListener(JFrame frame) {
@@ -99,7 +89,7 @@ public class gui implements ActionListener {
                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
                     try {
                         db.closeDB();
-                    } catch (IOException e) {
+                    } catch (IOException | SQLException e) {
                         e.printStackTrace();
                     }
                     System.exit(0);
@@ -109,7 +99,6 @@ public class gui implements ActionListener {
             }
         });
     }
-    
 
     void HomePageFrame(){
         CreateAccFrame.dispose();
@@ -162,22 +151,16 @@ public class gui implements ActionListener {
 
         //Handling if Users Closes the window too early
         // Source: https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
-          
+
     }
     void mainFrame() {
         //System.out.print(preferred);
-
         //mainFrame.setPreferredSize(new Dimension (0,0));
-
         // Set GUI's dimensions
         mainFrame.setMinimumSize(new Dimension(800, 500));
-
-
         //Setting Favicon
         mainFrame.setIconImage(favicon.getImage());
-
         // Panels
-
         // MainMenu Panel
         JPanel mainMenu = new JPanel(new GridLayout(3, 0));
         // mainMenu.setMaximumSize((new Dimension(40, 40)));
@@ -237,7 +220,6 @@ public class gui implements ActionListener {
 
         //Handling if Users Closes the window too early
         // Source: https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
-        
     }
 
     // FRAMES
@@ -270,8 +252,6 @@ public class gui implements ActionListener {
         //create submit button
         JButton submit = new JButton("Login"); //set label to button
         //A
-
-
         //create back button
         JButton back = new JButton("Back"); // set label to button
         back.setActionCommand("Go back");
@@ -291,23 +271,28 @@ public class gui implements ActionListener {
             }
         });
 
-            submit.setActionCommand("Authenticate");
-            submit.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    User = user.getText();
-                    newPassword = String.valueOf(password.getPassword());
+        submit.setActionCommand("Authenticate");
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                User = user.getText();
+                newPassword = String.valueOf(password.getPassword());
 
-                    // when verified, has access. If not, need to pop a message
-                    if (db.customerLogin(User, newPassword)) {
-                        System.out.println("Customer " + User + " login."  +timeLog()  );
+                // when verified, has access. If not, need to pop a message
+                if (db.customerLogin(User, newPassword)) {
+                    JOptionPane.showMessageDialog(mainFrame, "You have logged in.");
+                    guestAccount = db.getAccount(User);
+                    loginFrame.dispose();
+                    reservationFrame();
+                    System.out.println("Customer " + User + " login."  +timeLog()  );
 
-                    } else {
-                        System.out.println("Customer " + User+ " failed to login." +timeLog() );
-                    }
-
+                } else {
+                    System.out.println("Customer " + User+ " failed to login." +timeLog() );
+                    System.out.println("Customer failed login.");
+                    JOptionPane.showMessageDialog(mainFrame, "Customer failed login.");
                 }
-            });
+            }
+        });
 
         loginFrame.add(userLabel);
         loginFrame.add(user);
@@ -323,10 +308,8 @@ public class gui implements ActionListener {
         loginFrame.setLocationRelativeTo(null);
         loginFrame.setVisible(true);
 
-         // Closing WIndows
+        // Closing WIndows
         CloseWindowListener(loginFrame);
-
-       
     }
 
     void CreateAccFrame() {
@@ -390,7 +373,7 @@ public class gui implements ActionListener {
         UserNameLabel.setMaximumSize(new Dimension(1200, 40));
 
         //create text field to get username from the user
-         userName = new JTextField(15);
+        userName = new JTextField(15);
         userName.setMaximumSize(new Dimension(1200,40));
 
         //create label for password
@@ -492,7 +475,6 @@ public class gui implements ActionListener {
 
         // Closing Window
         CloseWindowListener(CreateAccFrame);
-
     }
 
     void adminLoginFrame() {
@@ -523,29 +505,29 @@ public class gui implements ActionListener {
         //create submit button
         JButton submit = new JButton("Login"); //set label to button
         submit.setActionCommand("Authenticate ");
-        submit.addActionListener(this);
-        // submit.addActionListener(new ActionListener() {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         User = user.getText();
-        //         newPassword = String.valueOf(password.getPassword());
-        //         int adminInt = Integer.parseInt(User);
+        //submit.addActionListener(this);
+         submit.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 User = user.getText();
+                 newPassword = String.valueOf(password.getPassword());
+                 Integer adminInt = Integer.parseInt(User);
 
-        //         // Verify admin ID and password
-        //         if (db.adminLogin(adminInt, newPassword)) {
-        //             // if verified, go to the next screen
-        //             System.out.println("Admin successfully login.");
-        //             JOptionPane.showMessageDialog(mainFrame, "Admin successful login.");
-        //             reservationFrame();
-        //         }
-        //         else {
-        //             // if failed, promote a message
-        //             System.out.println("Admin failed login.");
-        //             JOptionPane.showMessageDialog(mainFrame, "Admin failed login.");
-        //         }
-        //     }
-        //});
-
+                 // Verify admin ID and password
+                 if (db.adminLogin(adminInt, newPassword)) {
+                     // if verified, go to the next screen
+                     System.out.println("Admin successfully login.");
+                     JOptionPane.showMessageDialog(mainFrame, "Admin successful login.");
+                     adminLoginFrame.dispose();
+                     adminHomeFrame();
+                 }
+                 else {
+                     // if failed, promote a message
+                     System.out.println("Admin failed login.");
+                     JOptionPane.showMessageDialog(mainFrame, "Admin failed login.");
+                 }
+             }
+        });
 
         //create back button
         JButton back = new JButton("Back"); // set label to button
@@ -579,13 +561,12 @@ public class gui implements ActionListener {
 
         // Closing Windows
         CloseWindowListener(adminLoginFrame);
-
     }
 
     void reservationFrame() {
         reservationFrame.setMinimumSize(new Dimension(1200, 1000));
         reservationFrame.setIconImage(favicon.getImage());
-        
+
         HomePageFrame.dispose();
 
         SpinnerModel value = new SpinnerNumberModel(0,0,4,1);
@@ -595,7 +576,6 @@ public class gui implements ActionListener {
         SpinnerDateModel date = new SpinnerDateModel(dates, null, null, Calendar.DATE);
         JLabel welcomeText = new JLabel();
         welcomeText.setText("Welcome " + guest.getCustomerName() + ".");
-        
 
         JLabel arrivalLabel = new JLabel();
         arrivalLabel.setText("Arrival - Date");
@@ -605,10 +585,10 @@ public class gui implements ActionListener {
         dateSpinner.setToolTipText("Hightlight the number to change");
         dateSpinner.setEditor(de);
         dateSpinner.setMaximumSize(new Dimension(100,40));
-        
-      //  JTextField arrvial = new JTextField("mm-D-year");
+
+        //  JTextField arrvial = new JTextField("mm-D-year");
         //arrvial.setMaximumSize(new Dimension(1200,40));
-       
+
         JLabel stayLable = new JLabel();
         stayLable.setText("Length of stay");
         stayLable.setMaximumSize(new Dimension(1200,40));
@@ -623,7 +603,6 @@ public class gui implements ActionListener {
         Adults.setText("Adults");
         JSpinner spinner = new JSpinner(value);
         spinner.setMaximumSize(new Dimension(50,40));
-       
 
         JLabel Children = new JLabel();
         Children.setText("Children");
@@ -633,24 +612,24 @@ public class gui implements ActionListener {
         // guests.setMaximumSize(new Dimension(1200,40));
         // JTextField children = new JTextField();
 
-        JLabel NumberOfRoomsLable = new JLabel();
-        NumberOfRoomsLable.setText("Number of rooms:");
-        NumberOfRoomsLable.setMaximumSize(new Dimension(120,40));
+        JLabel NumberOfRoomsLabel = new JLabel();
+        NumberOfRoomsLabel.setText("Number of rooms:");
+        NumberOfRoomsLabel.setMaximumSize(new Dimension(120,40));
         JSpinner thirdJSpinner = new JSpinner(value3);
         thirdJSpinner.setMaximumSize(new Dimension(50,40));
 
         JLabel Roomselection = new JLabel();
         Roomselection.setText("Room Selection");
         Roomselection.setMaximumSize(new Dimension(120,40));
-        DefaultListModel<String> l1 = new DefaultListModel<>();  
-        l1.addElement("Classic - $150 per night");  
-        l1.addElement("Premium - $200 per night");  
-        l1.addElement("Deluxe - $250 per night");  
-        l1.addElement("Business - $275 per night");  
+        DefaultListModel<String> l1 = new DefaultListModel<>();
+        l1.addElement("Classic - $150 per night");
+        l1.addElement("Premium - $200 per night");
+        l1.addElement("Deluxe - $250 per night");
+        l1.addElement("Business - $275 per night");
         l1.addElement("Honeymoon (a floor section) - $300 per night");
         JList<String> list = new JList<>(l1);
         list.setMaximumSize(new Dimension(260,100));
-        
+
         JLabel RoomType = new JLabel();
         RoomType.setText("Room type selection");
         RoomType.setMaximumSize(new Dimension(120,40));
@@ -661,27 +640,33 @@ public class gui implements ActionListener {
         list2.setMaximumSize(new Dimension(100,50));
 
         JCheckBox checkbox1 = new JCheckBox("Agree to Hotel policies and regulations");
- 
+
         JButton submit = new JButton("Make Reservation"); //set label to button
         submit.setActionCommand("");
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            
+
                 if(!checkbox1.isSelected()){
-                JOptionPane.showMessageDialog(null, "can't progessive forword if you don't agree with the hotel policies ");
+                    JOptionPane.showMessageDialog(null, "can't progessive forword if you don't agree with the hotel policies ");
                 }else{
+                    try {
+                        db.makeReservation(guestAccount.getAccountID(), (Integer) thirdJSpinner.getValue(), (String) dateSpinner.getValue(), Integer.parseInt(stay.getText()));
+                    } catch (ParseException ex) {
+                        ex.printStackTrace();
+                        System.out.println("Could not make reservation.");
+                        JOptionPane.showMessageDialog(mainFrame, "Could not make reservation.");
+                    }
+                    System.out.println("Reservation made.");
+                    JOptionPane.showMessageDialog(mainFrame, "Reservation made.");
                     reservationFrame.dispose();
                     PaymentFrame();
                 }
-               
-
-             }
-                
-         });
+            }
+        });
         //create back button
         JButton back = new JButton("Back"); // set label to button
-       // back.setActionCommand("Go back");
+        // back.setActionCommand("Go back");
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -701,18 +686,18 @@ public class gui implements ActionListener {
 
         reservationFrame.add(welcomeText);
         // reservationFrame.add(welcomeText);
-        reservationFrame.add(NumberOfRoomsLable);
+        reservationFrame.add(NumberOfRoomsLabel);
         reservationFrame.add(thirdJSpinner);
         reservationFrame.add(guestCount);
         reservationFrame.add(Adults);
         reservationFrame.add(spinner);
         reservationFrame.add(Children);
         reservationFrame.add(secondspinner);
-      //  reservationFrame.add(guests);
-       // reservationFrame.add(children);
+        //  reservationFrame.add(guests);
+        // reservationFrame.add(children);
         reservationFrame.add(arrivalLabel);
         reservationFrame.add(dateSpinner);
-      //  reservationFrame.add(arrvial);
+        //  reservationFrame.add(arrvial);
         reservationFrame.add(stayLable);
         reservationFrame.add(stay);
         reservationFrame.add(Roomselection);
@@ -722,11 +707,9 @@ public class gui implements ActionListener {
         reservationFrame.add(checkbox1);
         reservationFrame.add(submit);
         reservationFrame.add(back);
-       //  reservationFrame.setSize(200,200);
-      
-
+        //  reservationFrame.setSize(200,200);
         reservationFrame.getContentPane().setLayout(new BoxLayout(reservationFrame.getContentPane(), BoxLayout.Y_AXIS));
-         
+
         reservationFrame.pack();
         reservationFrame.setLocationRelativeTo(null);
         reservationFrame.setVisible(true);
@@ -739,11 +722,10 @@ public class gui implements ActionListener {
     void PaymentFrame(){
         PaymentFrame.setMinimumSize(new Dimension(1200, 1000));
         PaymentFrame.setIconImage(favicon.getImage());
-       // reservationFrame.dispose();
+        // reservationFrame.dispose();
         Date dates = new Date();
         SpinnerDateModel date = new SpinnerDateModel(dates, null, null, Calendar.DATE);
-        
-        
+
         JLabel CardNum = new JLabel();
         CardNum.setText("Enter Debit/Credit car number");
         JTextField number = new JTextField();
@@ -777,11 +759,8 @@ public class gui implements ActionListener {
                 CreateAccFrame.dispose();
                 PaymentFrame.dispose();
                 HomePageFrame();
-
             }
-
         });
-        
 
         PaymentFrame.add(CardNum);
         PaymentFrame.add(number);
@@ -793,7 +772,6 @@ public class gui implements ActionListener {
         PaymentFrame.add(cVVField);
         PaymentFrame.add(completeButton);
 
-        
         PaymentFrame.getContentPane().setLayout(new BoxLayout(PaymentFrame.getContentPane(), BoxLayout.Y_AXIS));
         PaymentFrame.pack();
         PaymentFrame.setLocationRelativeTo(null);
@@ -801,12 +779,7 @@ public class gui implements ActionListener {
 
         //Closing Windows
         CloseWindowListener(PaymentFrame);
-
-
     }
-
-
-
 
     void cancelFrame(){
         cancelFrame.setMinimumSize(new Dimension(1200, 1000));
@@ -815,28 +788,23 @@ public class gui implements ActionListener {
 
         JLabel cancleCodLabel = new JLabel("Enter the Reservation I.D to cancel");
         JTextField codeTextField = new JTextField();
-       codeTextField.setBounds(100, 100,200, 10);
+        codeTextField.setBounds(100, 100,200, 10);
 
         JButton cancleButton = new JButton("Cancel Reservation");
-       // cancleButton.setMaximumSize(new Dimension(150,40));
-       cancelFrame.setLayout(new BorderLayout(100,100));
-       
+        // cancleButton.setMaximumSize(new Dimension(150,40));
+        cancelFrame.setLayout(new BorderLayout(100,100));
+
         cancelFrame.add(cancleCodLabel,BorderLayout.NORTH);
         cancelFrame.add(codeTextField,BorderLayout.CENTER);
         cancelFrame.add(cancleButton,BorderLayout.SOUTH);
-        
-       // cancelFrame.getContentPane().setLayout(new BoxLayout(cancelFrame.getContentPane(), BoxLayout.Y_AXIS));
+
+        // cancelFrame.getContentPane().setLayout(new BoxLayout(cancelFrame.getContentPane(), BoxLayout.Y_AXIS));
         //cancelFrame.pack();
         cancelFrame.setVisible(true);
 
         //Closing Windows
         CloseWindowListener(cancelFrame);
-
-
-
-
-
-}
+    }
     void adminHomeFrame() {
         // UserFrame
         // Tasks: Review Rooms, Edit, Cancel, and Reserve.
@@ -844,7 +812,7 @@ public class gui implements ActionListener {
 //        JFrame adminFrame = new JFrame("MAAD Hotel: Welcome.");
         adminFrame.setMinimumSize(new Dimension(1200, 1000));
         adminFrame.setIconImage(favicon.getImage());
-     
+
         adminLoginFrame.dispose();
         JLabel selected_file = new JLabel();
         JPanel adminJPanel = new JPanel();
@@ -855,137 +823,34 @@ public class gui implements ActionListener {
 
         //genReportButton.setMinimumSize(new Dimension(1000,10));
         //genReportButton.setHorizontalAlignment(JButton.CENTER);
-       // genReportButton.setVerticalAlignment(JButton.TOP);
+        // genReportButton.setVerticalAlignment(JButton.TOP);
 
-       
-       JPanel panel = new JPanel();
-       panel.setBounds(0, 0, 900, 900);
-       JTable jTable1 = new JTable();
-       JScrollPane sp = new JScrollPane(jTable1);
-       
-       panel.add(sp);
-       adminFrame.add(selected_file);
-       adminFrame.add(panel,BorderLayout.CENTER);
-       adminJPanel.add(genReportButton);
-       adminJPanel.add(genAccReportButton);
-       adminJPanel.add(genReservReportButton);
-       adminFrame.add(adminJPanel,BorderLayout.NORTH);
-       
-      genReportButton.addActionListener(new ActionListener() {
-           public void actionPerformed(ActionEvent e) {
-               File inf = new File("Rooms.csv");
-               // Rooms 8
-               // Reservations 9
-               // Accounts 4
-               String fi = inf.getName();
-               String filepath = inf.getPath();
-               System.out.print(filepath);
-               selected_file.setText(fi);
-               DefaultTableModel csv_data = new DefaultTableModel();
+        JPanel panel = new JPanel();
+        panel.setBounds(0, 0, 900, 900);
+        JTable jTable1 = new JTable();
+        JScrollPane sp = new JScrollPane(jTable1);
 
-                   try {
+        panel.add(sp);
+        adminFrame.add(selected_file);
+        adminFrame.add(panel,BorderLayout.CENTER);
+        adminJPanel.add(genReportButton);
+        adminJPanel.add(genAccReportButton);
+        adminJPanel.add(genReservReportButton);
+        adminFrame.add(adminJPanel,BorderLayout.NORTH);
 
-                       int start = 0;
-                       InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filepath));
-                       org.apache.commons.csv.CSVParser csvParser = CSVFormat.DEFAULT.parse(inputStreamReader);
-                       for (CSVRecord csvRecord : csvParser) {
-                           if (start == 0) {
-                               start = 1;
-                               csv_data.addColumn(csvRecord.get(0));
-                               csv_data.addColumn(csvRecord.get(1));
-                               csv_data.addColumn(csvRecord.get(2));
-                               csv_data.addColumn(csvRecord.get(3));
-                               csv_data.addColumn(csvRecord.get(4));
-                               csv_data.addColumn(csvRecord.get(5));
-                               csv_data.addColumn(csvRecord.get(6));
-                           } else {
-                               Vector row = new Vector();
-                               row.add(csvRecord.get(0));
-                               row.add(csvRecord.get(1));
-                               row.add(csvRecord.get(2));
-                               row.add(csvRecord.get(3));
-                               row.add(csvRecord.get(4));
-                               row.add(csvRecord.get(5));
-                               row.add(csvRecord.get(6));
-                               csv_data.addRow(row);
-                           }
-                       }
-
-                   } catch (Exception ex) {
-                       System.out.println("Error in Parsing CSV File");
-                   }
-
-                   jTable1.setModel(csv_data);
-
-               }
-
-       });
-
-
-     genAccReportButton.addActionListener(new ActionListener() {
-           public void actionPerformed(ActionEvent e) {
-               File inf = new File("Accounts.csv");
-               // Rooms 8
-               // Reservations 9
-               // Accounts 4
-               String fi = inf.getName();
-               String filepath = inf.getPath();
-               System.out.print(filepath);
-               selected_file.setText(fi);
-               DefaultTableModel csv_data = new DefaultTableModel();
-
-                   try {
-
-                       int start = 0;
-                       InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filepath));
-                       org.apache.commons.csv.CSVParser csvParser = CSVFormat.DEFAULT.parse(inputStreamReader);
-                       for (CSVRecord csvRecord : csvParser) {
-                           if (start == 0) {
-                               start = 1;
-                               csv_data.addColumn(csvRecord.get(0));
-                               csv_data.addColumn(csvRecord.get(1));
-                               csv_data.addColumn(csvRecord.get(2));
-                               csv_data.addColumn(csvRecord.get(3));
-                               csv_data.addColumn(csvRecord.get(4));
-                               csv_data.addColumn(csvRecord.get(5));
-                               csv_data.addColumn(csvRecord.get(6));
-                           } else {
-                               Vector row = new Vector();
-                               row.add(csvRecord.get(0));
-                               row.add(csvRecord.get(1));
-                               row.add(csvRecord.get(2));
-                               row.add(csvRecord.get(3));
-                               row.add(csvRecord.get(4));
-                               row.add(csvRecord.get(5));
-                               row.add(csvRecord.get(6));
-                               csv_data.addRow(row);
-                           }
-                       }
-
-                   } catch (Exception ex) {
-                       System.out.println("Error in Parsing CSV File");
-                   }
-
-                   jTable1.setModel(csv_data);
-
-               }
-
-       });
-
-       genReservReportButton.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            File inf = new File("Reservations.csv");
-            // Rooms 8
-            // Reservations 9
-            // Accounts 4
-            String fi = inf.getName();
-            String filepath = inf.getPath();
-            System.out.print(filepath);
-            selected_file.setText(fi);
-            DefaultTableModel csv_data = new DefaultTableModel();
+        genReportButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                File inf = new File("Rooms.csv");
+                // Rooms 8
+                // Reservations 9
+                // Accounts 4
+                String fi = inf.getName();
+                String filepath = inf.getPath();
+                System.out.print(filepath);
+                selected_file.setText(fi);
+                DefaultTableModel csv_data = new DefaultTableModel();
 
                 try {
-
                     int start = 0;
                     InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filepath));
                     org.apache.commons.csv.CSVParser csvParser = CSVFormat.DEFAULT.parse(inputStreamReader);
@@ -1008,34 +873,116 @@ public class gui implements ActionListener {
                             row.add(csvRecord.get(4));
                             row.add(csvRecord.get(5));
                             row.add(csvRecord.get(6));
+
                             csv_data.addRow(row);
                         }
                     }
-
                 } catch (Exception ex) {
                     System.out.println("Error in Parsing CSV File");
                 }
-
                 jTable1.setModel(csv_data);
-
             }
+        });
 
-    });
+        genAccReportButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                File inf = new File("Accounts.csv");
+                // Rooms 8
+                // Reservations 9
+                // Accounts 4
+                String fi = inf.getName();
+                String filepath = inf.getPath();
+                System.out.print(filepath);
+                selected_file.setText(fi);
+                DefaultTableModel csv_data = new DefaultTableModel();
 
+                try {
+                    int start = 0;
+                    InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filepath));
+                    org.apache.commons.csv.CSVParser csvParser = CSVFormat.DEFAULT.parse(inputStreamReader);
+                    for (CSVRecord csvRecord : csvParser) {
+                        if (start == 0) {
+                            start = 1;
+                            csv_data.addColumn(csvRecord.get(0));
+                            csv_data.addColumn(csvRecord.get(1));
+                            csv_data.addColumn(csvRecord.get(2));
+                            csv_data.addColumn(csvRecord.get(3));
+                        } else {
+                            Vector row = new Vector();
+                            row.add(csvRecord.get(0));
+                            row.add(csvRecord.get(1));
+                            row.add(csvRecord.get(2));
+                            row.add(csvRecord.get(3));
 
-       
+                            csv_data.addRow(row);
+                        }
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Error in Parsing CSV File");
+                }
+                jTable1.setModel(csv_data);
+            }
+        });
+
+        genReservReportButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                File inf = new File("Reservations.csv");
+                // Rooms 8
+                // Reservations 9
+                // Accounts 4
+                String fi = inf.getName();
+                String filepath = inf.getPath();
+                System.out.println(filepath);
+                selected_file.setText(fi);
+                DefaultTableModel csv_data = new DefaultTableModel();
+
+                try {
+                    int start = 0;
+                    InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filepath));
+                    org.apache.commons.csv.CSVParser csvParser = CSVFormat.DEFAULT.parse(inputStreamReader);
+                    for (CSVRecord csvRecord : csvParser) {
+                        if (start == 0) {
+                            start = 1;
+                            csv_data.addColumn(csvRecord.get(0));
+                            csv_data.addColumn(csvRecord.get(1));
+                            csv_data.addColumn(csvRecord.get(2));
+                            csv_data.addColumn(csvRecord.get(3));
+                            csv_data.addColumn(csvRecord.get(4));
+                            csv_data.addColumn(csvRecord.get(5));
+                            csv_data.addColumn(csvRecord.get(6));
+                            csv_data.addColumn(csvRecord.get(7));
+                            csv_data.addColumn(csvRecord.get(8));
+                        } else {
+                            Vector row = new Vector();
+                            row.add(csvRecord.get(0));
+                            row.add(csvRecord.get(1));
+                            row.add(csvRecord.get(2));
+                            row.add(csvRecord.get(3));
+                            row.add(csvRecord.get(4));
+                            row.add(csvRecord.get(5));
+                            row.add(csvRecord.get(6));
+                            row.add(csvRecord.get(7));
+                            row.add(csvRecord.get(8));
+
+                            csv_data.addRow(row);
+                        }
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Error in Parsing CSV File");
+                }
+                jTable1.setModel(csv_data);
+            }
+        });
+
         // adminJPanel.add(genReportButton);
 
         // adminFrame.add(adminJPanel,BorderLayout.NORTH);
-
-
         adminFrame.pack();
         adminFrame.setLayout(null);
         adminFrame.setVisible(true);
 
         // Closing Windows
         CloseWindowListener(adminFrame);
-
     }
 
     @Override
@@ -1049,7 +996,7 @@ public class gui implements ActionListener {
                 System.out.println("Exit");
                 try {
                     db.closeDB();
-                } catch (IOException ex) {
+                } catch (IOException | SQLException ex) {
                     ex.printStackTrace();
                 }
                 System.exit(420);
@@ -1110,7 +1057,6 @@ public class gui implements ActionListener {
                 JOptionPane.showMessageDialog(mainFrame, "Sorry! Skill Issue");
         }
     }
-
     // Source: https://www.w3schools.com/java/java_date.asp
     public String timeLog(){
         LocalDateTime myDateObj = LocalDateTime.now();
