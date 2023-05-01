@@ -9,6 +9,7 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 /**
  * Represents a Database
  * @name
@@ -37,22 +38,22 @@ import java.util.*;
  * output:- the total cost of reservation in string format
  *
  * readRoomToDB()
- * usage:- Reads data from "Rooms.txt" file to LinkedHashMap
+ * usage:- Reads data from "Rooms.csv" file to LinkedHashMap
  * input:- text file / will be changed to csv file
  * output:- Room class that is added to LinkedHashMap
  *
  * readAccFileToList()
- * usage:- Reads data from "Accounts.txt" file to arraylist
+ * usage:- Reads data from "Accounts.csv" file to arraylist
  * input:- text file / will be changed to csv file
  * output:- Account class that is added to ArrayList
  *
  * readResToList()
- * usage:- Reads data from the "Reservations.txt" file to arraylist
+ * usage:- Reads data from the "Reservations.csv" file to arraylist
  * input:- text file / will be changed to csv file
  * output:- Reservation class that is added to ArrayList
  *
  * updateDBWithRes()
- * usage:- Data from the "Reservations.txt" file updates the Database
+ * usage:- Data from the "Reservations.csv" file updates the Database
  * input:- ArrayLists containing Accounts and reservation. LinkedHashMap
  * output:- Data in the reservation ArrayList is added to the LinkedHashMap
  *
@@ -187,7 +188,6 @@ import java.util.*;
  * readResToList()
  *
  */
-
 public class DatabaseH {
 
     // class variables
@@ -196,6 +196,9 @@ public class DatabaseH {
     private String reservationFile = "Reservations.csv";
     private int hotelRoomMax = 500;
     private int numberOfAccounts = 5;
+    Connection connection = null;
+
+    private JDBC jdbcCloser;
 
     // Databases
     private LinkedHashMap<Room, Account> db = new LinkedHashMap<>();
@@ -215,11 +218,15 @@ public class DatabaseH {
      * @throws ParseException
      */
     public DatabaseH() throws FileNotFoundException, ParseException, SQLException {
-    /*
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/maad", "root", "MAAD_password");
 
-    */
-        Connection connection = null;
-        //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/maad", "root", "MAAD_password");
+        } catch (/*SQLException |*/ ClassNotFoundException ex) {
+            System.out.println("An error occurred while connecting MySQL database");
+            System.out.println("System will be working with written files.");
+            ex.printStackTrace();
+        }
 
         if (connection == null) {
             readRoomToDB();
@@ -228,22 +235,38 @@ public class DatabaseH {
             updateDBWithRes();
             setNumberOfAccounts();
         } else {
-            // JDBC jdbc = new JDBC();
-            // jdbc.jdbcHash = db;
-            // jdbc.jdbcAcList = acList;
-            // jdbc.jdbcResList = resList;
-            // updateDBWithRes();
-            // jdbc.pullSQLToHash();
+            JDBC jdbc = new JDBC();
+            jdbcCloser = jdbc;
+            jdbc.jdbcHash = db;
+            jdbc.jdbcAcList = acList;
+            jdbc.jdbcResList = resList;
+            updateDBWithRes();
+            jdbc.pullSQLToHash();
         }
     }
 
     // getters
+
+    /**
+     * getter for accountsFile name
+     * @return accountsFile name
+     */
     private String getAccountsFile() {
         return accountsFile;
     }
+
+    /**
+     * getter for reservationFile name
+     * @return reservationFile name
+     */
     private String getReservationFile() {
         return reservationFile;
     }
+
+    /**
+     * getter for roomsFile name
+     * @return roomsFile name
+     */
     private String getRoomsFile() {
         return roomsFile;
     }
@@ -262,13 +285,44 @@ public class DatabaseH {
         return 0;
     }
 
+    public Account getAccount(String userName) {
+        for (Account i : acList) {
+            if (i.getUserName().equals(userName)) {
+                return i;
+            }
+        }
+        return null;
+    }
+    public int getAccountID(String userName) {
+        for (Account i : acList) {
+            if (i.getUserName().equals(userName)) {
+                return i.getAccountID();
+            }
+        }
+        return 0;
+    }
     // getters for Databases
+
+    /**
+     * getter of LinkedHashMap<Room, Account>
+     * @return LinkedHashMap<Room, Account>
+     */
     public LinkedHashMap<Room, Account> getDb() {
         return db;
     }
+
+    /**
+     * getter of ArrayList<Account>
+     * @return ArrayList<Account>
+     */
     public ArrayList<Account> getAcList() {
         return acList;
     }
+
+    /**
+     * getter of ArrayList<Reservation>
+     * @return ArrayList<Reservation>
+     */
     public ArrayList<Reservation> getResList() {
         return resList;
     }
@@ -289,6 +343,10 @@ public class DatabaseH {
     }
 
     // setters
+
+    /**
+     * setter numberOfAccounts after reading ArrayList<`Account>
+     */
     private void setNumberOfAccounts() {
         int accs = 0;
         for (Account i : acList) {
@@ -296,24 +354,18 @@ public class DatabaseH {
         }
         this.numberOfAccounts = accs;
     }
-    /*
-    insert account to database when customer selects room - DONE
-    read reservation file and update database in constructor - DONE
-    remove account from database by room number and account ID - DONE
-    is room available - DONE
-    find rooms occupancy - DONE
-    search for room by X - DONE
-     */
 
     // Reading files to database and lists when starting program
     /**
-     * Reads data from "Rooms.txt" file to LinkedHashMap
+     * Reads data from "Rooms.csv" file to LinkedHashMap
      *
      * @throws FileNotFoundException
      */
     private void readRoomToDB() throws FileNotFoundException {
         File file = new File(getRoomsFile());
         Scanner inputFile = new Scanner(file);
+
+        inputFile.nextLine(); // Skipping the Header
 
         while (inputFile.hasNext()) {
             String[] str = inputFile.nextLine().split(",");
@@ -335,13 +387,15 @@ public class DatabaseH {
         inputFile.close();
     }
     /**
-     * Reads data from "Accounts.txt" file to arraylist
+     * Reads data from "Accounts.csv" file to arraylist
      *
      * @throws FileNotFoundException
      */
     private void readAccFileToList() throws FileNotFoundException {
         File file = new File(getAccountsFile());
         Scanner inputFile = new Scanner(file);
+
+        inputFile.nextLine(); // Skipping the Header
 
         while (inputFile.hasNext()) {
             String[] str = inputFile.nextLine().split(",");
@@ -358,7 +412,7 @@ public class DatabaseH {
         inputFile.close();
     }
     /**
-     * Reads data from the "Reservations.txt" file to arraylist
+     * Reads data from the "Reservations.csv" file to arraylist
      *
      * @throws FileNotFoundException
      * @throws ParseException
@@ -366,6 +420,8 @@ public class DatabaseH {
     private void readResToList() throws FileNotFoundException, ParseException {
         File file = new File(getReservationFile());
         Scanner inputFile = new Scanner(file);
+
+        inputFile.nextLine(); // Skipping the Header
 
         while (inputFile.hasNext()) {
             String[] str = inputFile.nextLine().split(",");
@@ -387,11 +443,10 @@ public class DatabaseH {
             }
         }
         inputFile.close();
-        // not complete
 
     }
     /**
-     * Data from the "Reservations.txt" file updates the Database
+     * Data from the "Reservations.csv" file updates the Database
      */
     private void updateDBWithRes() {
         for (Room r : db.keySet()) {
@@ -415,6 +470,13 @@ public class DatabaseH {
     }
 
     // Login in verification
+
+    /**
+     * verify customer login information
+     * @param userN customer login userName
+     * @param pass customer login password
+     * @return 1 if verified, 0 if failed
+     */
     public boolean customerLogin(String userN, String pass) {
         for (Account a : acList) {
             if (a.getUserName().equals(userN) && a.getAccountPassword().equals(pass)) {
@@ -424,6 +486,12 @@ public class DatabaseH {
         return false;
     }
 
+    /**
+     * verify admin login information
+     * @param adminID admin login userName
+     * @param pass admin login password
+     * @return 1 if verified, 0 if failed
+     */
     public boolean adminLogin(int adminID, String pass) {
         Administration ad = new Administration();
         if (adminID == ad.getAdminID() && pass.equals(ad.getPassword())) {
@@ -431,7 +499,6 @@ public class DatabaseH {
         }
         return false;
     }
-
 
     // Alter database
 
@@ -457,7 +524,7 @@ public class DatabaseH {
         }
     }
     /**
-     * Remove Account from the database and set Room's AccountID to 0
+     * Remove Account from the database and set Room's AccountID to null
      *
      * @param roomNumber    roomNumber that will have Account removed from
      * @param accountNumber accountNumber that is being removed from database
@@ -497,7 +564,6 @@ public class DatabaseH {
             }
         }
         return 0;
-
     }
     /**
      * Check the room occupancy by room number
@@ -630,6 +696,10 @@ public class DatabaseH {
     }
 
     // Displaying Data
+
+    /**
+     * console print out of DataBase
+     */
     public void displayDB() {
         System.out.println("roomNumber\t, availability\t, occupancy\t," +
                 " roomPrice\t, roomType\t\t\t, amenities\t\t\t\t\t, accountID");
@@ -698,6 +768,10 @@ public class DatabaseH {
         }
     }
     // Display reservations
+
+    /**
+     * Display all Reservation in Reservation arraylist in string format
+     */
     public void displayReservations() {
         for (Reservation i : resList) {
             System.out.println(i.reservationToString());
@@ -705,65 +779,115 @@ public class DatabaseH {
     }
 
     // Write to file when program ends
+
+    /**
+     * write to Room File
+     * @throws IOException
+     */
     public void writeToRoomFile() throws IOException {
 
         String fileName = getRoomsFile();
         java.io.FileWriter fw = new java.io.FileWriter(fileName);
         PrintWriter outputFile = new PrintWriter(fw);
+        outputFile.println("Room Number, Vacant, Occupancy, Price, Type, Amenities, AccountID, Cancelled");
         for (Room r : db.keySet()) {
             outputFile.println(r.roomToStringToFile().trim());
         }
         outputFile.close();
     }
+
+    /**
+     * write to Account File
+     * @throws IOException
+     */
     public void writeToAccountFile() throws IOException {
         String fileName = getAccountsFile();
         java.io.FileWriter fw = new java.io.FileWriter(fileName);
         PrintWriter outputFile = new PrintWriter(fw);
+        outputFile.println("AccountID, UserName, AccountPassword, CustomerData");
         for (Account a : acList) {
             outputFile.println(a.accountToString());
         }
         outputFile.close();
     }
+
+    /**
+     * write to Reservation File
+     * @throws IOException
+     */
     public void writeToReservationFile() throws IOException {
         String fileName = getReservationFile();
         java.io.FileWriter fw = new java.io.FileWriter(fileName);
         PrintWriter outputFile = new PrintWriter(fw);
+        outputFile.println("ResID, RoomNumber, RoomPrice, Stay(Days), ArrivalDate, CreatedDate, AccountId, Cancelled");
         for (Reservation r : resList) {
             outputFile.println(r.reservationToString());
         }
         outputFile.close();
     }
 
-    public void closeDB() throws IOException {
+    // Write to SQL database when program ends
+
+    public void writeToSQLAccount() throws SQLException {
+        for (Account i : acList) {
+            jdbcCloser.insert(i);
+        }
+    }
+    public void writeToSQLReservation() throws SQLException {
+        for (Reservation i : resList) {
+            jdbcCloser.insert(i);
+        }
+    }
+    public void writeToSQLRoom() throws SQLException {
+        for (Room i : db.keySet()) {
+            jdbcCloser.insert(i);
+        }
+    }
+
+    /**
+     * combines writeToAccountFile(), writeToReservationFile(), and writeToRoomFile()
+     * @throws IOException
+     */
+    public void closeDB() throws IOException, SQLException {
+        // Write to file when closing
         writeToAccountFile();
         writeToReservationFile();
         writeToRoomFile();
+
+        if (connection != null) {
+            // Clearing SQL tables for writing
+            jdbcCloser.clearAccountSQLTable();
+            jdbcCloser.clearReservationSQLTable();
+            jdbcCloser.clearRoomSQLTable();
+
+            // Write to SQL when closing
+            jdbcCloser.removeSQLSAFE();
+            writeToSQLAccount();
+            writeToSQLReservation();
+            writeToSQLRoom();
+        }
     }
     // Reservation changes
-    /*
-    When removing a reservation, free room, remove accountId from room, then set
-    reservation as cancelled
-     */
 
-    /*
-        check if room is available with roomVacant.
-        If not available, print statement that room is not available.
-        If room is available:
-            generate reservation number
-            insert into reservation arraylist
-            insert accountNum in main database
-
+    /**
+     * function to make a reservation
+     * @param accID accountID connected to the reservation
+     * @param roomNum room number for the reservation
+     * @param arrivalDate the arrival date of the reservation
+     * @param stayLength length of reservation
+     * @throws ParseException
      */
     public void makeReservation(int accID, int roomNum, String arrivalDate, int stayLength) throws ParseException {
         // Generate a reservation number random with range from 100 to 999.
         int resNum = (int)Math.floor(Math.random() * (999 - 100 + 1) + 100);
         Room selectRoom = null;
+        boolean change = false;
 
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
         Format f = new SimpleDateFormat("MM/dd/yyyy");
         String strDate = f.format(new Date());
-        Date date1=new SimpleDateFormat("MM/dd/yyyy").parse(strDate);
+        Date today =new SimpleDateFormat("MM/dd/yyyy").parse(strDate);
 
         Date resDate =new SimpleDateFormat("MMddyyyy").parse(arrivalDate);
         System.out.println("Reservation made today for: " + formatter.format(resDate));
@@ -787,15 +911,17 @@ public class DatabaseH {
                 selectRoom = r;
             }
         }
-        Reservation newRes = new Reservation(resNum, accID, selectRoom, resDate, date1, stayLength);
+        //Reservation newRes = new Reservation(resNum, accID, selectRoom, resDate, date1, stayLength);
+        Reservation newRes = new Reservation(resNum, selectRoom.getRoomNumber(), selectRoom.getOccupancy(), selectRoom.getRoomPrice(), stayLength, resDate, today, accID, change);
 
         // Insert New Reservation to reservation list
         resList.add(newRes);
         // Update database with data from reservation array list
         updateDBWithRes();
     }
+/*
     public void updateRoomWithAcIDInDB(int roomNumber, int accID) {}
-
+*/
 
     /**
      * cancel reservation with reservation number
