@@ -283,7 +283,7 @@ public class gui implements ActionListener {
                     JOptionPane.showMessageDialog(mainFrame, "You have logged in.");
                     guestAccount = db.getAccount(User);
                     loginFrame.dispose();
-                    reservationFrame();
+                    HomePageFrame();
                     System.out.println("Customer " + User + " login."  +timeLog()  );
 
                 } else {
