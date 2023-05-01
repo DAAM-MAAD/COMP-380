@@ -1,3 +1,4 @@
+RoomNumber, Vacant, Occupancy, Price, Type, Amenities, AccountID, Cancelled
 101, true, 2, 299.99, "classic", "ass dsf df sdf ", 0
 102, true, 2, 299.99, "classic", "ass dsf df sdf ", 0
 103, true, 2, 299.99, "classic", "ass dsf df sdf ", 0
