@@ -3,8 +3,8 @@ import java.sql.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
+
 /**
  * Represents a SQL connection
  * @name Java DataBase Connecot
@@ -53,6 +53,12 @@ public class JDBC {
     ArrayList<Reservation> jdbcResList;
 
     // link hashmaps
+
+    /**
+     * constructor for the Java DataBase connector with nor parameters
+     * @throws FileNotFoundException
+     * @throws ParseException
+     */
     public JDBC() throws FileNotFoundException, ParseException {
         try {
             Class.forName(JDBC_DRIVER);
@@ -63,6 +69,9 @@ public class JDBC {
         System.out.println("Database Connection Initialized.");
     }
 
+    /**
+     * closes Java DataBase connection
+     */
     public void closeConnection() {
         if (connection == null) {
             return;
@@ -76,7 +85,7 @@ public class JDBC {
         }
     }
 
-    public boolean execute(String sql) throws SQLException {
+    /*public boolean execute(String sql) throws SQLException {
         if (connection == null) {
             throw new SQLException("Connection null!");
         }
@@ -104,7 +113,13 @@ public class JDBC {
         statement.close();
         return resultSet;
     }
+*/
 
+    /**
+     * transfer data for DatabaseH reservation ArrayList to SQL table
+     * @param reservation Reservation Class
+     * @throws SQLException
+     */
     public void insert(Reservation reservation) throws SQLException {
         String command = "INSERT INTO `reservations` (`ReservationID`, `RoomNumber`, `NumberOfGuest`," +
                 " `RoomPrice`, `StayLength`, `ReservationDate`, `ReservationMade`, `AccountID`, `Cancelled`)" +
@@ -119,13 +134,18 @@ public class JDBC {
             addstmt.setObject(7, reservation.getDateMade());
             addstmt.setObject(8, reservation.getAccountID());
             addstmt.setObject(9, reservation.isCancelled());
-            addstmt.execute();
+            addstmt.executeUpdate();
             System.out.println("Insertion to Reservation SQL table.");
         } catch (Exception err) {
             System.out.println("An error has occurred when inserting to reservations sql table.");
             err.printStackTrace();
         }
     }
+    /**
+     * transfer data for DatabaseH account ArrayList to SQL table
+     * @param acc Account Class
+     * @throws SQLException
+     */
     public void insert(Account acc) throws SQLException {
         String command = "INSERT INTO `accounts` (`AccountID`, `UserName`, `Password`, `CustomerInfo`)" +
                 "VALUES (?,?,?,?);";
@@ -134,13 +154,18 @@ public class JDBC {
             addstmt.setObject(2, acc.getUserName());
             addstmt.setObject(3, acc.getAccountPassword());
             addstmt.setObject(4, acc.getCustomerData());
-            addstmt.execute();
+            addstmt.executeUpdate();
             System.out.println("Insertion to Account SQL table.");
         } catch (Exception err) {
             System.out.println("An error has occurred when inserting to accounts sql table.");
             err.printStackTrace();
         }
     }
+    /**
+     * transfer data for DatabaseH LinkedHashMap to SQL table
+     * @param room Room Class
+     * @throws SQLException
+     */
     public void insert(Room room) throws SQLException {
         String command = "INSERT INTO `rooms` (`RoomNumber`, `Vacant`, `Occupancy`, `RoomPrice`," +
                 " `RoomType`, `Amenities`, `AccountID`) " +
@@ -153,7 +178,7 @@ public class JDBC {
             addstmt.setObject(5, room.getRoomType());
             addstmt.setObject(6, room.getAmenities());
             addstmt.setObject(7, room.getAccountID());
-            addstmt.execute();
+            addstmt.executeUpdate();
             System.out.println("Insertion to Room SQL table.");
         } catch (Exception err) {
             System.out.println("An error has occured when inserting to rooms sql table.");
@@ -216,4 +241,34 @@ public class JDBC {
             err.printStackTrace();
         }
     }
+
+    public void removeSQLSAFE() throws SQLException {
+        String command = "SET SQL_SAFE_UPDATES=0;";
+        PreparedStatement addstmt = connection.prepareStatement(command);
+        addstmt.executeUpdate();
+        System.out.println("SQL safety removed.");
+    }
+
+    public void clearRoomSQLTable() throws SQLException {
+        String command = "DELETE FROM `rooms`";
+        PreparedStatement addstmt = connection.prepareStatement(command);
+        addstmt.executeUpdate();
+        System.out.println("Rooms SQL table cleared");
+    }
+
+    public void clearAccountSQLTable() throws SQLException {
+        String command = "DELETE FROM `accounts`";
+        PreparedStatement addstmt = connection.prepareStatement(command);
+        addstmt.executeUpdate();
+        System.out.println("Accounts SQL table cleared");
+    }
+    public void clearReservationSQLTable() throws SQLException {
+        String command = "DELETE FROM `reservations`";
+        PreparedStatement addstmt = connection.prepareStatement(command);
+        addstmt.executeUpdate();
+        System.out.println("Rooms SQL table cleared");
+    }
+
+
+
 }
