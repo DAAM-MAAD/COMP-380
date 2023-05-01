@@ -864,6 +864,7 @@ public class gui implements ActionListener {
                             csv_data.addColumn(csvRecord.get(4));
                             csv_data.addColumn(csvRecord.get(5));
                             csv_data.addColumn(csvRecord.get(6));
+                            csv_data.addColumn(csvRecord.get(7));
                         } else {
                             Vector row = new Vector();
                             row.add(csvRecord.get(0));
@@ -873,6 +874,8 @@ public class gui implements ActionListener {
                             row.add(csvRecord.get(4));
                             row.add(csvRecord.get(5));
                             row.add(csvRecord.get(6));
+                            row.add(csvRecord.get(7));
+                          
 
                             csv_data.addRow(row);
                         }
@@ -951,7 +954,7 @@ public class gui implements ActionListener {
                             csv_data.addColumn(csvRecord.get(5));
                             csv_data.addColumn(csvRecord.get(6));
                             csv_data.addColumn(csvRecord.get(7));
-                            csv_data.addColumn(csvRecord.get(8));
+                          
                         } else {
                             Vector row = new Vector();
                             row.add(csvRecord.get(0));
@@ -962,7 +965,7 @@ public class gui implements ActionListener {
                             row.add(csvRecord.get(5));
                             row.add(csvRecord.get(6));
                             row.add(csvRecord.get(7));
-                            row.add(csvRecord.get(8));
+                          
 
                             csv_data.addRow(row);
                         }
