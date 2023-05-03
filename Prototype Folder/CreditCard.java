@@ -20,7 +20,6 @@ public class CreditCard {
     // private variables
     private String number;
     private String name;
-    private String bank;
     private String ccv;
     private Date expiration;
 
@@ -28,14 +27,12 @@ public class CreditCard {
      * Constructor for credit card
      * @param no credit card number
      * @param nm credit card holder's name
-     * @param bk credit card bank name
      * @param backNum credit card CCV number
      * @param expires credit card expiration date
      */
-    CreditCard(String no, String nm, String bk, String backNum, Date expires) {
+    CreditCard(String no, String nm, String backNum, Date expires) {
         number = no;
         name = nm;
-        bank = bk;
         ccv = backNum;
         expiration = expires;
     }
@@ -50,11 +47,6 @@ public class CreditCard {
      * @return credit card holder's name
      */
     public String getName() { return name; }
-    /**
-     * getter for credit card bank's name
-     * @return credit card name
-     */
-    public String getBank() { return bank; }
     /**
      * getter for credit card cvv
      * @return credit card ccv
@@ -72,6 +64,6 @@ public class CreditCard {
     public static void printCard(CreditCard c) {
         System.out.println("Number = " + c.getNumber());
         System.out.println("Name = " + c.getName());
-        System.out.println("Bank = " + c.getBank());
+        System.out.println("Expiration = " + c.getExpiration());
     }
 }
