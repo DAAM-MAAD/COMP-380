@@ -1,11 +1,81 @@
-RoomNumber, Vacant, Occupancy, Price, Type, Amenities, AccountID, Cancelled
-101, true, 2, 299.99, "classic", "ass dsf df sdf ", 0
-102, true, 2, 299.99, "classic", "ass dsf df sdf ", 0
-103, true, 2, 299.99, "classic", "ass dsf df sdf ", 0
-104, true, 2, 299.99, "classic", "ass dsf df sdf ", 0
-105, true, 4, 699.99, "premium", "ass dsf df sdf ", 0
-106, true, 4, 699.99, "premium", "ass dsf df sdf ", 0
-107, true, 4, 699.99, "deluxe", "ass dsf df sdf ", 0
-108, true, 4, 699.99, "classic", "ass dsf df sdf ", 0
-109, false, 8, 999.99, "pool", "ass dsf df sdf ", 10
-110, true, 8, 999.99, "foundation", "ass dsf df sdf ", 0
+Room Number, Vacant, Occupancy, Price, Type, Amenities, AccountID
+101, true, 2, 149.99, classic, 1 queen, 0
+102, true, 2, 149.99, classic, 1 queen, 0
+103, true, 2, 149.99, classic, 1 queen, 0
+104, true, 2, 149.99, classic, 1 queen, 0
+105, true, 2, 149.99, classic, 1 queen, 0
+106, true, 4, 149.99, classic, 2 queen, 0
+107, true, 4, 149.99, classic, 2 queen, 0
+108, true, 4, 149.99, classic, 2 queen, 0
+109, true, 2, 199.99, premium, 1 queen, 0
+110, true, 2, 199.99, premium, 1 queen, 0
+111, true, 2, 199.99, premium, 1 queen, 0
+112, true, 4, 199.99, premium, 1 queen, 0
+113, true, 4, 199.99, premium, 2 queen, 0
+114, true, 2, 249.99, deluxe, 1 king, 0
+115, true, 2, 249.99, deluxe, 1 king, 0
+116, true, 4, 249.99, deluxe, 2 king, 0
+117, true, 1, 274.99, business, 1 king, 0
+118, true, 1, 274.99, business, 1 king, 0
+119, true, 2, 274.99, business, 2 queen, 0
+120, true, 2, 299.99, honeymoon, 1 king, 0
+201, true, 2, 149.99, classic, 1 queen, 0
+202, true, 2, 149.99, classic, 1 queen, 0
+203, true, 2, 149.99, classic, 1 queen, 0
+204, true, 2, 149.99, classic, 1 queen, 0
+205, true, 2, 149.99, classic, 1 queen, 0
+206, true, 4, 149.99, classic, 2 queen, 0
+207, true, 4, 149.99, classic, 2 queen, 0
+208, true, 4, 149.99, classic, 2 queen, 0
+209, true, 2, 199.99, premium, 1 queen, 0
+210, true, 2, 199.99, premium, 1 queen, 0
+211, true, 2, 199.99, premium, 1 queen, 0
+212, true, 4, 199.99, premium, 1 queen, 0
+213, true, 4, 199.99, premium, 2 queen, 0
+214, true, 2, 249.99, deluxe, 1 king, 0
+215, true, 2, 249.99, deluxe, 1 king, 0
+216, true, 4, 249.99, deluxe, 2 king, 0
+217, true, 1, 274.99, business, 1 king, 0
+218, true, 1, 274.99, business, 1 king, 0
+219, true, 2, 274.99, business, 2 queen, 0
+220, true, 2, 299.99, honeymoon, 1 king, 0
+301, true, 2, 149.99, classic, 1 queen, 0
+302, true, 2, 149.99, classic, 1 queen, 0
+303, true, 2, 149.99, classic, 1 queen, 0
+304, true, 2, 149.99, classic, 1 queen, 0
+305, true, 2, 149.99, classic, 1 queen, 0
+306, true, 4, 149.99, classic, 2 queen, 0
+307, true, 4, 149.99, classic, 2 queen, 0
+308, true, 4, 149.99, classic, 2 queen, 0
+309, true, 2, 199.99, premium, 1 queen, 0
+310, true, 2, 199.99, premium, 1 queen, 0
+311, true, 2, 199.99, premium, 1 queen, 0
+312, true, 4, 199.99, premium, 1 queen, 0
+313, true, 4, 199.99, premium, 2 queen, 0
+314, true, 2, 249.99, deluxe, 1 king, 0
+315, true, 2, 249.99, deluxe, 1 king, 0
+316, true, 4, 249.99, deluxe, 2 king, 0
+317, true, 1, 274.99, business, 1 king, 0
+318, true, 1, 274.99, business, 1 king, 0
+319, true, 2, 274.99, business, 2 queen, 0
+320, true, 2, 299.99, honeymoon, 1 king, 0
+401, true, 2, 149.99, classic, 1 queen, 0
+402, true, 2, 149.99, classic, 1 queen, 0
+403, true, 2, 149.99, classic, 1 queen, 0
+404, true, 2, 149.99, classic, 1 queen, 0
+405, true, 2, 149.99, classic, 1 queen, 0
+406, true, 4, 149.99, classic, 2 queen, 0
+407, true, 4, 149.99, classic, 2 queen, 0
+408, true, 4, 149.99, classic, 2 queen, 0
+409, true, 2, 199.99, premium, 1 queen, 0
+410, true, 2, 199.99, premium, 1 queen, 0
+411, true, 2, 199.99, premium, 1 queen, 0
+412, true, 4, 199.99, premium, 1 queen, 0
+413, true, 4, 199.99, premium, 2 queen, 0
+414, true, 2, 249.99, deluxe, 1 king, 0
+415, true, 2, 249.99, deluxe, 1 king, 0
+416, true, 4, 249.99, deluxe, 2 king, 0
+417, true, 1, 274.99, business, 1 king, 0
+418, true, 1, 274.99, business, 1 king, 0
+419, true, 2, 274.99, business, 2 queen, 0
+420, true, 2, 299.99, honeymoon, 1 king, 0
