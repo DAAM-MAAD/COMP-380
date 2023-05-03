@@ -1,9 +1,4 @@
-
-import javax.swing.plaf.nimbus.State;
-import java.io.*;
-import java.sql.ResultSet;
-import java.text.ParseException;
-import java.util.*;
+/*
 
 public class Main {
 
@@ -11,63 +6,37 @@ public class Main {
 
         DatabaseH db = new DatabaseH();
 
-        db.displayAccounts();
-        db.displayDB();
-        db.displayReservations();
+*/
+/*        Customer first = new Customer("Erna Marie-Pierre", 22, "3435 Layman Avenue Savannah GA 31401", "first@gmail.com");
+        Customer second = new Customer("Vlastimir Balaram", 39, "363 Clifford Street San Leandro CA 94578", "second@gmail.com");
+        Customer third = new Customer("Eugenia Nosipho", 54, "4482 Terra Cotta Street Badger MN 56714", "third@gmail.com");
+        db.makeAccount("first", "Password1!", first);
+        db.makeAccount("second", "Password2@", second);
+        db.makeAccount("third", "Password3#", third);*//*
 
-        db.writeToRoomFile();
-        db.writeToReservationFile();
+
+        db.makeReservation(43, 101, "05/10/2023", 5);
+        db.makeReservation(67, 102, "05/13/2023", 7);
+        db.makeReservation(52, 103, "05/20/2023", 2);
+
+        //db.cancelReservation(858);
+
+        //db.reservationHelper(76, "05/13/2024", 13, 2, "deluxe", "1 king");
         db.writeToAccountFile();
+        db.writeToReservationFile();
+        db.writeToRoomFile();
 
-        String sql;
-        String sqlRooms = "rooms1";
-        String sqlAccounts = "accounts1";
-        String sqlReservations = "reservations1";
 
-        //JDBC db = new JDBC();
 
-        //Create SQL ROOMS
-        sql = "CREATE TABLE IF NOT EXISTS `" + sqlRooms + "` " +
-                "(\n" +
-                "  `RoomNumber` int NOT NULL,\n" +
-                "  `Vacant` tinyint DEFAULT NULL,\n" +
-                "  `Occupancy` int DEFAULT NULL,\n" +
-                "  `RoomPrice` double DEFAULT NULL,\n" +
-                "  `RoomType` varchar(45) DEFAULT NULL,\n" +
-                "  `Amenities` varchar(45) DEFAULT NULL,\n" +
-                "  `AccountID` int DEFAULT NULL,\n" +
-                "  PRIMARY KEY (`RoomNumber`)\n" +
-                ");";
+*/
+/*        db.writeToSQLRoom();
+        db.writeToSQLReservation();
+        db.writeToSQLAccount();*//*
 
-        // Create SQL Accounts
-        sql = "CREATE TABLE IF NOT EXISTS `" + sqlAccounts + "` " +
-                "(\n" +
-                "  `AccountID` int NOT NULL,\n" +
-                "  `UserName` varchar(45) DEFAULT NULL,\n" +
-                "  `Password` varchar(45) DEFAULT NULL,\n" +
-                "  `CustomerInfo` varchar(45) DEFAULT NULL,\n" +
-                "  `Email` varchar(45) DEFAULT NULL,\n" +
-                "  PRIMARY KEY (`AccountID`)\n" +
-                ");";
 
-        // Create SQL Reservation
-       sql = "CREATE TABLE IF NOT EXISTS `" + sqlReservations + "` " +
-                "(\n" +
-                "  `ReservationID` int NOT NULL,\n" +
-                "  `RoomNumber` int DEFAULT NULL,\n" +
-                "  `NumberOfGuest` int DEFAULT NULL,\n" +
-                "  `RoomPrice` double DEFAULT NULL,\n" +
-                "  `StayLength` int DEFAULT NULL,\n" +
-                "  `ReservationDate` date DEFAULT NULL,\n" +
-                "  `ReservationMade` date DEFAULT NULL,\n" +
-                "  `AccountID` int DEFAULT NULL,\n" +
-                "  `Cancelled` tinyint DEFAULT NULL,\n" +
-                "  PRIMARY KEY (`ReservationID`)\n" +
-                ");";
-
-       //db.execute(sql);
-      // db.closeConnection();
+        //db.displayAccounts();
+        //db.displayDB();
+        //db.displayReservations();
     }
 }
-
-
+*/
