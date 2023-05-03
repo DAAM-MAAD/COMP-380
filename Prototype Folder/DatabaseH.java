@@ -9,6 +9,9 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.activation.*;
 
 /**
  * Represents a Database
@@ -197,6 +200,10 @@ public class DatabaseH {
     private int hotelRoomMax = 500;
     private int numberOfAccounts = 5;
     Connection connection = null;
+    
+    // email aids, subject to change for demo
+    String emailFrom = "mathewos.yohannes.358@my.csun.edu";
+    String host = "localhost";
 
     private JDBC jdbcCloser;
 
@@ -237,11 +244,16 @@ public class DatabaseH {
         } else {
             JDBC jdbc = new JDBC();
             jdbcCloser = jdbc;
-            jdbc.jdbcHash = db;
+            readRoomToDB();
+            readAccFileToList();
+            readResToList();
+            updateDBWithRes();
+            setNumberOfAccounts();
+/*            jdbc.jdbcHash = db;
             jdbc.jdbcAcList = acList;
             jdbc.jdbcResList = resList;
             updateDBWithRes();
-            jdbc.pullSQLToHash();
+            jdbc.pullSQLToHash();*/
         }
     }
 
@@ -254,7 +266,6 @@ public class DatabaseH {
     private String getAccountsFile() {
         return accountsFile;
     }
-
     /**
      * getter for reservationFile name
      * @return reservationFile name
@@ -262,7 +273,6 @@ public class DatabaseH {
     private String getReservationFile() {
         return reservationFile;
     }
-
     /**
      * getter for roomsFile name
      * @return roomsFile name
@@ -284,7 +294,6 @@ public class DatabaseH {
         }
         return 0;
     }
-
     public Account getAccount(String userName) {
         for (Account i : acList) {
             if (i.getUserName().equals(userName)) {
@@ -301,8 +310,8 @@ public class DatabaseH {
         }
         return 0;
     }
-    // getters for Databases
 
+    // getters for Databases
     /**
      * getter of LinkedHashMap<Room, Account>
      * @return LinkedHashMap<Room, Account>
@@ -310,7 +319,6 @@ public class DatabaseH {
     public LinkedHashMap<Room, Account> getDb() {
         return db;
     }
-
     /**
      * getter of ArrayList<Account>
      * @return ArrayList<Account>
@@ -402,7 +410,7 @@ public class DatabaseH {
             int accountID = Integer.parseInt(str[0].trim());
             String userName = str[1].trim();
             String accountPassword = str[2].trim();
-            String customerData = str[2].trim();
+            String customerData = str[3].trim();
 
             if (!str.equals("")) {
                 Account ac = new Account(accountID, userName, accountPassword, customerData);
@@ -443,7 +451,6 @@ public class DatabaseH {
             }
         }
         inputFile.close();
-
     }
     /**
      * Data from the "Reservations.csv" file updates the Database
@@ -460,9 +467,6 @@ public class DatabaseH {
                         r.setAccountID(a.getAccountID());
                         r.setAvailability(false);
                         db.replace(r, a);
-                    }
-                    else if (cancel == true) {
-                        continue;
                     }
                 }
             }
@@ -615,7 +619,6 @@ public class DatabaseH {
             if (i.getAccountID() == acNumber) {
                 acList.set(n, new Account());
                 System.out.println("Account #:" + acNumber + " has been removed.\n");
-
             }
         }
         if (acNumber < 0 || acNumber > n + 1) {
@@ -702,7 +705,7 @@ public class DatabaseH {
      */
     public void displayDB() {
         System.out.println("roomNumber\t, availability\t, occupancy\t," +
-                " roomPrice\t, roomType\t\t\t, amenities\t\t\t\t\t, accountID");
+                " roomPrice\t, roomType\t\t\t, amenities\t\t\t, accountID\t, cancelled");
 
         for (Room r : db.keySet()) {
             String room = r.roomToString();
@@ -718,7 +721,6 @@ public class DatabaseH {
                 account = acc.accountToString();
             }
             System.out.println(room + ", \t\t" + account);
-
         }
     }
     /**
@@ -789,13 +791,12 @@ public class DatabaseH {
         String fileName = getRoomsFile();
         java.io.FileWriter fw = new java.io.FileWriter(fileName);
         PrintWriter outputFile = new PrintWriter(fw);
-        outputFile.println("Room Number, Vacant, Occupancy, Price, Type, Amenities, AccountID, Cancelled");
+        outputFile.println("Room Number, Vacant, Occupancy, Price, Type, Amenities, AccountID");
         for (Room r : db.keySet()) {
             outputFile.println(r.roomToStringToFile().trim());
         }
         outputFile.close();
     }
-
     /**
      * write to Account File
      * @throws IOException
@@ -810,7 +811,6 @@ public class DatabaseH {
         }
         outputFile.close();
     }
-
     /**
      * write to Reservation File
      * @throws IOException
@@ -819,7 +819,7 @@ public class DatabaseH {
         String fileName = getReservationFile();
         java.io.FileWriter fw = new java.io.FileWriter(fileName);
         PrintWriter outputFile = new PrintWriter(fw);
-        outputFile.println("ResID, RoomNumber, RoomPrice, Stay(Days), ArrivalDate, CreatedDate, AccountId, Cancelled");
+        outputFile.println("ResID, RoomNumber, Occupancy, RoomPrice, Stay(Days), ArrivalDate, CreatedDate, AccountId, Cancelled");
         for (Reservation r : resList) {
             outputFile.println(r.reservationToString());
         }
@@ -827,18 +827,20 @@ public class DatabaseH {
     }
 
     // Write to SQL database when program ends
-
     public void writeToSQLAccount() throws SQLException {
+        jdbcCloser.clearAccountSQLTable();
         for (Account i : acList) {
             jdbcCloser.insert(i);
         }
     }
     public void writeToSQLReservation() throws SQLException {
+        jdbcCloser.clearReservationSQLTable();
         for (Reservation i : resList) {
             jdbcCloser.insert(i);
         }
     }
     public void writeToSQLRoom() throws SQLException {
+        jdbcCloser.clearRoomSQLTable();
         for (Room i : db.keySet()) {
             jdbcCloser.insert(i);
         }
@@ -856,15 +858,15 @@ public class DatabaseH {
 
         if (connection != null) {
             // Clearing SQL tables for writing
+            jdbcCloser.removeSQLSAFE();
             jdbcCloser.clearAccountSQLTable();
             jdbcCloser.clearReservationSQLTable();
             jdbcCloser.clearRoomSQLTable();
 
             // Write to SQL when closing
-            jdbcCloser.removeSQLSAFE();
-            writeToSQLAccount();
+/*            writeToSQLAccount();
             writeToSQLReservation();
-            writeToSQLRoom();
+            writeToSQLRoom();*/
         }
     }
     // Reservation changes
@@ -889,7 +891,7 @@ public class DatabaseH {
         String strDate = f.format(new Date());
         Date today =new SimpleDateFormat("MM/dd/yyyy").parse(strDate);
 
-        Date resDate =new SimpleDateFormat("MMddyyyy").parse(arrivalDate);
+        Date resDate =new SimpleDateFormat("MM/dd/yyyy").parse(arrivalDate);
         System.out.println("Reservation made today for: " + formatter.format(resDate));
 
         // Checking if reservation number is already in use
@@ -918,10 +920,36 @@ public class DatabaseH {
         resList.add(newRes);
         // Update database with data from reservation array list
         updateDBWithRes();
+        sendEmailConfirmationResID(resNum);
     }
-/*
-    public void updateRoomWithAcIDInDB(int roomNumber, int accID) {}
-*/
+    /**
+     * Helper function that connects the GUI with the makeReservation function
+     * @param accID account ID
+     * @param arrival reservation arrival date
+     * @param stayOfLength length of stay
+     * @param numberOfGuests number of guests
+     * @param roomClass selecting the type/price of room
+     * @param roomType selecting the type of amenities/bed
+     * @throws ParseException
+     */
+    public void reservationHelper(int accID, String arrival, int stayOfLength,
+                                  int numberOfGuests, String roomClass , String roomType) throws ParseException {
+        // search for room based on number, $, bed
+        boolean found = false;
+        for (Room i: db.keySet()) {
+            if (i.isAvailability() && i.getRoomType().equals(roomClass) &&
+                    i.getAmenities().equals(roomType) && i.getOccupancy() >= numberOfGuests) {
+
+                System.out.println(i.roomToString());
+                makeReservation(accID, i.getRoomNumber(), arrival, stayOfLength);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println("No rooms available with selected parameters.");
+        }
+    }
 
     /**
      * cancel reservation with reservation number
@@ -951,20 +979,39 @@ public class DatabaseH {
      * @param accountID account ID
      */
     public void sendEmailConfirmationAccountID(int accountID) {
-        String email;
+        String emailTo = null;
+
         for (Account a : acList) {
             if (a.getAccountID() == accountID) {
-                email = a.getCustomerData().substring(a.getCustomerData().lastIndexOf(' ') + 1);
-                System.out.println(email);
+                emailTo = a.getCustomerData().substring(a.getCustomerData().lastIndexOf(' ') + 1);
             }
         }
+
+        // Below is the actual connection
+        /*Properties properties = System.getProperties();
+        properties.setProperty("mail.smtp.host", host);
+        Session session = Session.getDefaultInstance(properties);
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(emailFrom));
+            message.addRecipients(Message.RecipientType.TO,
+                    String.valueOf(new InternetAddress(emailTo)));
+            message.setSubject("Email confirmation from MAAD Hotel.");
+            message.setText("The is a confirmation email regarding your reservation.");
+            Transport.send(message);
+            System.out.println("Send message successfully.");
+        } catch (MessagingException mex) {
+            mex.printStackTrace();;
+        }
+        System.out.println(emailTo);
+*/
     }
     /**
      * send email confirmation of reservation ID
      * @param reservationID
      */
     public void sendEmailConfirmationResID(int reservationID) {
-        String email;
         int accountID;
         for (Reservation r : resList) {
             if (r.getReservationID() == reservationID) {
@@ -974,4 +1021,12 @@ public class DatabaseH {
         }
     }
 
+    /**
+     * function for credit card payment
+     * @param card credit card
+     */
+    public void paymentCreditCard(CreditCard card) {
+        System.out.println(card.getName() + "'s credit card ending in " +
+                card.getNumber().substring(card.getNumber().length() - 4) + "is charged for reservation.");
+    }
 }
