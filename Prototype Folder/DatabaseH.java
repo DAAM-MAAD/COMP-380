@@ -9,9 +9,9 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
-import javax.activation.*;
+// import javax.mail.*;
+// import javax.mail.internet.*;
+// import javax.activation.*;
 
 /**
  * Represents a Database
