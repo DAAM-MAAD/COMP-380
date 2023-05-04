@@ -569,7 +569,7 @@ public class gui implements ActionListener {
 
         HomePageFrame.dispose();
 
-        SpinnerModel value = new SpinnerNumberModel(0,0,4,1);
+        SpinnerModel value = new SpinnerNumberModel(1,1,4,1);
         SpinnerModel value2 = new SpinnerNumberModel(0,0,4,1);
         SpinnerModel value3 = new SpinnerNumberModel(0,0,4,1);
         Date dates = new Date();
@@ -595,28 +595,28 @@ public class gui implements ActionListener {
         JTextField stay = new JTextField(5);
         stay.setMaximumSize(new Dimension(120,40));
 
-        JLabel guestCount = new JLabel();
-        guestCount.setText("Number of guests");
-        guestCount.setMaximumSize(new Dimension(120,40));
+        // JLabel guestCount = new JLabel();
+        // guestCount.setText("Number of guests");
+        // guestCount.setMaximumSize(new Dimension(120,40));
 
         JLabel Adults = new JLabel();
-        Adults.setText("Adults");
+        Adults.setText("Number of guests");
         JSpinner spinner = new JSpinner(value);
         spinner.setMaximumSize(new Dimension(50,40));
 
-        JLabel Children = new JLabel();
-        Children.setText("Children");
-        JSpinner secondspinner = new JSpinner(value2);
-        secondspinner.setMaximumSize(new Dimension(50,40));
+        // JLabel Children = new JLabel();
+        // Children.setText("Children");
+        // JSpinner secondspinner = new JSpinner(value2);
+        // secondspinner.setMaximumSize(new Dimension(50,40));
         // JTextField guests = new JTextField();
         // guests.setMaximumSize(new Dimension(1200,40));
         // JTextField children = new JTextField();
 
-        JLabel NumberOfRoomsLabel = new JLabel();
-        NumberOfRoomsLabel.setText("Number of rooms:");
-        NumberOfRoomsLabel.setMaximumSize(new Dimension(120,40));
-        JSpinner thirdJSpinner = new JSpinner(value3);
-        thirdJSpinner.setMaximumSize(new Dimension(50,40));
+        // JLabel NumberOfRoomsLabel = new JLabel();
+        // NumberOfRoomsLabel.setText("Number of rooms:");
+        // NumberOfRoomsLabel.setMaximumSize(new Dimension(120,40));
+        // JSpinner thirdJSpinner = new JSpinner(value3);
+        // thirdJSpinner.setMaximumSize(new Dimension(50,40));
 
         JLabel Roomselection = new JLabel();
         Roomselection.setText("Room Selection");
@@ -629,6 +629,8 @@ public class gui implements ActionListener {
         l1.addElement("Honeymoon (a floor section) - $300 per night");
         JList<String> list = new JList<>(l1);
         list.setMaximumSize(new Dimension(260,100));
+
+       
 
         JLabel RoomType = new JLabel();
         RoomType.setText("Room type selection");
@@ -646,23 +648,30 @@ public class gui implements ActionListener {
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+               
                 if(!checkbox1.isSelected()){
                     JOptionPane.showMessageDialog(null, "can't progessive forword if you don't agree with the hotel policies ");
                 }else{
-                    try {
-                        db.makeReservation(guestAccount.getAccountID(), (Integer) thirdJSpinner.getValue(), (String) dateSpinner.getValue(), Integer.parseInt(stay.getText()));
-                    } catch (ParseException ex) {
-                        ex.printStackTrace();
-                        System.out.println("Could not make reservation.");
-                        JOptionPane.showMessageDialog(mainFrame, "Could not make reservation.");
+                    // try {
+                    //     db.makeReservation(guestAccount.getAccountID(), (Integer) thirdJSpinner.getValue(), (String) dateSpinner.getValue(), Integer.parseInt(stay.getText()));
+                    // } catch (ParseException ex) {
+                    //     ex.printStackTrace();
+                    //     System.out.println("Could not make reservation.");
+                    //     JOptionPane.showMessageDialog(mainFrame, "Could not make reservation.");
+                    // }
+                    if ((list.getSelectedIndex() != -1) && (list2.getSelectedIndex() != -1)) {
+                        String data = list.getSelectedValue();   
+                        String data2 = list2.getSelectedValue();
+
                     }
+                    
                     System.out.println("Reservation made.");
                     JOptionPane.showMessageDialog(mainFrame, "Reservation made.");
                     reservationFrame.dispose();
                     PaymentFrame();
                 }
             }
+        
         });
         //create back button
         JButton back = new JButton("Back"); // set label to button
@@ -686,13 +695,13 @@ public class gui implements ActionListener {
 
         reservationFrame.add(welcomeText);
         // reservationFrame.add(welcomeText);
-        reservationFrame.add(NumberOfRoomsLabel);
-        reservationFrame.add(thirdJSpinner);
+        // reservationFrame.add(NumberOfRoomsLabel);
+        // reservationFrame.add(thirdJSpinner);
         reservationFrame.add(guestCount);
         reservationFrame.add(Adults);
         reservationFrame.add(spinner);
-        reservationFrame.add(Children);
-        reservationFrame.add(secondspinner);
+        // reservationFrame.add(Children);
+        // reservationFrame.add(secondspinner);
         //  reservationFrame.add(guests);
         // reservationFrame.add(children);
         reservationFrame.add(arrivalLabel);
