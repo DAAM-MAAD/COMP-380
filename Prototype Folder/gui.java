@@ -697,7 +697,7 @@ public class gui implements ActionListener {
         // reservationFrame.add(welcomeText);
         // reservationFrame.add(NumberOfRoomsLabel);
         // reservationFrame.add(thirdJSpinner);
-        reservationFrame.add(guestCount);
+        //reservationFrame.add(guestCount);
         reservationFrame.add(Adults);
         reservationFrame.add(spinner);
         // reservationFrame.add(Children);

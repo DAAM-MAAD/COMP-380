@@ -1,3 +1,3 @@
-ResID, RoomNumber, Occupancy,	RoomPrice,	Stay(Days),	ArrivalDate,	CreatedDate,	AccountId, Cancelled
-283, 103, 2, 299.99, 5, 4/23/2024, 4/14/2023, 69,	false
+ResID, RoomNumber, Occupancy, RoomPrice, Stay(Days), ArrivalDate, CreatedDate, AccountId, Cancelled
+283, 103, 2, 299.99, 5, 4/23/2024, 4/14/2023, 69, false
 999, 101, 2, 299.99, 3, 5/13/2024, 4/14/2023, 68, false

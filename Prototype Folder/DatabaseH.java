@@ -202,7 +202,7 @@ public class DatabaseH {
     Connection connection = null;
     
     // email aids, subject to change for demo
-    String emailFrom = "mathewos.yohannes.358@my.csun.edu";
+    String emailFrom = "abpaxtorgarcia72@gmail.com";
     String host = "localhost";
 
     private JDBC jdbcCloser;
@@ -980,6 +980,8 @@ public class DatabaseH {
      */
     public void sendEmailConfirmationAccountID(int accountID) {
         String emailTo = null;
+        final String username = "maadhotel380@gmail.com";
+        final String password = "qogschhjggmdmmyc";
 
         for (Account a : acList) {
             if (a.getAccountID() == accountID) {
@@ -988,13 +990,23 @@ public class DatabaseH {
         }
 
         // Below is the actual connection
-        /*Properties properties = System.getProperties();
-        properties.setProperty("mail.smtp.host", host);
-        Session session = Session.getDefaultInstance(properties);
+        Properties properties = System.getProperties();
+       // properties.setProperty("mail.smtp.host", host);
+        properties.put("mail.smtp.user", username);
 
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.ssl.enable", "true");
+        properties.put("mail.smtp.auth", "true");
+        Session session = Session.getDefaultInstance(properties ,new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+        session.setDebug(true);
         try {
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(emailFrom));
+            message.setFrom(new InternetAddress(username));
             message.addRecipients(Message.RecipientType.TO,
                     String.valueOf(new InternetAddress(emailTo)));
             message.setSubject("Email confirmation from MAAD Hotel.");
@@ -1005,7 +1017,7 @@ public class DatabaseH {
             mex.printStackTrace();;
         }
         System.out.println(emailTo);
-*/
+
     }
     /**
      * send email confirmation of reservation ID
