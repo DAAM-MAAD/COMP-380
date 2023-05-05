@@ -522,14 +522,14 @@ public class gui implements ActionListener {
                     JOptionPane.showMessageDialog(mainFrame, "Admin successful login.");
                     adminLoginFrame.dispose();
                     adminHomeFrame();
+                }else{
+                    System.out.println("Admin failed login.");
+                    JOptionPane.showMessageDialog(mainFrame, "Wrong password/username try again, Admin failed login.");
                 }                
                 if(password.getPassword().length == 0 ) {
                     // if failed, promote a message
                     System.out.println("Admin failed login.");
                     JOptionPane.showMessageDialog(mainFrame, "Please fill in the blanks, Admin failed login.");
-                }else{
-                System.out.println("Admin failed login.");
-                JOptionPane.showMessageDialog(mainFrame, "Admin failed login.");
                 }
             }
         });
@@ -926,7 +926,7 @@ public class gui implements ActionListener {
         adminLoginFrame.dispose();
         JLabel selected_file = new JLabel();
         JPanel adminJPanel = new JPanel();
-        adminJPanel.setSize(1000,500);
+        adminJPanel.setSize(1500,500);
         JButton genReportButton = new JButton("generate Room report", favicon);
         JButton genAccReportButton = new JButton("generate Account report", favicon);
         JButton genReservReportButton = new JButton("generate Reservation report", favicon);
@@ -936,7 +936,7 @@ public class gui implements ActionListener {
         // genReportButton.setVerticalAlignment(JButton.TOP);
 
         JPanel panel = new JPanel();
-        panel.setBounds(0, 0, 900, 900);
+        panel.setBounds(0, 0, 1500, 900);
         JTable jTable1 = new JTable();
         JScrollPane sp = new JScrollPane(jTable1);
 
