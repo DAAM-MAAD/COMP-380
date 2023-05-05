@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,7 +25,7 @@ import javax.mail.internet.MimeMessage;
 /**
  * Represents a Database
  * @name
- * @author Mathewos Yohannes, Aryaman Mehta
+ * @author Mathewos Yohannes, Aryaman Mehta, AB Paxtor Garcia
  * @reviewed Mathewos Yohannes, Aryaman Mehta
  * @version 1.0
  * @Date  Sun Mar 5 17:54:59 2023 -0800
@@ -208,7 +209,7 @@ public class DatabaseH {
     private int hotelRoomMax = 500;
     private int numberOfAccounts = 5;
     Connection connection = null;
-    
+
     // email aids, subject to change for demo
     String emailFrom = "abpaxtorgarcia72@gmail.com";
     String host = "localhost";
@@ -940,16 +941,20 @@ public class DatabaseH {
      * @param roomType selecting the type of amenities/bed
      * @throws ParseException
      */
-    public void reservationHelper(int accID, String arrival, int stayOfLength,
+    public void reservationHelper(int accID, Date arrival, int stayOfLength,
                                   int numberOfGuests, String roomClass , String roomType) throws ParseException {
         // search for room based on number, $, bed
         boolean found = false;
-        for (Room i: db.keySet()) {
-            if (i.isAvailability() && i.getRoomType().equals(roomClass) &&
-                    i.getAmenities().equals(roomType) && i.getOccupancy() >= numberOfGuests) {
 
-                System.out.println(i.roomToString());
-                makeReservation(accID, i.getRoomNumber(), arrival, stayOfLength);
+        String[] roomClassArr = roomClass.split(" ", 2);
+
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String arrivalDate = dateFormat.format(arrival);
+
+        for (Room i: db.keySet()) {
+            if (i.isAvailability() && i.getRoomType().equals(roomClassArr[0].toLowerCase()) &&
+                    i.getAmenities().equals(roomType) && i.getOccupancy() >= numberOfGuests) {
+                makeReservation(accID, i.getRoomNumber(), arrivalDate, stayOfLength);
                 found = true;
                 break;
             }
@@ -999,7 +1004,7 @@ public class DatabaseH {
 
         // Below is the actual connection
         Properties properties = System.getProperties();
-       // properties.setProperty("mail.smtp.host", host);
+        // properties.setProperty("mail.smtp.host", host);
         properties.put("mail.smtp.user", username);
 
         properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -1011,7 +1016,7 @@ public class DatabaseH {
                 return new PasswordAuthentication(username, password);
             }
         });
-        session.setDebug(true);
+        //session.setDebug(true);
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
@@ -1045,8 +1050,9 @@ public class DatabaseH {
      * function for credit card payment
      * @param card credit card
      */
-    public void paymentCreditCard(CreditCard card) {
-        System.out.println(card.getName() + "'s credit card ending in " +
-                card.getNumber().substring(card.getNumber().length() - 4) + "is charged for reservation.");
+    public String paymentCreditCard(CreditCard card) {
+        String temp = card.getName() + "'s credit card ending in " +
+                card.getNumber().substring(card.getNumber().length() - 4) + " is charged for reservation.";
+        return temp;
     }
 }
