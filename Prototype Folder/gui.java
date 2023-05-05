@@ -7,7 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -506,27 +508,27 @@ public class gui implements ActionListener {
         JButton submit = new JButton("Login"); //set label to button
         submit.setActionCommand("Authenticate ");
         //submit.addActionListener(this);
-         submit.addActionListener(new ActionListener() {
-             @Override
-             public void actionPerformed(ActionEvent e) {
-                 User = user.getText();
-                 newPassword = String.valueOf(password.getPassword());
-                 Integer adminInt = Integer.parseInt(User);
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                User = user.getText();
+                newPassword = String.valueOf(password.getPassword());
+                Integer adminInt = Integer.parseInt(User);
 
-                 // Verify admin ID and password
-                 if (db.adminLogin(adminInt, newPassword)) {
-                     // if verified, go to the next screen
-                     System.out.println("Admin successfully login.");
-                     JOptionPane.showMessageDialog(mainFrame, "Admin successful login.");
-                     adminLoginFrame.dispose();
-                     adminHomeFrame();
-                 }
-                 else {
-                     // if failed, promote a message
-                     System.out.println("Admin failed login.");
-                     JOptionPane.showMessageDialog(mainFrame, "Admin failed login.");
-                 }
-             }
+                // Verify admin ID and password
+                if (db.adminLogin(adminInt, newPassword)) {
+                    // if verified, go to the next screen
+                    System.out.println("Admin successfully login.");
+                    JOptionPane.showMessageDialog(mainFrame, "Admin successful login.");
+                    adminLoginFrame.dispose();
+                    adminHomeFrame();
+                }
+                else {
+                    // if failed, promote a message
+                    System.out.println("Admin failed login.");
+                    JOptionPane.showMessageDialog(mainFrame, "Admin failed login.");
+                }
+            }
         });
 
         //create back button
@@ -589,9 +591,18 @@ public class gui implements ActionListener {
         //  JTextField arrvial = new JTextField("mm-D-year");
         //arrvial.setMaximumSize(new Dimension(1200,40));
 
-        JLabel stayLable = new JLabel();
-        stayLable.setText("Length of stay");
-        stayLable.setMaximumSize(new Dimension(1200,40));
+        JLabel stayLabel = new JLabel();
+        stayLabel.setText("Length of stay");
+        stayLabel.setMaximumSize(new Dimension(120,40));
+
+
+        SpinnerModel staySpinner = new SpinnerNumberModel(1, 1, 7, 1);
+        JSpinner staySpinner2 = new JSpinner(staySpinner);
+        JPanel panelStay = new JPanel();
+        panelStay.setPreferredSize(new Dimension(200, 20));
+        panelStay.add(staySpinner2);
+
+
         JTextField stay = new JTextField(5);
         stay.setMaximumSize(new Dimension(120,40));
 
@@ -601,8 +612,8 @@ public class gui implements ActionListener {
 
         JLabel Adults = new JLabel();
         Adults.setText("Number of guests");
-        JSpinner spinner = new JSpinner(value);
-        spinner.setMaximumSize(new Dimension(50,40));
+        JSpinner numGuestSpinner = new JSpinner(value);
+        numGuestSpinner.setMaximumSize(new Dimension(50,40));
 
         // JLabel Children = new JLabel();
         // Children.setText("Children");
@@ -622,56 +633,93 @@ public class gui implements ActionListener {
         Roomselection.setText("Room Selection");
         Roomselection.setMaximumSize(new Dimension(120,40));
         DefaultListModel<String> l1 = new DefaultListModel<>();
-        l1.addElement("Classic - $150 per night");
-        l1.addElement("Premium - $200 per night");
-        l1.addElement("Deluxe - $250 per night");
-        l1.addElement("Business - $275 per night");
-        l1.addElement("Honeymoon (a floor section) - $300 per night");
+        l1.addElement("Classic - $149.99 per night");
+        l1.addElement("Premium - $199.99 per night");
+        l1.addElement("Deluxe - $249.99 per night");
+        l1.addElement("Business - $274.99 per night");
+        l1.addElement("Honeymoon - $299.99 per night");
         JList<String> list = new JList<>(l1);
         list.setMaximumSize(new Dimension(260,100));
-
-       
 
         JLabel RoomType = new JLabel();
         RoomType.setText("Room type selection");
         RoomType.setMaximumSize(new Dimension(120,40));
         DefaultListModel<String> l2 = new DefaultListModel<>();
-        l2.addElement("1 king bed");
-        l2.addElement("2 queen bed");
+        l2.addElement("1 king");
+        l2.addElement("2 king");
+        l2.addElement("1 queen");
+        l2.addElement("2 queen");
         JList<String> list2 = new JList<>(l2);
-        list2.setMaximumSize(new Dimension(100,50));
+        list2.setMaximumSize(new Dimension(100,80));
 
         JCheckBox checkbox1 = new JCheckBox("Agree to Hotel policies and regulations");
 
         JButton submit = new JButton("Make Reservation"); //set label to button
         submit.setActionCommand("");
+
+        final String[] roomClassT = new String[1];
+        final String[] roomAmen = new String[1];
+
+        Date dateSpinner2 = (Date) dateSpinner.getValue();
+        int stay2 = (int) staySpinner2.getValue();
+
+        try {
+            numGuestSpinner.commitEdit();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Integer numGuestSpinner2 = (Integer) numGuestSpinner.getValue();
+
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               
+
                 if(!checkbox1.isSelected()){
                     JOptionPane.showMessageDialog(null, "can't progessive forword if you don't agree with the hotel policies ");
                 }else{
-                    // try {
-                    //     db.makeReservation(guestAccount.getAccountID(), (Integer) thirdJSpinner.getValue(), (String) dateSpinner.getValue(), Integer.parseInt(stay.getText()));
-                    // } catch (ParseException ex) {
-                    //     ex.printStackTrace();
-                    //     System.out.println("Could not make reservation.");
-                    //     JOptionPane.showMessageDialog(mainFrame, "Could not make reservation.");
-                    // }
                     if ((list.getSelectedIndex() != -1) && (list2.getSelectedIndex() != -1)) {
-                        String data = list.getSelectedValue();   
-                        String data2 = list2.getSelectedValue();
-
+                        roomClassT[0] = list.getSelectedValue();
+                        roomAmen[0] = list2.getSelectedValue();
                     }
-                    
+
+                    String[] roomClassArr = roomClassT[0].split(" ", 2);
+
+                    boolean exists = false;
+                    for (Room r : db.getDb().keySet()) {
+                        if (r.getAmenities().equals(roomAmen[0]) && r.getRoomType().equals(roomClassArr[0].toLowerCase())) {
+                            exists = true;
+                        }
+                        if (!exists) {
+                            JOptionPane.showMessageDialog(null, "There are no rooms that is a " + roomClassT[0] +
+                                    " and has " + roomAmen[0] + ". Please selection different options.");
+                            return;
+                        }
+                    }
+                    try {
+                        db.reservationHelper(guestAccount.getAccountID(), dateSpinner2, stay2, numGuestSpinner2, roomClassT[0], roomAmen[0]);
+                    } catch (ParseException ex) {
+                        ex.printStackTrace();
+                    }
+
                     System.out.println("Reservation made.");
                     JOptionPane.showMessageDialog(mainFrame, "Reservation made.");
+                    reservationFrame.getContentPane().removeAll();
                     reservationFrame.dispose();
-                    PaymentFrame();
+                    adminFrame.dispose();
+                    adminLoginFrame.dispose();
+                    loginFrame.dispose();
+                    CreateAccFrame.dispose();
+                    PaymentFrame.getContentPane().removeAll();
+                    PaymentFrame.dispose();
+
+                    try {
+                        PaymentFrame();
+                    } catch (ParseException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
-        
+
         });
         //create back button
         JButton back = new JButton("Back"); // set label to button
@@ -699,7 +747,7 @@ public class gui implements ActionListener {
         // reservationFrame.add(thirdJSpinner);
         //reservationFrame.add(guestCount);
         reservationFrame.add(Adults);
-        reservationFrame.add(spinner);
+        reservationFrame.add(numGuestSpinner);
         // reservationFrame.add(Children);
         // reservationFrame.add(secondspinner);
         //  reservationFrame.add(guests);
@@ -707,8 +755,11 @@ public class gui implements ActionListener {
         reservationFrame.add(arrivalLabel);
         reservationFrame.add(dateSpinner);
         //  reservationFrame.add(arrvial);
-        reservationFrame.add(stayLable);
-        reservationFrame.add(stay);
+        reservationFrame.add(stayLabel);
+
+        reservationFrame.getContentPane().add(panelStay);
+        //reservationFrame.add(staySpinner2);
+        //reservationFrame.add(stay);
         reservationFrame.add(Roomselection);
         reservationFrame.add(list);
         reservationFrame.add(RoomType);
@@ -725,10 +776,9 @@ public class gui implements ActionListener {
 
         // Closing Windows
         CloseWindowListener(reservationFrame);
-
     }
 
-    void PaymentFrame(){
+    void PaymentFrame() throws ParseException {
         PaymentFrame.setMinimumSize(new Dimension(1200, 1000));
         PaymentFrame.setIconImage(favicon.getImage());
         // reservationFrame.dispose();
@@ -737,27 +787,35 @@ public class gui implements ActionListener {
 
         JLabel CardNum = new JLabel();
         CardNum.setText("Enter Debit/Credit car number");
-        JTextField number = new JTextField();
-        number.setMaximumSize(new Dimension(120,40));
+        JTextField numberCC = new JTextField(16);
+        numberCC.setMaximumSize(new Dimension(120,40));
 
         JLabel CardName = new JLabel("Enter name on card");
         JTextField name = new JTextField();
         name.setMaximumSize(new Dimension(120,40));
 
         JLabel Expiration = new JLabel("Enter Expiration date");
-        JSpinner dateSpinner = new JSpinner(date);
-        JSpinner.DateEditor de = new JSpinner.DateEditor(dateSpinner,"MM-yyyy");
-        dateSpinner.setToolTipText("Hightlight the number to change");
-        dateSpinner.setEditor(de);
-        dateSpinner.setMaximumSize(new Dimension(100,40));
+        JSpinner expireSpinner = new JSpinner(date);
+        JSpinner.DateEditor de = new JSpinner.DateEditor(expireSpinner,"MM-yyyy");
+        expireSpinner.setToolTipText("Highlight the number to change");
+        expireSpinner.setEditor(de);
+        expireSpinner.setMaximumSize(new Dimension(100,40));
 
         JLabel cVVJLabel = new JLabel("Enter the CVV");
-        JPasswordField cVVField = new JPasswordField();
+        JPasswordField cVVField = new JPasswordField(3);
         cVVField.setMaximumSize(new Dimension(120,40));
         JButton completeButton = new JButton("Complete Payment");
         completeButton.setMaximumSize(new Dimension(150,40));
+        String myCVV=String.valueOf(cVVField.getPassword());
+        Object eDate = expireSpinner.getValue();
+        Date eDate2 = (java.util.Date) eDate;
+
+
         completeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                CreditCard userCreditCard = new CreditCard(numberCC.getText(), name.getText(), myCVV, eDate2);
+                userCreditCard.printCard();
+                JOptionPane.showMessageDialog(null, db.paymentCreditCard(userCreditCard));
                 JOptionPane.showMessageDialog(null,"Payment has been processed, you will be redirected to the home page.");
                 mainFrame.getContentPane().removeAll();
                 loginFrame.getContentPane().removeAll();
@@ -766,17 +824,19 @@ public class gui implements ActionListener {
                 adminLoginFrame.dispose();
                 loginFrame.dispose();
                 CreateAccFrame.dispose();
+                PaymentFrame.getContentPane().removeAll();
                 PaymentFrame.dispose();
+
                 HomePageFrame();
             }
         });
 
         PaymentFrame.add(CardNum);
-        PaymentFrame.add(number);
+        PaymentFrame.add(numberCC);
         PaymentFrame.add(CardName);
         PaymentFrame.add(name);
         PaymentFrame.add(Expiration);
-        PaymentFrame.add(dateSpinner);
+        PaymentFrame.add(expireSpinner);
         PaymentFrame.add(cVVJLabel);
         PaymentFrame.add(cVVField);
         PaymentFrame.add(completeButton);
@@ -791,28 +851,66 @@ public class gui implements ActionListener {
     }
 
     void cancelFrame(){
-        cancelFrame.setMinimumSize(new Dimension(1200, 1000));
+
+        JFrame cancelF = new JFrame();
+        int resIDtoCancel = 0;
+        String cancelNum = JOptionPane.showInputDialog(cancelF, "Enter reservation ID to cancel");
+
+        try {
+            resIDtoCancel = Integer.parseInt(cancelNum);
+        } catch (Exception ex) {
+            System.out.println("Reservation ID was not provided for cancellation.");
+        }
+
+        for (Reservation r: db.getResList()) {
+            if (resIDtoCancel == r.getReservationID()) {
+                JOptionPane.showMessageDialog(null,"Reservation has been cancelled.");
+                db.cancelReservation(resIDtoCancel);
+            }
+        }
+
+      /*  cancelFrame.setMinimumSize(new Dimension(1200, 1000));
         cancelFrame.setIconImage(favicon.getImage());
         HomePageFrame.dispose();
-
         JLabel cancleCodLabel = new JLabel("Enter the Reservation I.D to cancel");
         JTextField codeTextField = new JTextField();
         codeTextField.setBounds(100, 100,200, 10);
-
         JButton cancleButton = new JButton("Cancel Reservation");
-        // cancleButton.setMaximumSize(new Dimension(150,40));
+        cancleButton.setMaximumSize(new Dimension(150,40));
         cancelFrame.setLayout(new BorderLayout(100,100));
+        cancleButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                db.cancelReservation(resIDtoCancel);
+                JOptionPane.showMessageDialog(null,"Reservation has been cancelled.");
+                mainFrame.getContentPane().removeAll();
+                loginFrame.getContentPane().removeAll();
+                reservationFrame.dispose();
+                adminFrame.dispose();
+                adminLoginFrame.dispose();
+                loginFrame.dispose();
+                CreateAccFrame.dispose();
+                PaymentFrame.dispose();
+                cancelFrame.getContentPane().removeAll();
+                cancelFrame.dispose();
 
-        cancelFrame.add(cancleCodLabel,BorderLayout.NORTH);
-        cancelFrame.add(codeTextField,BorderLayout.CENTER);
-        cancelFrame.add(cancleButton,BorderLayout.SOUTH);
+                HomePageFrame();
+            }
+        });*/
+
+
+        //cancelFrame.add(cancleCodLabel,BorderLayout.NORTH);
+        //cancelFrame.add(codeTextField,BorderLayout.CENTER);
+        //cancelFrame.add(cancleButton,BorderLayout.SOUTH);
+
 
         // cancelFrame.getContentPane().setLayout(new BoxLayout(cancelFrame.getContentPane(), BoxLayout.Y_AXIS));
         //cancelFrame.pack();
-        cancelFrame.setVisible(true);
+        //cancelFrame.setVisible(true);
 
         //Closing Windows
-        CloseWindowListener(cancelFrame);
+        //CloseWindowListener(cancelFrame);
+        HomePageFrame();
+
     }
     void adminHomeFrame() {
         // UserFrame
@@ -873,7 +971,6 @@ public class gui implements ActionListener {
                             csv_data.addColumn(csvRecord.get(4));
                             csv_data.addColumn(csvRecord.get(5));
                             csv_data.addColumn(csvRecord.get(6));
-                            csv_data.addColumn(csvRecord.get(7));
                         } else {
                             Vector row = new Vector();
                             row.add(csvRecord.get(0));
@@ -883,8 +980,6 @@ public class gui implements ActionListener {
                             row.add(csvRecord.get(4));
                             row.add(csvRecord.get(5));
                             row.add(csvRecord.get(6));
-                            row.add(csvRecord.get(7));
-                          
 
                             csv_data.addRow(row);
                         }
@@ -944,7 +1039,7 @@ public class gui implements ActionListener {
                 // Accounts 4
                 String fi = inf.getName();
                 String filepath = inf.getPath();
-                System.out.println(filepath);
+                //System.out.println(filepath);
                 selected_file.setText(fi);
                 DefaultTableModel csv_data = new DefaultTableModel();
 
@@ -963,7 +1058,9 @@ public class gui implements ActionListener {
                             csv_data.addColumn(csvRecord.get(5));
                             csv_data.addColumn(csvRecord.get(6));
                             csv_data.addColumn(csvRecord.get(7));
-                          
+                            csv_data.addColumn(csvRecord.get(8));
+
+
                         } else {
                             Vector row = new Vector();
                             row.add(csvRecord.get(0));
@@ -974,7 +1071,9 @@ public class gui implements ActionListener {
                             row.add(csvRecord.get(5));
                             row.add(csvRecord.get(6));
                             row.add(csvRecord.get(7));
-                          
+                            row.add(csvRecord.get(8));
+
+
 
                             csv_data.addRow(row);
                         }
@@ -1034,7 +1133,7 @@ public class gui implements ActionListener {
                 JOptionPane.showConfirmDialog (null, "Would you like to sign in?","Confirmation", dialogButton);
                 if(dialogButton == JOptionPane.YES_OPTION) {
                     HomePageFrame();
-                    System.out.println(User+ "'s entererd  home page. Time: "+timeLog() );
+                    System.out.println(User+ "'s entered  home page. Time: "+timeLog() );
 
                     if(dialogButton == JOptionPane.NO_OPTION) {
                         JOptionPane.showMessageDialog(null,"Returning to main menu.");
