@@ -59,11 +59,10 @@ public class CreditCard {
     public Date getExpiration() { return expiration; }
     /**
      * print out credit details
-     * @param c credit card class
      */
-    public static void printCard(CreditCard c) {
-        System.out.println("Number = " + c.getNumber());
-        System.out.println("Name = " + c.getName());
-        System.out.println("Expiration = " + c.getExpiration());
+    public void printCard() {
+        System.out.println("Number = " + getNumber());
+        System.out.println("Name = " +  getName());
+        System.out.println("Expiration = " + getExpiration());
     }
 }
