@@ -523,14 +523,15 @@ public class gui implements ActionListener {
                     adminLoginFrame.dispose();
                     adminHomeFrame();
                 }else{
+                    if(password.getPassword().length == 0 ) {
+                        // if failed, promote a message
+                        System.out.println("Admin failed login.");
+                        JOptionPane.showMessageDialog(mainFrame, "Please fill in the blanks, Admin failed login.");
+                    }else{
                     System.out.println("Admin failed login.");
                     JOptionPane.showMessageDialog(mainFrame, "Wrong password/username try again, Admin failed login.");
+                    }
                 }                
-                if(password.getPassword().length == 0 ) {
-                    // if failed, promote a message
-                    System.out.println("Admin failed login.");
-                    JOptionPane.showMessageDialog(mainFrame, "Please fill in the blanks, Admin failed login.");
-                }
             }
         });
 
