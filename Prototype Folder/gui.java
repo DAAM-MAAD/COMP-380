@@ -506,7 +506,7 @@ public class gui implements ActionListener {
         password.setMaximumSize(new Dimension(1200, 40));
         //create submit button
         JButton submit = new JButton("Login"); //set label to button
-        submit.setActionCommand("Authenticate ");
+        //submit.setActionCommand("Authenticate ");
         //submit.addActionListener(this);
         submit.addActionListener(new ActionListener() {
             @Override
@@ -522,11 +522,14 @@ public class gui implements ActionListener {
                     JOptionPane.showMessageDialog(mainFrame, "Admin successful login.");
                     adminLoginFrame.dispose();
                     adminHomeFrame();
-                }
-                else {
+                }                
+                if(password.getPassword().length == 0 ) {
                     // if failed, promote a message
                     System.out.println("Admin failed login.");
-                    JOptionPane.showMessageDialog(mainFrame, "Admin failed login.");
+                    JOptionPane.showMessageDialog(mainFrame, "Please fill in the blanks, Admin failed login.");
+                }else{
+                System.out.println("Admin failed login.");
+                JOptionPane.showMessageDialog(mainFrame, "Admin failed login.");
                 }
             }
         });
