@@ -44,15 +44,6 @@ public class gui implements ActionListener {
     Customer guest = new Customer();
     Account guestAccount = new Account();
 
-    int userAccountID;
-    int roomNumber;
-    String arrivalDate;
-    int stayLength;
-    int newRoomNumber;
-    double minPrice;
-    double maxPrice;
-    String roomType;
-    int reservationID;
 
     // Favicon and Images
     java.net.URL imgURL = gui.class.getResource("favicon.png");
@@ -121,21 +112,21 @@ public class gui implements ActionListener {
 
         JButton Exit = new JButton("Exit");
 
-        JButton RoomInfo = new JButton("Rooms and Ammenities");
+/*        JButton RoomInfo = new JButton("Rooms and Ammenities");
         RoomInfo.setBounds(100,0,800,900);
-        RoomInfo.setBackground(Color.green);
+        RoomInfo.setBackground(Color.green);*/
 
         Exit.setActionCommand("Exit");
         Exit.addActionListener(this);
-        RoomInfo.setActionCommand("");
-        RoomInfo.addActionListener(this);
+/*        RoomInfo.setActionCommand("");
+        RoomInfo.addActionListener(this);*/
         Reservation.setActionCommand("Make Reservation");
         Reservation.addActionListener(this);
         Cancel.setActionCommand("Cancel Reservation");
         Cancel.addActionListener(this);
         //  login.setPreferredSize(new Dimension(40, 40));
         HomePage.add(Reservation);
-        HomePage.add(RoomInfo);
+        //HomePage.add(RoomInfo);
         HomePage.add(Cancel);
         HomePage.add(Exit);
 
@@ -528,10 +519,10 @@ public class gui implements ActionListener {
                         System.out.println("Admin failed login.");
                         JOptionPane.showMessageDialog(mainFrame, "Please fill in the blanks, Admin failed login.");
                     }else{
-                    System.out.println("Admin failed login.");
-                    JOptionPane.showMessageDialog(mainFrame, "Wrong password/username try again, Admin failed login.");
+                        System.out.println("Admin failed login.");
+                        JOptionPane.showMessageDialog(mainFrame, "Wrong password/username try again, Admin failed login.");
                     }
-                }                
+                }
             }
         });
 
@@ -576,8 +567,8 @@ public class gui implements ActionListener {
         HomePageFrame.dispose();
 
         SpinnerModel value = new SpinnerNumberModel(1,1,4,1);
-        SpinnerModel value2 = new SpinnerNumberModel(0,0,4,1);
-        SpinnerModel value3 = new SpinnerNumberModel(0,0,4,1);
+/*        SpinnerModel value2 = new SpinnerNumberModel(0,0,4,1);
+        SpinnerModel value3 = new SpinnerNumberModel(0,0,4,1);*/
         Date dates = new Date();
         SpinnerDateModel date = new SpinnerDateModel(dates, null, null, Calendar.DATE);
         JLabel welcomeText = new JLabel();
@@ -661,22 +652,22 @@ public class gui implements ActionListener {
         JButton submit = new JButton("Make Reservation"); //set label to button
         submit.setActionCommand("");
 
-        final String[] roomClassT = new String[1];
-        final String[] roomAmen = new String[1];
-
-        Date dateSpinner2 = (Date) dateSpinner.getValue();
-        int stay2 = (int) staySpinner2.getValue();
-
-        try {
-            numGuestSpinner.commitEdit();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Integer numGuestSpinner2 = (Integer) numGuestSpinner.getValue();
-
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                final String[] roomClassT = new String[1];
+                final String[] roomAmen = new String[1];
+
+                try {
+                    numGuestSpinner.commitEdit();
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                }
+                Integer numGuestSpinner2 = (Integer) numGuestSpinner.getValue();
+
+                Date dateSpinner2 = (Date) dateSpinner.getValue();
+                int stay2 = (int) staySpinner2.getValue();
 
                 if(!checkbox1.isSelected()){
                     JOptionPane.showMessageDialog(null, "can't progessive forword if you don't agree with the hotel policies ");
@@ -689,15 +680,28 @@ public class gui implements ActionListener {
                     String[] roomClassArr = roomClassT[0].split(" ", 2);
 
                     boolean exists = false;
+
                     for (Room r : db.getDb().keySet()) {
-                        if (r.getAmenities().equals(roomAmen[0]) && r.getRoomType().equals(roomClassArr[0].toLowerCase())) {
+                        if (r.getAmenities().equalsIgnoreCase(roomAmen[0]) && r.getRoomType().equalsIgnoreCase(roomClassArr[0].toLowerCase())) {
                             exists = true;
                         }
-                        if (!exists) {
-                            JOptionPane.showMessageDialog(null, "There are no rooms that is a " + roomClassT[0] +
-                                    " and has " + roomAmen[0] + ". Please selection different options.");
-                            return;
-                        }
+                    }
+                    if (roomClassArr[0].equalsIgnoreCase("honeymoon") && numGuestSpinner2 == 1) {
+                        System.out.println("Yes");
+                        JOptionPane.showMessageDialog(null, "You may not book a honeymoon for yourself. That is just sad.");
+                        return;
+                   }
+                    else if (roomClassArr[0].equalsIgnoreCase("honeymoon") && numGuestSpinner2 > 2) {
+                        JOptionPane.showMessageDialog(null, "You want to book a honeyroom room for " + numGuestSpinner2 + " people. You need Jesus!");
+                        return;
+                    }
+
+                    if (!exists) {
+                        JOptionPane.showMessageDialog(null, "There are no rooms that is a " + roomClassT[0] +
+                                " and has " + roomAmen[0] + ". Please selection different options.");
+                        return;
+                    }
+
                     }
                     try {
                         db.reservationHelper(guestAccount.getAccountID(), dateSpinner2, stay2, numGuestSpinner2, roomClassT[0], roomAmen[0]);
@@ -722,7 +726,6 @@ public class gui implements ActionListener {
                         ex.printStackTrace();
                     }
                 }
-            }
 
         });
         //create back button
