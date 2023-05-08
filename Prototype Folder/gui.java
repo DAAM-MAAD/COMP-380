@@ -231,7 +231,7 @@ public class gui implements ActionListener {
 //        JFrame loginFrame = new JFrame("MAAD Hotel: User Login");
         loginFrame.setMinimumSize(new Dimension(1200, 1000));
         loginFrame.setIconImage(favicon.getImage());
-        loginFrame.show();
+    
         mainFrame.dispose();
 
 // INPUTS Section
