@@ -49,8 +49,11 @@ public class gui implements ActionListener {
     java.net.URL imgURL = gui.class.getResource("favicon.png");
     java.net.URL imgURL2 = gui.class.getResource("logo.png");
 
+    java.net.URL imgURL4 = gui.class.getResource("image.png");
+
     //Favicon is the logo on the top left of the window
     ImageIcon favicon = new ImageIcon(imgURL);
+    ImageIcon reserve = new ImageIcon(imgURL4);
 
     // Logo when signing in
     ImageIcon logo = new ImageIcon(imgURL2);
@@ -130,7 +133,14 @@ public class gui implements ActionListener {
         HomePage.add(Cancel);
         HomePage.add(Exit);
 
-        HomePageFrame.add(HomePage, BorderLayout.NORTH);
+       HomePageFrame.add(HomePage, BorderLayout.NORTH);
+        JPanel imagePanel = new JPanel(new GridLayout(1, 1));
+        imagePanel.setPreferredSize((new Dimension(500, 700)));
+
+        //Adding Logo and Slogan
+        JLabel logoLabel = new JLabel(reserve);
+        imagePanel.add(logoLabel, BorderLayout.CENTER);
+        HomePageFrame.add(imagePanel, BorderLayout.CENTER);
 
         //Pack, Locate, and Visibility
 
