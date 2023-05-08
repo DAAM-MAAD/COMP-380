@@ -18,7 +18,7 @@ Room Number, Vacant, Occupancy, Price, Type, Amenities, AccountID
 117, true, 1, 274.99, business, 1 king, 0
 118, true, 1, 274.99, business, 1 king, 0
 119, true, 2, 274.99, business, 2 queen, 0
-120, true, 2, 299.99, honeymoon, 1 king, 0
+120, false, 2, 299.99, honeymoon, 1 king, 27
 201, true, 2, 149.99, classic, 1 queen, 0
 202, true, 2, 149.99, classic, 1 queen, 0
 203, true, 2, 149.99, classic, 1 queen, 0
