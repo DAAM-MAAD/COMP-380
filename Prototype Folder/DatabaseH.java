@@ -991,7 +991,7 @@ public class DatabaseH {
      * send email confirmation of account ID
      * @param accountID account ID
      */
-    public void sendEmailConfirmationAccountID(int accountID) {
+    public void sendEmailConfirmationAccountID(int accountID, int reservationID) {
         String emailTo = null;
         final String username = "maadhotel380@gmail.com";
         final String password = "qogschhjggmdmmyc";
@@ -1023,7 +1023,11 @@ public class DatabaseH {
             message.addRecipients(Message.RecipientType.TO,
                     String.valueOf(new InternetAddress(emailTo)));
             message.setSubject("Email confirmation from MAAD Hotel.");
-            message.setText("The is a confirmation email regarding your reservation.");
+            message.setText("The is a confirmation email regarding your reservation. \n" +
+                    "The following reservation has been assigned. " + reservationID +
+                    "\n We hope you enjoy your stay at MAAD Hotel" +
+                    "\n Best, " +
+                    "\n MAAD HOTEL STAFF");
             Transport.send(message);
             System.out.println("Send message successfully.");
         } catch (MessagingException mex) {
@@ -1041,7 +1045,7 @@ public class DatabaseH {
         for (Reservation r : resList) {
             if (r.getReservationID() == reservationID) {
                 accountID = r.getAccountID();
-                sendEmailConfirmationAccountID(accountID);
+                sendEmailConfirmationAccountID(accountID, reservationID);
             }
         }
     }
