@@ -16,3 +16,4 @@ ResID, RoomNumber, Occupancy, RoomPrice, Stay(Days), ArrivalDate, CreatedDate, A
 302, 101, 2, 149.99, 2, 8/07/2023, 5/07/2023, 27, false
 451, 120, 2, 299.99, 2, 8/07/2023, 5/07/2023, 27, false
 565, 102, 2, 149.99, 1, 5/07/2023, 5/07/2023, 0, false
+124, 114, 2, 249.99, 2, 8/07/2023, 5/07/2023, 27, true
