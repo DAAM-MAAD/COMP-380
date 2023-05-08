@@ -33,7 +33,8 @@ public class gui implements ActionListener {
     JFrame adminFrame = new JFrame("MAAD Hotel: Welcome.");
     JFrame HomePageFrame= new JFrame("MAAD Hotel: Welcome " + User);
     JFrame PaymentFrame = new JFrame("MAAD Hotel: Payment");
-    JFrame cancelFrame = new JFrame("MAAD Hotel: Cancel Reservation ");
+    //JFrame cancelFrame = new JFrame("MAAD Hotel: Cancel Reservation ");
+    JFrame cancelF = new JFrame("Cancel reservation");
 
     JFrame reservationFrame = new JFrame("MAAD Hotel: Reservation");
     /**
@@ -837,9 +838,9 @@ public class gui implements ActionListener {
         CloseWindowListener(PaymentFrame);
     }
 
-    void cancelFrame(){
+    void cancelF(){
 
-        JFrame cancelF = new JFrame();
+       // JFrame cancelF = new JFrame("Cancel reservation");
         int resIDtoCancel = 0;
         String cancelNum = JOptionPane.showInputDialog(cancelF, "Enter reservation ID to cancel");
 
@@ -856,46 +857,6 @@ public class gui implements ActionListener {
             }
         }
 
-      /*  cancelFrame.setMinimumSize(new Dimension(1200, 1000));
-        cancelFrame.setIconImage(favicon.getImage());
-        HomePageFrame.dispose();
-        JLabel cancleCodLabel = new JLabel("Enter the Reservation I.D to cancel");
-        JTextField codeTextField = new JTextField();
-        codeTextField.setBounds(100, 100,200, 10);
-        JButton cancleButton = new JButton("Cancel Reservation");
-        cancleButton.setMaximumSize(new Dimension(150,40));
-        cancelFrame.setLayout(new BorderLayout(100,100));
-        cancleButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                db.cancelReservation(resIDtoCancel);
-                JOptionPane.showMessageDialog(null,"Reservation has been cancelled.");
-                mainFrame.getContentPane().removeAll();
-                loginFrame.getContentPane().removeAll();
-                reservationFrame.dispose();
-                adminFrame.dispose();
-                adminLoginFrame.dispose();
-                loginFrame.dispose();
-                CreateAccFrame.dispose();
-                PaymentFrame.dispose();
-                cancelFrame.getContentPane().removeAll();
-                cancelFrame.dispose();
-
-                HomePageFrame();
-            }
-        });*/
-
-
-        //cancelFrame.add(cancleCodLabel,BorderLayout.NORTH);
-        //cancelFrame.add(codeTextField,BorderLayout.CENTER);
-        //cancelFrame.add(cancleButton,BorderLayout.SOUTH);
-
-
-        // cancelFrame.getContentPane().setLayout(new BoxLayout(cancelFrame.getContentPane(), BoxLayout.Y_AXIS));
-        //cancelFrame.pack();
-        //cancelFrame.setVisible(true);
-
-        //Closing Windows
-        //CloseWindowListener(cancelFrame);
         HomePageFrame();
 
     }
@@ -1148,7 +1109,7 @@ public class gui implements ActionListener {
                 adminHomeFrame();
                 break;
             case "Cancel Reservation":
-                cancelFrame();
+                cancelF();
                 System.out.println("Entering user cancel reservation. Time: "+timeLog() );
                 break;
             default:
