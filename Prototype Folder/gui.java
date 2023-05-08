@@ -593,36 +593,17 @@ public class gui implements ActionListener {
 
         SpinnerModel staySpinner = new SpinnerNumberModel(1, 1, 7, 1);
         JSpinner staySpinner2 = new JSpinner(staySpinner);
-        JPanel panelStay = new JPanel();
-        panelStay.setPreferredSize(new Dimension(200, 20));
-        panelStay.add(staySpinner2);
-
+        staySpinner2.setMaximumSize(new Dimension(50,40));
+       
 
         JTextField stay = new JTextField(5);
         stay.setMaximumSize(new Dimension(120,40));
 
-        // JLabel guestCount = new JLabel();
-        // guestCount.setText("Number of guests");
-        // guestCount.setMaximumSize(new Dimension(120,40));
 
         JLabel Adults = new JLabel();
         Adults.setText("Number of guests");
         JSpinner numGuestSpinner = new JSpinner(value);
         numGuestSpinner.setMaximumSize(new Dimension(50,40));
-
-        // JLabel Children = new JLabel();
-        // Children.setText("Children");
-        // JSpinner secondspinner = new JSpinner(value2);
-        // secondspinner.setMaximumSize(new Dimension(50,40));
-        // JTextField guests = new JTextField();
-        // guests.setMaximumSize(new Dimension(1200,40));
-        // JTextField children = new JTextField();
-
-        // JLabel NumberOfRoomsLabel = new JLabel();
-        // NumberOfRoomsLabel.setText("Number of rooms:");
-        // NumberOfRoomsLabel.setMaximumSize(new Dimension(120,40));
-        // JSpinner thirdJSpinner = new JSpinner(value3);
-        // thirdJSpinner.setMaximumSize(new Dimension(50,40));
 
         JLabel Roomselection = new JLabel();
         Roomselection.setText("Room Selection");
@@ -749,24 +730,12 @@ public class gui implements ActionListener {
         });
 
         reservationFrame.add(welcomeText);
-        // reservationFrame.add(welcomeText);
-        // reservationFrame.add(NumberOfRoomsLabel);
-        // reservationFrame.add(thirdJSpinner);
-        //reservationFrame.add(guestCount);
         reservationFrame.add(Adults);
         reservationFrame.add(numGuestSpinner);
-        // reservationFrame.add(Children);
-        // reservationFrame.add(secondspinner);
-        //  reservationFrame.add(guests);
-        // reservationFrame.add(children);
         reservationFrame.add(arrivalLabel);
         reservationFrame.add(dateSpinner);
-        //  reservationFrame.add(arrvial);
         reservationFrame.add(stayLabel);
-
-        reservationFrame.getContentPane().add(panelStay);
-        //reservationFrame.add(staySpinner2);
-        //reservationFrame.add(stay);
+        reservationFrame.add(staySpinner2);
         reservationFrame.add(Roomselection);
         reservationFrame.add(list);
         reservationFrame.add(RoomType);

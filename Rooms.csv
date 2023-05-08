@@ -1,5 +1,5 @@
 Room Number, Vacant, Occupancy, Price, Type, Amenities, AccountID
-101, true, 2, 149.99, classic, 1 queen, 0
+101, false, 2, 149.99, classic, 1 queen, 27
 102, true, 2, 149.99, classic, 1 queen, 0
 103, true, 2, 149.99, classic, 1 queen, 0
 104, true, 2, 149.99, classic, 1 queen, 0
