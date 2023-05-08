@@ -824,6 +824,7 @@ public class gui implements ActionListener {
                 userCreditCard.printCard();
                 JOptionPane.showMessageDialog(null, db.paymentCreditCard(userCreditCard));
                 JOptionPane.showMessageDialog(null,"Payment has been processed, you will be redirected to the home page.");
+                JOptionPane.showMessageDialog(null,"E-mail conformation has been sent to you with your reservation Id");
                 mainFrame.getContentPane().removeAll();
                 loginFrame.getContentPane().removeAll();
                 reservationFrame.dispose();
